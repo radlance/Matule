@@ -1,7 +1,6 @@
 package com.radlance.matule.presentation
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,15 +28,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.radlance.matule.R
-import com.radlance.matule.ui.theme.backGroundGradient
 import com.radlance.matule.ui.theme.ralewayFamily
 
 @Composable
-fun OnBoardingFirst(modifier: Modifier = Modifier) {
+fun OnBoardingFirst(
+    onStartClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(brush = backGroundGradient)
     ) {
         Box(modifier = Modifier.padding(start = 50.dp, end = 50.dp, top = 121.dp)) {
             Image(
@@ -95,6 +95,10 @@ fun OnBoardingFirst(modifier: Modifier = Modifier) {
                     contentScale = ContentScale.FillWidth
                 )
             }
+            Image(
+                painter = painterResource(R.drawable.onboarding_progress_1),
+                contentDescription = "onboarding_progress_1"
+            )
         }
         Column(modifier = Modifier.align(Alignment.BottomCenter)) {
             Row(
@@ -102,29 +106,29 @@ fun OnBoardingFirst(modifier: Modifier = Modifier) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Column {
-
                     Image(
                         painter = painterResource(R.drawable.onboarding_highlight_4),
                         contentDescription = "onboarding_highlight_4",
                         modifier = Modifier
                             .alpha(0.3f)
+                            .padding(start = 20.dp, top = 75.dp)
                             .rotate(-120f)
-                            .padding(end = 20.dp, bottom = 30.dp)
                     )
                 }
-
-
 
                 Image(
                     painter = painterResource(R.drawable.onboarding_highlight_4),
                     contentDescription = "onboarding_highlight_4",
                     modifier = Modifier
                         .alpha(0.3f)
-                        .padding(end = 20.dp, bottom = 8.dp)
+                        .padding(end = 20.dp, bottom = 30.dp)
                 )
 
             }
-            Spacer(modifier = Modifier.height(65.dp))
+            OnBoardingButton(
+                stringResId = R.string.start,
+                onClick = onStartClicked
+            )
         }
     }
 }
@@ -132,11 +136,11 @@ fun OnBoardingFirst(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 private fun OnBoardingFirstPreview() {
-    OnBoardingFirst()
+    OnBoardingFirst({})
 }
 
 @Preview(device = "spec:width=673dp,height=841dp")
 @Composable
 private fun OnBoardingFirstPreviewExpanded() {
-    OnBoardingFirst()
+    OnBoardingFirst({})
 }

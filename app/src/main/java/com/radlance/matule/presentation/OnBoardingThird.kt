@@ -1,7 +1,6 @@
 package com.radlance.matule.presentation
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,15 +27,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.radlance.matule.R
-import com.radlance.matule.ui.theme.backGroundGradient
 import com.radlance.matule.ui.theme.ralewayFamily
 
 @Composable
-fun OnBoardingThird(modifier: Modifier = Modifier) {
+fun OnBoardingThird(
+    onNextClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Box(
         modifier = modifier
-            .fillMaxSize()
-            .background(brush = backGroundGradient),
+            .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -93,20 +93,34 @@ fun OnBoardingThird(modifier: Modifier = Modifier) {
                     fontWeight = FontWeight.Normal,
                     textAlign = TextAlign.Center
                 )
+
+                Spacer(modifier = Modifier.height(37.5.dp))
+                Image(
+                    painter = painterResource(R.drawable.onboarding_progress_3),
+                    contentDescription = "onboarding_progress_3"
+                )
             }
+
+
         }
+
+        OnBoardingButton(
+            stringResId = R.string.next,
+            onClick = onNextClicked,
+            modifier = Modifier.align(Alignment.BottomCenter)
+        )
     }
 }
 
 @Preview
 @Composable
 private fun ThirdOnBoardingScreenPreview() {
-    OnBoardingThird()
+    OnBoardingThird({})
 }
 
 
 @Preview(device = "spec:width=673dp,height=841dp")
 @Composable
 private fun OnBoardingThirdPreviewExpanded() {
-    OnBoardingThird()
+    OnBoardingThird({})
 }

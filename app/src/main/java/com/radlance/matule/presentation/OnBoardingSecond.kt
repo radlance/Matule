@@ -1,7 +1,6 @@
 package com.radlance.matule.presentation
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,15 +24,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.radlance.matule.R
-import com.radlance.matule.ui.theme.backGroundGradient
 import com.radlance.matule.ui.theme.ralewayFamily
 
 @Composable
-fun OnBoardingSecond(modifier: Modifier = Modifier) {
+fun OnBoardingSecond(
+    onNextClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Box(
         modifier = modifier
-            .fillMaxSize()
-            .background(brush = backGroundGradient),
+            .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -97,18 +97,29 @@ fun OnBoardingSecond(modifier: Modifier = Modifier) {
                     textAlign = TextAlign.Center
                 )
             }
+
+            Spacer(modifier = Modifier.height(37.5.dp))
+            Image(
+                painter = painterResource(R.drawable.onboarding_progress_2),
+                contentDescription = "onboarding_progress_2"
+            )
         }
+        OnBoardingButton(
+            stringResId = R.string.start,
+            onClick = onNextClicked,
+            modifier = Modifier.align(Alignment.BottomCenter)
+        )
     }
 }
 
 @Preview
 @Composable
 private fun OnBoardingSecondPreview() {
-    OnBoardingSecond()
+    OnBoardingSecond({})
 }
 
 @Preview(device = "spec:width=673dp,height=841dp")
 @Composable
 private fun OnBoardingSecondPreviewExpanded() {
-    OnBoardingSecond()
+    OnBoardingSecond({})
 }

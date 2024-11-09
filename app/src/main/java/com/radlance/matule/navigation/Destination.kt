@@ -10,3 +10,11 @@ object Splash
 @Serializable
 @Keep
 object OnBoardingFirst
+
+@Serializable
+@Keep
+object OnBoardingSecond
+
+@Serializable
+@Keep
+object OnBoardingThird
