@@ -123,12 +123,9 @@ fun OnBoardingFirst(modifier: Modifier = Modifier) {
                         .padding(end = 20.dp, bottom = 8.dp)
                 )
 
-
             }
-
             Spacer(modifier = Modifier.height(65.dp))
         }
-
     }
 }
 
