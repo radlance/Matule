@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -17,6 +16,7 @@ import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import com.radlance.matule.ui.theme.backGroundGradient
 import com.radlance.matule.ui.theme.ralewayFamily
 import kotlinx.coroutines.delay
 
@@ -33,14 +33,7 @@ fun SplashScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Color(color = 0xff48b2e7),
-                        Color(color = 0xff0176b1)
-                    )
-                )
-            ),
+            .background(brush = backGroundGradient),
         contentAlignment = Alignment.Center
     ) {
         val text = buildAnnotatedString {
