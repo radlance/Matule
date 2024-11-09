@@ -10,4 +10,5 @@ val ralewayFamily = FontFamily(
     Font(R.font.raleway_bold, weight = FontWeight.Bold),
     Font(R.font.raleway_black, weight = FontWeight.Black),
     Font(R.font.raleway_semi_bold, weight = FontWeight.SemiBold),
+    Font(R.font.raleway_regular, weight = FontWeight.Normal),
 )

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Matule</string>
+    <string name="welcome">ДОБРО ПОЖАЛОВАТЬ</string>
+    <string name="start">Начать</string>
+    <string name="will_start_travel">Начнем путешествие</string>
+    <string name="smart_collection_explain_now">Умнаяя, великолепная и модная коллекция Изучите сейчас</string>
 </resources>
