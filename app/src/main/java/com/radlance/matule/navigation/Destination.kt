@@ -5,16 +5,16 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @Keep
-object Splash
+data object Splash
 
 @Serializable
 @Keep
-object OnBoardingFirst
+data object OnBoardingFirst
 
 @Serializable
 @Keep
-object OnBoardingSecond
+data object OnBoardingSecond
 
 @Serializable
 @Keep
-object OnBoardingThird
+data object OnBoardingThird
