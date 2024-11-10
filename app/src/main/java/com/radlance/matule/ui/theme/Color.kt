@@ -17,3 +17,7 @@ val backGroundGradient = Brush.verticalGradient(
         Color(color = 0xff0176b1)
     )
 )
+
+val componentGrayColor = Color(0xFFf7f7f9)
+val secondaryTextColor = Color(0xFF707B81)
+val blueButtonColor = Color(0xFF48B2E7)

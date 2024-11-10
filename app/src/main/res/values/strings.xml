@@ -7,4 +7,12 @@
     <string name="smart_collection_explain_now">Умнаяя, великолепная и модная коллекция Изучите сейчас</string>
     <string name="you_have_the_power">У Вас Есть Сила, Чтобы</string>
     <string name="in_your_room_a_lot_of_plants">В вашей комнате много красивых и привлекательных растений</string>
+    <string name="fill_your_data">Заполните Свои Данные Или Продолжите через Социальные Медиа</string>
+    <string name="hello">Привет!</string>
+    <string name="email">Email</string>
+    <string name="password">Пароль</string>
+    <string name="recover">Восстановить</string>
+    <string name="sign_in">Войти</string>
+    <string name="is_first_time">"Вы впервые? "</string>
+    <string name="create_user">Создать пользователя</string>
 </resources>

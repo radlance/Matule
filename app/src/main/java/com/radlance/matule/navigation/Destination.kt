@@ -18,3 +18,7 @@ data object OnboardingSecond
 @Serializable
 @Keep
 data object OnboardingThird
+
+@Serializable
+@Keep
+data object SignIn

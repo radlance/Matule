@@ -14,6 +14,7 @@ import com.radlance.matule.presentation.onboarding.OnboardingFirst
 import com.radlance.matule.presentation.onboarding.OnboardingSecond
 import com.radlance.matule.presentation.onboarding.OnboardingThird
 import com.radlance.matule.presentation.onboarding.SplashScreen
+import com.radlance.matule.presentation.signin.SignInScreen
 import com.radlance.matule.ui.theme.backGroundGradient
 
 @Composable
@@ -65,7 +66,17 @@ fun NavGraph(navController: NavHostController) {
 
         composable<OnboardingThird> {
             OnboardingThird(
-                onNextClicked = {}
+                onNextClicked = {
+                    navController.navigate(SignIn)
+                }
+            )
+        }
+
+        composable<SignIn> {
+            SignInScreen(
+                onBackPressed = {
+                    navController.navigateUp()
+                }
             )
         }
     }
