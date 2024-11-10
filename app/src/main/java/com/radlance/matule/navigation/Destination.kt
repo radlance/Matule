@@ -9,12 +9,12 @@ data object Splash
 
 @Serializable
 @Keep
-data object OnBoardingFirst
+data object OnboardingFirst
 
 @Serializable
 @Keep
-data object OnBoardingSecond
+data object OnboardingSecond
 
 @Serializable
 @Keep
-data object OnBoardingThird
+data object OnboardingThird

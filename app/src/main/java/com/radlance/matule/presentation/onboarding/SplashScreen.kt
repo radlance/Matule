@@ -1,4 +1,4 @@
-package com.radlance.matule.presentation
+package com.radlance.matule.presentation.onboarding
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

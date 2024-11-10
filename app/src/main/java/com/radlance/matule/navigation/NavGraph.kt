@@ -10,10 +10,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.radlance.matule.presentation.OnBoardingFirst
-import com.radlance.matule.presentation.OnBoardingSecond
-import com.radlance.matule.presentation.OnBoardingThird
-import com.radlance.matule.presentation.SplashScreen
+import com.radlance.matule.presentation.onboarding.OnboardingFirst
+import com.radlance.matule.presentation.onboarding.OnboardingSecond
+import com.radlance.matule.presentation.onboarding.OnboardingThird
+import com.radlance.matule.presentation.onboarding.SplashScreen
 import com.radlance.matule.ui.theme.backGroundGradient
 
 @Composable
@@ -22,9 +22,9 @@ fun NavGraph(navController: NavHostController) {
     val currentRoute = currentBackStackEntry?.destination?.route?.split(".")?.last()
 
     val modifier = if (currentRoute in listOf(
-            OnBoardingFirst,
-            OnBoardingSecond,
-            OnBoardingThird
+            OnboardingFirst,
+            OnboardingSecond,
+            OnboardingThird
         ).map { it.toString() } || currentRoute == null
     ) {
         Modifier.background(brush = backGroundGradient)
@@ -40,31 +40,31 @@ fun NavGraph(navController: NavHostController) {
         composable<Splash> {
             SplashScreen(
                 onDelayFinished = {
-                    navController.navigate(OnBoardingFirst) {
+                    navController.navigate(OnboardingFirst) {
                         popUpTo<Splash> { inclusive = true }
                     }
                 }
             )
         }
 
-        composable<OnBoardingFirst> {
-            OnBoardingFirst(
+        composable<OnboardingFirst> {
+            OnboardingFirst(
                 onStartClicked = {
-                    navController.navigate(OnBoardingSecond)
+                    navController.navigate(OnboardingSecond)
                 }
             )
         }
 
-        composable<OnBoardingSecond> {
-            OnBoardingSecond(
+        composable<OnboardingSecond> {
+            OnboardingSecond(
                 onNextClicked = {
-                    navController.navigate(OnBoardingThird)
+                    navController.navigate(OnboardingThird)
                 }
             )
         }
 
-        composable<OnBoardingThird> {
-            OnBoardingThird(
+        composable<OnboardingThird> {
+            OnboardingThird(
                 onNextClicked = {}
             )
         }

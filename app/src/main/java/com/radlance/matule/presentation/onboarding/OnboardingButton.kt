@@ -1,4 +1,4 @@
-package com.radlance.matule.presentation
+package com.radlance.matule.presentation.onboarding
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxWidth

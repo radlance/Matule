@@ -1,4 +1,4 @@
-package com.radlance.matule.presentation
+package com.radlance.matule.presentation.onboarding
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -29,7 +29,7 @@ import com.radlance.matule.ui.theme.backGroundGradient
 import com.radlance.matule.ui.theme.ralewayFamily
 
 @Composable
-fun OnBoardingSecond(
+fun OnboardingSecond(
     onNextClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -117,12 +117,12 @@ fun OnBoardingSecond(
 
 @Preview
 @Composable
-private fun OnBoardingSecondPreview() {
-    OnBoardingSecond({})
+private fun OnboardingSecondPreview() {
+    OnboardingSecond({})
 }
 
 @Preview(device = "spec:width=673dp,height=841dp")
 @Composable
-private fun OnBoardingSecondPreviewExpanded() {
-    OnBoardingSecond({})
+private fun OnboardingSecondPreviewExpanded() {
+    OnboardingSecond({})
 }
