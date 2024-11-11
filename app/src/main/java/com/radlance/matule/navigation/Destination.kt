@@ -26,3 +26,7 @@ data object SignIn
 @Serializable
 @Keep
 data object SignUp
+
+@Serializable
+@Keep
+data object ForgotPassword

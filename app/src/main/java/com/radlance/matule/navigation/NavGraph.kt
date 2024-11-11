@@ -14,6 +14,7 @@ import com.radlance.matule.presentation.onboarding.OnboardingFirst
 import com.radlance.matule.presentation.onboarding.OnboardingSecond
 import com.radlance.matule.presentation.onboarding.OnboardingThird
 import com.radlance.matule.presentation.onboarding.SplashScreen
+import com.radlance.matule.presentation.signin.ForgotPasswordScreen
 import com.radlance.matule.presentation.signin.SignInScreen
 import com.radlance.matule.presentation.signup.SignUpScreen
 import com.radlance.matule.ui.theme.backGroundGradient
@@ -82,6 +83,9 @@ fun NavGraph(navController: NavHostController) {
                     navController.navigate(SignUp) {
                         popUpTo<SignIn> { inclusive = true }
                     }
+                },
+                onRecoverPasswordTextClicked = {
+                    navController.navigate(ForgotPassword)
                 }
             )
         }
@@ -92,10 +96,17 @@ fun NavGraph(navController: NavHostController) {
                     navController.navigateUp()
                 },
                 onSignInTextClicked = {
-                    navController.navigate(SignIn)
                     navController.navigate(SignIn) {
                         popUpTo<SignUp> { inclusive = true }
                     }
+                }
+            )
+        }
+
+        composable<ForgotPassword> {
+            ForgotPasswordScreen(
+                onBackPressed = {
+                    navController.navigateUp()
                 }
             )
         }

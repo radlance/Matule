@@ -20,4 +20,7 @@
     <string name="agreement">Даю согласие на обработку персональных данных</string>
     <string name="register">Зарегистрироваться</string>
     <string name="have_an_account">"Есть аккаунт? "</string>
+    <string name="forgot_password">Забыл Пароль</string>
+    <string name="enter_your_account">Введите Свою Учетную Запись Для Сброса</string>
+    <string name="send">Отправить</string>
 </resources>

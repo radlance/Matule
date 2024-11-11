@@ -5,8 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -39,10 +37,8 @@ import com.radlance.matule.ui.theme.ralewayFamily
 import com.radlance.matule.ui.theme.secondaryTextColor
 
 @Composable
-fun SignInScreen(
+fun ForgotPasswordScreen(
     onBackPressed: () -> Unit,
-    onSignUpTextClicked: () -> Unit,
-    onRecoverPasswordTextClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -50,11 +46,6 @@ fun SignInScreen(
         mutableStateOf("")
     }
 
-    var passwordFieldValue by rememberSaveable {
-        mutableStateOf("")
-    }
-
-    val interactionSource = remember { MutableInteractionSource() }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -62,6 +53,7 @@ fun SignInScreen(
             .padding(start = 20.dp, end = 20.dp, top = 66.dp, bottom = 47.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val interactionSource = remember { MutableInteractionSource() }
 
         Image(
             painter = painterResource(R.drawable.ic_arrow_back),
@@ -75,7 +67,7 @@ fun SignInScreen(
         )
 
         Text(
-            text = stringResource(R.string.hello),
+            text = stringResource(R.string.forgot_password),
             fontSize = 32.sp,
             fontFamily = ralewayFamily,
             fontWeight = FontWeight.Bold,
@@ -83,7 +75,7 @@ fun SignInScreen(
             modifier = Modifier.padding(top = 11.dp)
         )
         Text(
-            text = stringResource(R.string.fill_your_data),
+            text = stringResource(R.string.enter_your_account),
             fontSize = 16.sp,
             fontFamily = poppinsFamily,
             fontWeight = FontWeight.Normal,
@@ -94,45 +86,20 @@ fun SignInScreen(
         )
 
         EnterInputField(
-            label = stringResource(R.string.email),
+            label = "",
             value = emailFieldValue,
             onValueChange = { emailFieldValue = it },
             modifier = Modifier
                 .align(Alignment.Start)
-                .padding(top = 30.dp),
+                .padding(top = 40.dp),
             isPassword = false,
             interactionSource = interactionSource
         )
 
-        EnterInputField(
-            label = stringResource(R.string.password),
-            value = passwordFieldValue,
-            onValueChange = { passwordFieldValue = it },
-            modifier = Modifier
-                .align(Alignment.Start)
-                .padding(top = 30.dp),
-            isPassword = true,
-            interactionSource = interactionSource
-        )
-
-        Text(
-            text = stringResource(R.string.recover),
-            color = secondaryTextColor,
-            fontSize = 12.sp,
-            fontFamily = poppinsFamily,
-            fontWeight = FontWeight.Normal,
-            lineHeight = 16.sp,
-            modifier = Modifier
-                .align(Alignment.End)
-                .padding(top = 12.dp)
-                .clickable(indication = null, interactionSource = interactionSource) {
-                    onRecoverPasswordTextClicked()
-                }
-        )
         Button(
             onClick = {},
             modifier = modifier
-                .padding(top = 24.dp)
+                .padding(top = 40.dp)
                 .fillMaxWidth()
                 .height(50.dp),
             shape = RoundedCornerShape(13.dp),
@@ -142,48 +109,23 @@ fun SignInScreen(
             )
         ) {
             Text(
-                text = stringResource(R.string.sign_in),
+                text = stringResource(R.string.send),
                 fontSize = 14.sp,
                 fontFamily = ralewayFamily,
                 fontWeight = FontWeight.SemiBold
             )
         }
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        Row {
-            Text(
-                text = stringResource(R.string.is_first_time),
-                color = secondaryTextColor,
-                fontSize = 16.sp,
-                fontFamily = ralewayFamily,
-                fontWeight = FontWeight.Medium,
-                lineHeight = 1.sp
-            )
-            Text(
-                text = stringResource(R.string.create_user),
-                fontSize = 16.sp,
-                fontFamily = ralewayFamily,
-                fontWeight = FontWeight.Medium,
-                lineHeight = 1.sp,
-                modifier = Modifier.clickable(
-                    indication = null,
-                    interactionSource = interactionSource
-                ) { onSignUpTextClicked() }
-            )
-        }
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
-private fun SignInScreenPreview() {
-    SignInScreen({}, {}, {})
+private fun ForgotPasswordScreenPreview() {
+    ForgotPasswordScreen({})
 }
 
 @Preview(showBackground = true, device = "spec:width=673dp,height=841dp")
 @Composable
-private fun SignInScreenExpandedPreview() {
-    SignInScreen({}, {}, {})
+private fun ForgotPasswordScreenExpandedPreview() {
+    ForgotPasswordScreen({})
 }

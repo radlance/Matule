@@ -49,13 +49,15 @@ fun EnterInputField(
     }
 
     Column(modifier = modifier) {
-        Text(
-            text = label,
-            fontSize = 16.sp,
-            fontFamily = ralewayFamily,
-            fontWeight = FontWeight.Medium,
-            lineHeight = 20.sp
-        )
+        if (label.isNotBlank()) {
+            Text(
+                text = label,
+                fontSize = 16.sp,
+                fontFamily = ralewayFamily,
+                fontWeight = FontWeight.Medium,
+                lineHeight = 20.sp
+            )
+        }
 
         Box(
             modifier = Modifier
