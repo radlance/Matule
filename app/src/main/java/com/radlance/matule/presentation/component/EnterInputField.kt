@@ -1,7 +1,8 @@
-package com.radlance.matule.presentation.components
+package com.radlance.matule.presentation.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,9 +31,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.radlance.matule.R
 import com.radlance.matule.ui.theme.componentGrayColor
+import com.radlance.matule.ui.theme.inputFieldTextColor
 import com.radlance.matule.ui.theme.poppinsFamily
 import com.radlance.matule.ui.theme.ralewayFamily
-import com.radlance.matule.ui.theme.secondaryTextColor
 
 @Composable
 fun EnterInputField(
@@ -40,7 +41,8 @@ fun EnterInputField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    isPassword: Boolean = false
+    isPassword: Boolean = false,
+    interactionSource: MutableInteractionSource
 ) {
     var showPassword by rememberSaveable {
         mutableStateOf(!isPassword)
@@ -85,7 +87,7 @@ fun EnterInputField(
                         },
                         singleLine = true,
                         textStyle = TextStyle(
-                            color = secondaryTextColor,
+                            color = inputFieldTextColor,
                             fontSize = 14.sp,
                             lineHeight = 16.sp,
                             fontFamily = poppinsFamily,
@@ -98,7 +100,10 @@ fun EnterInputField(
                             painter = painterResource(R.drawable.ic_visibility_off),
                             contentDescription = "VisibilityOff",
                             modifier = Modifier
-                                .clickable {
+                                .clickable(
+                                    indication = null,
+                                    interactionSource = interactionSource
+                                ) {
                                     showPassword = !showPassword
                                 }
                         )

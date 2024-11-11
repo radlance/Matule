@@ -22,3 +22,7 @@ data object OnboardingThird
 @Serializable
 @Keep
 data object SignIn
+
+@Serializable
+@Keep
+data object SignUp

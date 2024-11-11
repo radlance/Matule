@@ -15,6 +15,7 @@ import com.radlance.matule.presentation.onboarding.OnboardingSecond
 import com.radlance.matule.presentation.onboarding.OnboardingThird
 import com.radlance.matule.presentation.onboarding.SplashScreen
 import com.radlance.matule.presentation.signin.SignInScreen
+import com.radlance.matule.presentation.signup.SignUpScreen
 import com.radlance.matule.ui.theme.backGroundGradient
 
 @Composable
@@ -76,6 +77,25 @@ fun NavGraph(navController: NavHostController) {
             SignInScreen(
                 onBackPressed = {
                     navController.navigateUp()
+                },
+                onSignUpTextClicked = {
+                    navController.navigate(SignUp) {
+                        popUpTo<SignIn> { inclusive = true }
+                    }
+                }
+            )
+        }
+
+        composable<SignUp> {
+            SignUpScreen(
+                onBackPressed = {
+                    navController.navigateUp()
+                },
+                onSignInTextClicked = {
+                    navController.navigate(SignIn)
+                    navController.navigate(SignIn) {
+                        popUpTo<SignUp> { inclusive = true }
+                    }
                 }
             )
         }
