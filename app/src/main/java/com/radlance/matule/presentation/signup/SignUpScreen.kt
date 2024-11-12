@@ -1,5 +1,7 @@
 package com.radlance.matule.presentation.signup
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -30,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -76,6 +79,8 @@ fun SignUpScreen(
     val interactionSource = remember { MutableInteractionSource() }
 
     val scrollState = rememberScrollState()
+
+    val context = LocalContext.current
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -192,7 +197,17 @@ fun SignUpScreen(
                 fontFamily = ralewayFamily,
                 fontWeight = FontWeight.Medium,
                 textDecoration = TextDecoration.Underline,
-                modifier = Modifier.padding(start = 16.dp)
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .clickable {
+                        val pdfUrl =
+                            "https://drive.google.com/uc?id=1UD2e1VZKOHcXqrHlH65PBhPAXIftbg07"
+                        val intent = Intent(Intent.ACTION_VIEW).apply {
+                            setDataAndType(Uri.parse(pdfUrl), "application/pdf")
+                            addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                        }
+                        context.startActivity(intent)
+                    }
             )
         }
 
