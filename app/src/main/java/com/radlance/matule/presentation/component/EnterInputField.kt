@@ -1,6 +1,8 @@
 package com.radlance.matule.presentation.component
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -22,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -42,11 +45,21 @@ fun EnterInputField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     isPassword: Boolean = false,
+    isError: Boolean = false,
     interactionSource: MutableInteractionSource
 ) {
     var showPassword by rememberSaveable {
         mutableStateOf(!isPassword)
     }
+
+    val shapeColor by animateColorAsState(
+        targetValue = if(isError) {
+            Color.Red
+        } else {
+            Color.Transparent
+        },
+        label = "EnterInputField error"
+    )
 
     Column(modifier = modifier) {
         if (label.isNotBlank()) {
@@ -60,13 +73,13 @@ fun EnterInputField(
         }
 
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxWidth()
                 .padding(top = 12.dp)
                 .height(48.dp)
                 .clip(RoundedCornerShape(14.dp))
-                .background(componentGrayColor),
-            contentAlignment = Alignment.Center
+                .background(componentGrayColor)
+                .border(1.dp, shapeColor, RoundedCornerShape(14.dp))
         ) {
             Box(
                 modifier = Modifier
@@ -115,5 +128,4 @@ fun EnterInputField(
             }
         }
     }
-
 }

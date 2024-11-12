@@ -13,11 +13,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,6 +38,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.radlance.matule.R
 import com.radlance.matule.presentation.component.EnterInputField
 import com.radlance.matule.ui.theme.blueButtonColor
@@ -47,7 +51,8 @@ import com.radlance.matule.ui.theme.secondaryTextColor
 fun SignUpScreen(
     onBackPressed: () -> Unit,
     onSignInTextClicked: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: SignUpViewModel = viewModel()
 ) {
 
     var nameFieldValue by rememberSaveable {
@@ -66,12 +71,17 @@ fun SignUpScreen(
         mutableStateOf(false)
     }
 
+    val uiState by viewModel.signUpUiState.collectAsState()
+
     val interactionSource = remember { MutableInteractionSource() }
+
+    val scrollState = rememberScrollState()
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(start = 20.dp, end = 20.dp, top = 66.dp, bottom = 47.dp),
+            .padding(start = 20.dp, end = 20.dp, top = 66.dp, bottom = 47.dp)
+            .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
@@ -108,33 +118,45 @@ fun SignUpScreen(
         EnterInputField(
             label = stringResource(R.string.your_name),
             value = nameFieldValue,
-            onValueChange = { nameFieldValue = it },
+            onValueChange = {
+                nameFieldValue = it
+                viewModel.resetNameError()
+            },
             modifier = Modifier
                 .align(Alignment.Start)
                 .padding(top = 30.dp),
             isPassword = false,
+            isError = !uiState.isValidName,
             interactionSource = interactionSource
         )
 
         EnterInputField(
             label = stringResource(R.string.email),
             value = emailFieldValue,
-            onValueChange = { emailFieldValue = it },
+            onValueChange = {
+                emailFieldValue = it
+                viewModel.resetEmailError()
+            },
             modifier = Modifier
                 .align(Alignment.Start)
                 .padding(top = 30.dp),
             isPassword = false,
+            isError = !uiState.isValidEmail,
             interactionSource = interactionSource
         )
 
         EnterInputField(
             label = stringResource(R.string.password),
             value = passwordFieldValue,
-            onValueChange = { passwordFieldValue = it },
+            onValueChange = {
+                passwordFieldValue = it
+                viewModel.resetPasswordError()
+            },
             modifier = Modifier
                 .align(Alignment.Start)
                 .padding(top = 30.dp),
             isPassword = true,
+            isError = !uiState.isValidPassword,
             interactionSource = interactionSource
         )
 
@@ -175,7 +197,9 @@ fun SignUpScreen(
         }
 
         Button(
-            onClick = {},
+            onClick = {
+                viewModel.registerUser(nameFieldValue, emailFieldValue, passwordFieldValue)
+            },
             modifier = modifier
                 .padding(top = 12.dp)
                 .fillMaxWidth()
@@ -196,7 +220,7 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Row {
+        Row(modifier = Modifier.padding(top = 12.dp)) {
             Text(
                 text = stringResource(R.string.have_an_account),
                 color = secondaryTextColor,
