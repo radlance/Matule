@@ -1,5 +1,6 @@
 package com.radlance.matule.presentation.onboarding
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -34,8 +35,11 @@ import com.radlance.matule.ui.theme.ralewayFamily
 @Composable
 fun OnboardingThird(
     onNextClicked: () -> Unit,
+    onBackPressed: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    BackHandler { onBackPressed() }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -118,12 +122,12 @@ fun OnboardingThird(
 @Preview
 @Composable
 private fun OnboardingThirdScreenPreview() {
-    OnboardingThird({})
+    OnboardingThird({}, {})
 }
 
 
 @Preview(device = "spec:width=673dp,height=841dp")
 @Composable
 private fun OnboardingThirdPreviewExpanded() {
-    OnboardingThird({})
+    OnboardingThird({}, {})
 }

@@ -4,12 +4,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.radlance.matule.presentation.onboarding.OnBoardingViewModel
 import com.radlance.matule.presentation.onboarding.OnboardingFirst
 import com.radlance.matule.presentation.onboarding.OnboardingSecond
 import com.radlance.matule.presentation.onboarding.OnboardingThird
@@ -23,6 +26,9 @@ import com.radlance.matule.ui.theme.backGroundGradient
 fun NavGraph(navController: NavHostController) {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route?.split(".")?.last()
+
+    val onBoardingViewModel = viewModel<OnBoardingViewModel>()
+    val alreadyViewed by onBoardingViewModel.alreadyViewed.collectAsState()
 
     val modifier = if (currentRoute in listOf(
             OnboardingFirst,
@@ -43,8 +49,14 @@ fun NavGraph(navController: NavHostController) {
         composable<Splash> {
             SplashScreen(
                 onDelayFinished = {
-                    navController.navigate(OnboardingFirst) {
-                        popUpTo<Splash> { inclusive = true }
+                    if (alreadyViewed) {
+                        navController.navigate(SignIn) {
+                            popUpTo<Splash> { inclusive = true }
+                        }
+                    } else {
+                        navController.navigate(OnboardingFirst) {
+                            popUpTo<Splash> { inclusive = true }
+                        }
                     }
                 }
             )
@@ -53,7 +65,9 @@ fun NavGraph(navController: NavHostController) {
         composable<OnboardingFirst> {
             OnboardingFirst(
                 onStartClicked = {
-                    navController.navigate(OnboardingSecond)
+                    navController.navigate(OnboardingSecond) {
+                        popUpTo<OnboardingFirst> { inclusive = true }
+                    }
                 }
             )
         }
@@ -62,6 +76,11 @@ fun NavGraph(navController: NavHostController) {
             OnboardingSecond(
                 onNextClicked = {
                     navController.navigate(OnboardingThird)
+                },
+                onBackPressed = {
+                    navController.navigate(OnboardingFirst) {
+                        popUpTo<OnboardingSecond> { inclusive = true }
+                    }
                 }
             )
         }
@@ -69,7 +88,15 @@ fun NavGraph(navController: NavHostController) {
         composable<OnboardingThird> {
             OnboardingThird(
                 onNextClicked = {
-                    navController.navigate(SignIn)
+                    navController.navigate(SignIn) {
+                        popUpTo<OnboardingThird> { inclusive = true }
+                    }
+                    onBoardingViewModel.setOnBoardingViewed()
+                },
+                onBackPressed = {
+                    navController.navigate(OnboardingSecond) {
+                        popUpTo<OnboardingThird> { inclusive = true }
+                    }
                 }
             )
         }
@@ -77,7 +104,9 @@ fun NavGraph(navController: NavHostController) {
         composable<SignIn> {
             SignInScreen(
                 onBackPressed = {
-                    navController.navigateUp()
+                    navController.navigate(OnboardingThird) {
+                        popUpTo<SignIn> { inclusive = true }
+                    }
                 },
                 onSignUpTextClicked = {
                     navController.navigate(SignUp) {
@@ -93,7 +122,9 @@ fun NavGraph(navController: NavHostController) {
         composable<SignUp> {
             SignUpScreen(
                 onBackPressed = {
-                    navController.navigateUp()
+                    navController.navigate(OnboardingThird) {
+                        popUpTo<SignIn> { inclusive = true }
+                    }
                 },
                 onSignInTextClicked = {
                     navController.navigate(SignIn) {

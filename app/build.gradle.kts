@@ -1,8 +1,10 @@
 plugins {
+    alias(libs.plugins.dagger.hilt.android)
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+    kotlin("kapt")
 }
 
 android {
@@ -40,7 +42,15 @@ android {
     }
 }
 
+kapt {
+    correctErrorTypes = true
+}
+
 dependencies {
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.hilt.android)
+
+    implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
