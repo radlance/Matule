@@ -1,5 +1,6 @@
 package com.radlance.matule.presentation.signin
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,7 +12,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -54,12 +57,17 @@ fun SignInScreen(
         mutableStateOf("")
     }
 
+    val scrollState = rememberScrollState()
+
     val interactionSource = remember { MutableInteractionSource() }
+
+    BackHandler { onBackPressed() }
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(start = 20.dp, end = 20.dp, top = 66.dp, bottom = 47.dp),
+            .padding(start = 20.dp, end = 20.dp, top = 66.dp, bottom = 47.dp)
+            .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
@@ -151,7 +159,7 @@ fun SignInScreen(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Row {
+        Row(Modifier.padding(top = 12.dp)) {
             Text(
                 text = stringResource(R.string.is_first_time),
                 color = secondaryTextColor,

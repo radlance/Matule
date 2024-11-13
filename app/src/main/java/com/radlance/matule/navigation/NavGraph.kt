@@ -122,8 +122,8 @@ fun NavGraph(navController: NavHostController) {
         composable<SignUp> {
             SignUpScreen(
                 onBackPressed = {
-                    navController.navigate(OnboardingThird) {
-                        popUpTo<SignIn> { inclusive = true }
+                    navController.navigate(SignIn) {
+                        popUpTo<SignUp> { inclusive = true }
                     }
                 },
                 onSignInTextClicked = {

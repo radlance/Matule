@@ -2,6 +2,7 @@ package com.radlance.matule.presentation.signup
 
 import android.content.Intent
 import android.net.Uri
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -57,6 +58,8 @@ fun SignUpScreen(
     modifier: Modifier = Modifier,
     viewModel: SignUpViewModel = viewModel()
 ) {
+
+    BackHandler { onBackPressed() }
 
     var nameFieldValue by rememberSaveable {
         mutableStateOf("")
