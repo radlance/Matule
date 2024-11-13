@@ -221,8 +221,10 @@ fun SignUpScreen(
             },
             buttonColors = ButtonDefaults.buttonColors().copy(
                 containerColor = blueButtonColor,
+                disabledContainerColor = MaterialTheme.colorScheme.surfaceTint,
                 contentColor = Color.White
             ),
+            enabled = checked,
             modifier = Modifier.padding(top = 12.dp)
         )
 

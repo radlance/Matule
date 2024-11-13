@@ -20,10 +20,12 @@ fun NavigationButton(
     @StringRes stringResId: Int,
     onClick: () -> Unit,
     buttonColors: ButtonColors,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
 ) {
     Button(
         onClick = onClick,
+        enabled = enabled,
         modifier = modifier
             .fillMaxWidth()
             .height(50.dp),
