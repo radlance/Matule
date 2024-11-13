@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.radlance.matule.R
+import com.radlance.matule.presentation.component.NavigationButton
 import com.radlance.matule.ui.theme.backGroundGradient
 import com.radlance.matule.ui.theme.ralewayFamily
 
@@ -111,10 +113,16 @@ fun OnboardingThird(
 
         }
 
-        OnBoardingButton(
+        NavigationButton(
             stringResId = R.string.next,
             onClick = onNextClicked,
-            modifier = Modifier.align(Alignment.BottomCenter)
+            buttonColors = ButtonDefaults.buttonColors().copy(
+                containerColor = Color.White,
+                contentColor = Color.Black
+            ),
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(start = 20.dp, end = 20.dp, bottom = 36.dp, top = 16.dp)
         )
     }
 }

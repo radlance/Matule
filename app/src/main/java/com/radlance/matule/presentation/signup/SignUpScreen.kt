@@ -13,14 +13,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -44,9 +43,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.radlance.matule.R
+import com.radlance.matule.presentation.component.BackButton
 import com.radlance.matule.presentation.component.EnterInputField
+import com.radlance.matule.presentation.component.NavigationButton
+import com.radlance.matule.ui.theme.MatuleTheme
 import com.radlance.matule.ui.theme.blueButtonColor
-import com.radlance.matule.ui.theme.componentGrayColor
 import com.radlance.matule.ui.theme.poppinsFamily
 import com.radlance.matule.ui.theme.ralewayFamily
 import com.radlance.matule.ui.theme.secondaryTextColor
@@ -87,22 +88,13 @@ fun SignUpScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.background)
             .padding(start = 20.dp, end = 20.dp, top = 66.dp, bottom = 47.dp)
             .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Image(
-            painter = painterResource(R.drawable.ic_arrow_back),
-            contentDescription = "ic_arrow_back",
-            modifier = Modifier
-                .align(Alignment.Start)
-                .clickable(
-                    indication = null,
-                    interactionSource = interactionSource
-                ) { onBackPressed() }
-        )
+        BackButton(onClicked = onBackPressed, modifier = Modifier.align(Alignment.Start))
 
         Text(
             text = stringResource(R.string.registration),
@@ -180,7 +172,7 @@ fun SignUpScreen(
                 modifier = Modifier
                     .size(18.dp)
                     .clip(RoundedCornerShape(6.dp))
-                    .background(componentGrayColor)
+                    .background(MaterialTheme.colorScheme.surfaceTint)
                     .clickable(indication = null, interactionSource = interactionSource) {
                         checked = !checked
                     }
@@ -214,27 +206,21 @@ fun SignUpScreen(
             )
         }
 
-        Button(
+        NavigationButton(
+            stringResId = R.string.register,
             onClick = {
-                viewModel.registerUser(nameFieldValue, emailFieldValue, passwordFieldValue)
+                viewModel.registerUser(
+                    nameFieldValue,
+                    emailFieldValue,
+                    passwordFieldValue
+                )
             },
-            modifier = modifier
-                .padding(top = 12.dp)
-                .fillMaxWidth()
-                .height(50.dp),
-            shape = RoundedCornerShape(13.dp),
-            colors = ButtonDefaults.buttonColors().copy(
+            buttonColors = ButtonDefaults.buttonColors().copy(
                 containerColor = blueButtonColor,
                 contentColor = Color.White
-            )
-        ) {
-            Text(
-                text = stringResource(R.string.register),
-                fontSize = 14.sp,
-                fontFamily = ralewayFamily,
-                fontWeight = FontWeight.SemiBold
-            )
-        }
+            ),
+            modifier = Modifier.padding(top = 12.dp)
+        )
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -265,11 +251,15 @@ fun SignUpScreen(
 @Preview(showBackground = true)
 @Composable
 private fun SignUpScreenPreview() {
-    SignUpScreen({}, {})
+    MatuleTheme {
+        SignUpScreen({}, {})
+    }
 }
 
 @Preview(showBackground = true, device = "spec:width=673dp,height=841dp")
 @Composable
 private fun SignUpScreenExpandedPreview() {
-    SignUpScreen({}, {})
+    MatuleTheme {
+        SignUpScreen({}, {})
+    }
 }
