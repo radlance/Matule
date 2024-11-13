@@ -2,7 +2,7 @@ package com.radlance.matule.presentation.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.radlance.matule.domain.OnBoardingRepository
+import com.radlance.matule.domain.onboarding.OnBoardingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn

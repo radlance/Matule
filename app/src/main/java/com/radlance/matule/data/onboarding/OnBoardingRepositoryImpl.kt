@@ -1,7 +1,7 @@
 package com.radlance.matule.data.onboarding
 
 import com.radlance.matule.data.DataStoreManager
-import com.radlance.matule.domain.OnBoardingRepository
+import com.radlance.matule.domain.onboarding.OnBoardingRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

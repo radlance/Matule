@@ -1,7 +1,7 @@
 package com.radlance.matule.di
 
 import com.radlance.matule.data.onboarding.OnBoardingRepositoryImpl
-import com.radlance.matule.domain.OnBoardingRepository
+import com.radlance.matule.domain.onboarding.OnBoardingRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

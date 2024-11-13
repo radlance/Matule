@@ -41,7 +41,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.radlance.matule.R
 import com.radlance.matule.presentation.component.BackButton
 import com.radlance.matule.presentation.component.EnterInputField
@@ -57,7 +57,7 @@ fun SignUpScreen(
     onBackPressed: () -> Unit,
     onSignInTextClicked: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: SignUpViewModel = viewModel()
+    viewModel: SignUpViewModel = hiltViewModel()
 ) {
 
     BackHandler { onBackPressed() }
@@ -77,6 +77,10 @@ fun SignUpScreen(
     var checked by rememberSaveable {
         mutableStateOf(false)
     }
+
+    val signUpResultUiState by viewModel.signUpResultUiState.collectAsState()
+
+    signUpResultUiState.Show()
 
     val uiState by viewModel.signUpUiState.collectAsState()
 

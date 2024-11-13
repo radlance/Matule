@@ -1,4 +1,4 @@
-package com.radlance.matule.domain
+package com.radlance.matule.domain.onboarding
 
 import kotlinx.coroutines.flow.Flow
 
