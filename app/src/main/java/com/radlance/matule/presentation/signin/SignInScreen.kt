@@ -63,8 +63,9 @@ fun SignInScreen(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .padding(start = 20.dp, end = 20.dp, top = 66.dp, bottom = 47.dp)
-            .verticalScroll(scrollState),
+            .verticalScroll(scrollState)
+            .padding(start = 20.dp, end = 20.dp, top = 66.dp, bottom = 47.dp),
+
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
