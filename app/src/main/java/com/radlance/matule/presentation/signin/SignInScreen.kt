@@ -1,6 +1,5 @@
 package com.radlance.matule.presentation.signin
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -40,12 +39,14 @@ import com.radlance.matule.ui.theme.secondaryTextColor
 
 @Composable
 fun SignInScreen(
-    onBackPressed: () -> Unit,
+    onIconBackPressed: () -> Unit,
+//    onSystemBackPressed: () -> Unit,
     onSignUpTextClicked: () -> Unit,
     onRecoverPasswordTextClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
+//    BackHandler { onSystemBackPressed() }
     var emailFieldValue by rememberSaveable {
         mutableStateOf("")
     }
@@ -58,7 +59,6 @@ fun SignInScreen(
 
     val interactionSource = remember { MutableInteractionSource() }
 
-    BackHandler { onBackPressed() }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -69,7 +69,7 @@ fun SignInScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        BackButton(onClicked = onBackPressed, modifier = Modifier.align(Alignment.Start))
+        BackButton(onClicked = onIconBackPressed, modifier = Modifier.align(Alignment.Start))
 
         Text(
             text = stringResource(R.string.hello),

@@ -1,5 +1,6 @@
 package com.radlance.matule.navigation
 
+import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -7,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -28,7 +30,9 @@ fun NavGraph(navController: NavHostController) {
     val currentRoute = currentBackStackEntry?.destination?.route?.split(".")?.last()
 
     val onBoardingViewModel = viewModel<OnBoardingViewModel>()
-    val alreadyViewed by onBoardingViewModel.alreadyViewed.collectAsState()
+    val onBoardingAlreadyViewed by onBoardingViewModel.alreadyViewed.collectAsState()
+
+    val context = LocalContext.current
 
     val modifier = if (currentRoute in listOf(
             OnboardingFirst,
@@ -49,7 +53,7 @@ fun NavGraph(navController: NavHostController) {
         composable<Splash> {
             SplashScreen(
                 onDelayFinished = {
-                    if (alreadyViewed) {
+                    if (onBoardingAlreadyViewed) {
                         navController.navigate(SignIn) {
                             popUpTo<Splash> { inclusive = true }
                         }
@@ -68,6 +72,9 @@ fun NavGraph(navController: NavHostController) {
                     navController.navigate(OnboardingSecond) {
                         popUpTo<OnboardingFirst> { inclusive = true }
                     }
+                },
+                onBackPressed = {
+                    (context as Activity).finish()
                 }
             )
         }
@@ -89,7 +96,7 @@ fun NavGraph(navController: NavHostController) {
             OnboardingThird(
                 onNextClicked = {
                     navController.navigate(SignIn) {
-                        popUpTo<OnboardingThird> { inclusive = true }
+                        popUpTo<OnboardingThird> { inclusive = false }
                     }
                     onBoardingViewModel.setOnBoardingViewed()
                 },
@@ -103,11 +110,20 @@ fun NavGraph(navController: NavHostController) {
 
         composable<SignIn> {
             SignInScreen(
-                onBackPressed = {
+                onIconBackPressed = {
                     navController.navigate(OnboardingThird) {
                         popUpTo<SignIn> { inclusive = true }
                     }
                 },
+
+//                onSystemBackPressed = {
+//                    if (currentBackStackEntry?.) {
+//                        navController.navigate(OnboardingThird) {
+//                            popUpTo<SignIn> { inclusive = true }
+//                        }
+//                    }
+//                },
+
                 onSignUpTextClicked = {
                     navController.navigate(SignUp) {
                         popUpTo<SignIn> { inclusive = true }
