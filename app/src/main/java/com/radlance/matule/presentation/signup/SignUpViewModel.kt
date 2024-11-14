@@ -30,14 +30,25 @@ class SignUpViewModel @Inject constructor(
 
     fun registerUser(name: String, email: String, password: String) {
         validateFields(name, email, password)
+
         with(signUpUiState.value) {
             if (isValidName && isValidEmail && isValidPassword) {
                 viewModelScope.launch {
                     _signUpResultUiState.value = SignUpResultUiState.Loading
+                    updateSignUpButtonState(false)
+
                     val result = authRepository.signUp(User(name, email, password))
                     _signUpResultUiState.value = result.map(mapper)
+
+                    updateSignUpButtonState(true)
                 }
             }
+        }
+    }
+
+    private fun updateSignUpButtonState(isEnabled: Boolean) {
+        _signUpUiState.update { currentState ->
+            currentState.copy(isEnabledButton = isEnabled)
         }
     }
 
@@ -46,7 +57,7 @@ class SignUpViewModel @Inject constructor(
             currentState.copy(
                 isValidName = name.isNotBlank(),
                 isValidEmail = Regex("^[a-z0-9]+@[a-z0-9]+\\.[a-z]{2,}$").matches(email),
-                isValidPassword = password.isNotBlank()
+                isValidPassword = password.isNotBlank() && password.length >= 6
             )
         }
     }

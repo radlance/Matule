@@ -11,6 +11,7 @@ private val DarkColorScheme = darkColorScheme(
     primary = blueButtonColor,
     secondary = PurpleGrey80,
     tertiary = Pink80,
+    onSurface = Color.White,
     surfaceTint = componentGrayColorDark
 )
 
@@ -18,24 +19,14 @@ private val LightColorScheme = lightColorScheme(
     primary = blueButtonColor,
     background = Color.White,
     secondary = PurpleGrey40,
+    onSurface = Color.Black,
     tertiary = Pink40,
     surfaceTint = componentGrayColor
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
 )
 
 @Composable
 fun MatuleTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {

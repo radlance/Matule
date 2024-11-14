@@ -30,3 +30,7 @@ data object SignUp
 @Serializable
 @Keep
 data object ForgotPassword
+
+@Serializable
+@Keep
+data object Home

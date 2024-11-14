@@ -2,11 +2,14 @@ package com.radlance.matule.navigation
 
 import android.app.Activity
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -116,14 +119,6 @@ fun NavGraph(navController: NavHostController) {
                     }
                 },
 
-//                onSystemBackPressed = {
-//                    if (currentBackStackEntry?.) {
-//                        navController.navigate(OnboardingThird) {
-//                            popUpTo<SignIn> { inclusive = true }
-//                        }
-//                    }
-//                },
-
                 onSignUpTextClicked = {
                     navController.navigate(SignUp) {
                         popUpTo<SignIn> { inclusive = true }
@@ -146,6 +141,11 @@ fun NavGraph(navController: NavHostController) {
                     navController.navigate(SignIn) {
                         popUpTo<SignUp> { inclusive = true }
                     }
+                },
+                onSuccessSignUp = {
+                    navController.navigate(Home) {
+                        popUpTo<SignUp> { inclusive = true }
+                    }
                 }
             )
         }
@@ -156,6 +156,12 @@ fun NavGraph(navController: NavHostController) {
                     navController.navigateUp()
                 }
             )
+        }
+
+        composable<Home> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text(text = "Home screen")
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ import com.radlance.matule.domain.authorization.User
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.builtin.Email
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
@@ -18,10 +19,9 @@ class AuthRepositoryImpl @Inject constructor(
                 email = user.email
                 password = user.password
             }
-
             AuthResult.Success
         } catch (e: Exception) {
-            AuthResult.Error
+            AuthResult.Error(e is UnknownHostException)
         }
     }
 }

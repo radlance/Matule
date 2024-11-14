@@ -40,13 +40,11 @@ import com.radlance.matule.ui.theme.secondaryTextColor
 @Composable
 fun SignInScreen(
     onIconBackPressed: () -> Unit,
-//    onSystemBackPressed: () -> Unit,
     onSignUpTextClicked: () -> Unit,
     onRecoverPasswordTextClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
-//    BackHandler { onSystemBackPressed() }
     var emailFieldValue by rememberSaveable {
         mutableStateOf("")
     }
@@ -77,6 +75,7 @@ fun SignInScreen(
             fontFamily = ralewayFamily,
             fontWeight = FontWeight.Bold,
             lineHeight = 38.sp,
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(top = 11.dp)
         )
         Text(
@@ -153,6 +152,7 @@ fun SignInScreen(
                 fontFamily = ralewayFamily,
                 fontWeight = FontWeight.Medium,
                 lineHeight = 1.sp,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.clickable(
                     indication = null,
                     interactionSource = interactionSource

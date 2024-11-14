@@ -8,7 +8,13 @@ class SignUpResultMapper @Inject constructor() : AuthResult.Mapper<SignUpResultU
         return SignUpResultUiState.Success
     }
 
-    override fun mapError(): SignUpResultUiState {
-        return SignUpResultUiState.Error
+    override fun mapError(noConnection: Boolean): SignUpResultUiState {
+        val message = if(noConnection) {
+            "Нет соединения с интернетом"
+        } else {
+            "Ошибка сервера"
+        }
+
+        return SignUpResultUiState.Error(message)
     }
 }

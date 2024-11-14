@@ -64,6 +64,7 @@ fun ForgotPasswordScreen(
             fontFamily = ralewayFamily,
             fontWeight = FontWeight.Bold,
             lineHeight = 38.sp,
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(top = 11.dp)
         )
         Text(
