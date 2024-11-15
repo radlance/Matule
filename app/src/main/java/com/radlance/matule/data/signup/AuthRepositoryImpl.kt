@@ -19,6 +19,18 @@ class AuthRepositoryImpl @Inject constructor(
                 email = user.email
                 password = user.password
             }
+            signIn(user)
+        } catch (e: Exception) {
+            AuthResult.Error(e is UnknownHostException)
+        }
+    }
+
+    override suspend fun signIn(user: User): AuthResult {
+        return try {
+            supabaseClient.auth.signInWith(Email) {
+                email = user.email
+                password = user.password
+            }
             AuthResult.Success
         } catch (e: Exception) {
             AuthResult.Error(e is UnknownHostException)

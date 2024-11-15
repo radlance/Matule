@@ -1,4 +1,4 @@
-package com.radlance.matule.presentation.signup
+package com.radlance.matule.presentation.authorization.common
 
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
@@ -7,20 +7,20 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.res.stringResource
 import com.radlance.matule.R
 
-interface SignUpResultUiState {
+interface AuthResultUiState {
     @Composable
     fun Show(
         onSuccessResult: () -> Unit,
         snackBarHostState: SnackbarHostState
     )
 
-    object Initial : SignUpResultUiState {
+    object Initial : AuthResultUiState {
         @Composable
         override fun Show(onSuccessResult: () -> Unit, snackBarHostState: SnackbarHostState) {
         }
     }
 
-    object Success : SignUpResultUiState {
+    object Success : AuthResultUiState {
         @Composable
         override fun Show(onSuccessResult: () -> Unit, snackBarHostState: SnackbarHostState) {
             LaunchedEffect(Unit) {
@@ -29,7 +29,7 @@ interface SignUpResultUiState {
         }
     }
 
-    data class Error(private val message: String) : SignUpResultUiState {
+    data class Error(private val message: String) : AuthResultUiState {
         @Composable
         override fun Show(onSuccessResult: () -> Unit, snackBarHostState: SnackbarHostState) {
             LaunchedEffect(message) {
@@ -42,7 +42,7 @@ interface SignUpResultUiState {
         }
     }
 
-    object Loading : SignUpResultUiState {
+    object Loading : AuthResultUiState {
         @Composable
         override fun Show(onSuccessResult: () -> Unit, snackBarHostState: SnackbarHostState) {
             val message = stringResource(R.string.loading)

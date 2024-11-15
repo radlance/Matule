@@ -1,4 +1,4 @@
-package com.radlance.matule.presentation.signup
+package com.radlance.matule.presentation.authorization.signup
 
 data class SignUpUiState(
     val isValidName: Boolean = true,

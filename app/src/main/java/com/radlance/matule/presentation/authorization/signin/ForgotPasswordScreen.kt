@@ -1,4 +1,4 @@
-package com.radlance.matule.presentation.signin
+package com.radlance.matule.presentation.authorization.signin
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource

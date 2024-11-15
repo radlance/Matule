@@ -1,4 +1,4 @@
-package com.radlance.matule.presentation.signup
+package com.radlance.matule.presentation.authorization.signup
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -15,16 +15,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Snackbar
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -49,6 +45,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.radlance.matule.R
+import com.radlance.matule.presentation.authorization.common.AuthScaffold
+import com.radlance.matule.presentation.authorization.common.AuthViewModel
 import com.radlance.matule.presentation.component.BackButton
 import com.radlance.matule.presentation.component.EnterInputField
 import com.radlance.matule.presentation.component.NavigationButton
@@ -65,7 +63,7 @@ fun SignUpScreen(
     onSignInTextClicked: () -> Unit,
     onSuccessSignUp: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: SignUpViewModel = hiltViewModel()
+    viewModel: AuthViewModel = hiltViewModel()
 ) {
 
     BackHandler { onBackPressed() }
@@ -86,8 +84,7 @@ fun SignUpScreen(
         mutableStateOf(false)
     }
 
-    val signUpResultUiState by viewModel.signUpResultUiState.collectAsState()
-
+    val signUpResultUiState by viewModel.authResultUiState.collectAsState()
 
     val uiState by viewModel.signUpUiState.collectAsState()
 
@@ -98,22 +95,8 @@ fun SignUpScreen(
     val context = LocalContext.current
 
     val snackBarHostState = remember { SnackbarHostState() }
-    Scaffold(
-        snackbarHost = {
-            SnackbarHost(hostState = snackBarHostState) {
-                Snackbar(
-                    snackbarData = it,
-                    containerColor = MaterialTheme.colorScheme.surfaceTint,
-                    contentColor = MaterialTheme.colorScheme.onSurface,
-                    dismissActionContentColor = MaterialTheme.colorScheme.onSurface,
-                    shape = RoundedCornerShape(14.dp)
-                )
-            }
-        },
-        modifier = modifier
-            .fillMaxSize()
-            .safeDrawingPadding()
-    ) {
+
+    AuthScaffold(snackBarHostState = snackBarHostState, modifier = modifier) {
         signUpResultUiState.Show(
             onSuccessResult = onSuccessSignUp,
             snackBarHostState = snackBarHostState
@@ -244,7 +227,7 @@ fun SignUpScreen(
             NavigationButton(
                 stringResId = R.string.register,
                 onClick = {
-                    viewModel.registerUser(
+                    viewModel.signUp(
                         nameFieldValue,
                         emailFieldValue,
                         passwordFieldValue
