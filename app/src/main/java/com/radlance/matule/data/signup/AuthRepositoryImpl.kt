@@ -36,4 +36,13 @@ class AuthRepositoryImpl @Inject constructor(
             AuthResult.Error(e is UnknownHostException)
         }
     }
+
+    override suspend fun sendOtp(email: String): AuthResult {
+        return try {
+            supabaseClient.auth.resetPasswordForEmail(email)
+            AuthResult.Success
+        } catch (e: Exception) {
+            AuthResult.Error(e is UnknownHostException)
+        }
+    }
 }

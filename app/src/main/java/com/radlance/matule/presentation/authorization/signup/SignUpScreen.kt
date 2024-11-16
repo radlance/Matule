@@ -86,7 +86,7 @@ fun SignUpScreen(
 
     val signUpResultUiState by viewModel.authResultUiState.collectAsState()
 
-    val uiState by viewModel.signUpUiState.collectAsState()
+    val uiState by viewModel.authUiState.collectAsState()
 
     val interactionSource = remember { MutableInteractionSource() }
 

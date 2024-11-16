@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.radlance.matule.domain.authorization.AuthRepository
 import com.radlance.matule.domain.authorization.AuthResult
 import com.radlance.matule.domain.authorization.User
-import com.radlance.matule.presentation.authorization.signup.SignUpUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,9 +18,9 @@ class AuthViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val mapper: AuthResult.Mapper<AuthResultUiState>
 ) : ViewModel() {
-    private val _signUpUiState = MutableStateFlow(SignUpUiState())
-    val signUpUiState: StateFlow<SignUpUiState>
-        get() = _signUpUiState.asStateFlow()
+    private val _authUiState = MutableStateFlow(AuthUiState())
+    val authUiState: StateFlow<AuthUiState>
+        get() = _authUiState.asStateFlow()
 
     private val _authResultUiState: MutableStateFlow<AuthResultUiState> =
         MutableStateFlow(AuthResultUiState.Initial)
@@ -30,39 +29,36 @@ class AuthViewModel @Inject constructor(
         get() = _authResultUiState.asStateFlow()
 
     fun signUp(name: String, email: String, password: String) {
-        performAuthAction(
-            email = email,
-            password = password,
-            name = name,
-            isSignUp = true
-        )
+        performAuthAction(email, password, name, isSignUp = true)
     }
 
     fun signIn(email: String, password: String) {
-        performAuthAction(
-            email = email,
-            password = password,
-            isSignUp = false
-        )
+        performAuthAction(email, password, isSignUp = false)
+    }
+
+    fun sendOtp(email: String) {
+        performAuthAction(email = email, sendOtp = true)
     }
 
     private fun performAuthAction(
-        email: String, password: String,
-        name: String = "",
-        isSignUp: Boolean
+        email: String? = null,
+        password: String? = null,
+        name: String? = null,
+        isSignUp: Boolean = false,
+        sendOtp: Boolean = false
     ) {
-        validateFields(email = email, password = password, name = name)
+        validateFields(email, password, name)
 
-        with(signUpUiState.value) {
-            if (isValidEmail && isValidPassword && (isSignUp && isValidName || !isSignUp)) {
+        with(authUiState.value) {
+            if (isValidEmail && (isValidPassword && (isSignUp && isValidName || !isSignUp)) || sendOtp) {
                 viewModelScope.launch {
                     _authResultUiState.value = AuthResultUiState.Loading
                     updateActionButtonState(false)
 
-                    val result = if (isSignUp) {
-                        authRepository.signUp(User(email = email, password = password, name = name))
-                    } else {
-                        authRepository.signIn(User(email = email, password = password))
+                    val result = when {
+                        isSignUp -> authRepository.signUp(User(email = email!!, password = password!!, name = name!!))
+                        sendOtp -> authRepository.sendOtp(email!!)
+                        else -> authRepository.signIn(User(email = email!!, password = password!!))
                     }
 
                     _authResultUiState.value = result.map(mapper)
@@ -75,35 +71,42 @@ class AuthViewModel @Inject constructor(
 
 
     private fun updateActionButtonState(isEnabled: Boolean) {
-        _signUpUiState.update { currentState ->
+        _authUiState.update { currentState ->
             currentState.copy(isEnabledButton = isEnabled)
         }
     }
 
-    private fun validateFields(email: String, password: String, name: String = "") {
-        _signUpUiState.update { currentState ->
+    private fun validateFields(
+        email: String? = null,
+        password: String? = null,
+        name: String? = null
+    ) {
+        _authUiState.update { currentState ->
             currentState.copy(
-                isValidName = name.isNotBlank(),
-                isValidEmail = Regex("^[a-z0-9]+@[a-z0-9]+\\.[a-z]{2,}$").matches(email),
-                isValidPassword = password.isNotBlank() && password.length >= 6
+                isValidName = name?.isNotBlank() ?: false,
+                isValidEmail = email?.let { Regex("^[a-z0-9]+@[a-z0-9]+\\.[a-z]{2,}$").matches(it) }
+                    ?: false,
+                isValidPassword = password?.let { password.isNotBlank() && password.length >= 6 }
+                    ?: false
+
             )
         }
     }
 
     fun resetNameError() {
-        _signUpUiState.update { currentState ->
+        _authUiState.update { currentState ->
             currentState.copy(isValidName = true)
         }
     }
 
     fun resetEmailError() {
-        _signUpUiState.update { currentState ->
+        _authUiState.update { currentState ->
             currentState.copy(isValidEmail = true)
         }
     }
 
     fun resetPasswordError() {
-        _signUpUiState.update { currentState ->
+        _authUiState.update { currentState ->
             currentState.copy(isValidPassword = true)
         }
     }

@@ -17,14 +17,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.radlance.matule.presentation.authorization.signin.ForgotPasswordScreen
+import com.radlance.matule.presentation.authorization.signin.SignInScreen
+import com.radlance.matule.presentation.authorization.signup.SignUpScreen
 import com.radlance.matule.presentation.onboarding.OnBoardingViewModel
 import com.radlance.matule.presentation.onboarding.OnboardingFirst
 import com.radlance.matule.presentation.onboarding.OnboardingSecond
 import com.radlance.matule.presentation.onboarding.OnboardingThird
 import com.radlance.matule.presentation.onboarding.SplashScreen
-import com.radlance.matule.presentation.authorization.signin.ForgotPasswordScreen
-import com.radlance.matule.presentation.authorization.signin.SignInScreen
-import com.radlance.matule.presentation.authorization.signup.SignUpScreen
 import com.radlance.matule.ui.theme.backGroundGradient
 
 @Composable
@@ -159,6 +159,11 @@ fun NavGraph(navController: NavHostController) {
             ForgotPasswordScreen(
                 onBackPressed = {
                     navController.navigateUp()
+                },
+                onSuccessSending = {
+                    navController.navigate(Home) {
+                        popUpTo<ForgotPassword> { inclusive = true }
+                    }
                 }
             )
         }

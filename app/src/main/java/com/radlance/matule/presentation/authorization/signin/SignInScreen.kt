@@ -62,14 +62,14 @@ fun SignInScreen(
 
     val scrollState = rememberScrollState()
 
-    val signUpResultUiState by viewModel.authResultUiState.collectAsState()
+    val signInResultUiState by viewModel.authResultUiState.collectAsState()
 
-    val uiState by viewModel.signUpUiState.collectAsState()
+    val uiState by viewModel.authUiState.collectAsState()
 
     val interactionSource = remember { MutableInteractionSource() }
     val snackBarHostState = remember { SnackbarHostState() }
 
-    signUpResultUiState.Show(
+    signInResultUiState.Show(
         onSuccessResult = onSuccessSignIn,
         snackBarHostState = snackBarHostState
     )
