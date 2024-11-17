@@ -34,6 +34,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.radlance.matule.R
+import com.radlance.matule.ui.theme.inputFieldErrorBorderColor
 import com.radlance.matule.ui.theme.inputFieldTextColor
 import com.radlance.matule.ui.theme.poppinsFamily
 import com.radlance.matule.ui.theme.ralewayFamily
@@ -54,7 +55,7 @@ fun EnterInputField(
 
     val shapeColor by animateColorAsState(
         targetValue = if(isError) {
-            Color.Red
+            inputFieldErrorBorderColor
         } else {
             Color.Transparent
         },
@@ -81,7 +82,7 @@ fun EnterInputField(
                 .height(48.dp)
                 .clip(RoundedCornerShape(14.dp))
                 .background(MaterialTheme.colorScheme.surfaceTint)
-                .border(1.dp, shapeColor, RoundedCornerShape(14.dp))
+                .border(width = 1.dp, color = shapeColor, shape = RoundedCornerShape(14.dp))
         ) {
             Box(
                 modifier = Modifier

@@ -16,5 +16,6 @@ val ralewayFamily = FontFamily(
 
 val poppinsFamily = FontFamily(
     Font(R.font.poppins_regular, weight = FontWeight.Normal),
-    Font(R.font.poppins_medium, weight = FontWeight.Medium)
+    Font(R.font.poppins_medium, weight = FontWeight.Medium),
+    Font(R.font.poppins_semi_bold, weight = FontWeight.SemiBold)
 )

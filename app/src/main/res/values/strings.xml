@@ -24,4 +24,7 @@
     <string name="enter_your_account">Введите Свою Учетную Запись Для Сброса</string>
     <string name="send">Отправить</string>
     <string name="loading">Загрузка…</string>
+    <string name="otp_check">OTP Проверка</string>
+    <string name="check_your_email">Пожалуйста, Проверьте Свою Электронную Почту, Чтобы Увидеть Код Подтвверждения</string>
+    <string name="otp_code">OTP Код</string>
 </resources>

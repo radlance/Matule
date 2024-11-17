@@ -33,4 +33,8 @@ data object ForgotPassword
 
 @Serializable
 @Keep
+data object Verification
+
+@Serializable
+@Keep
 data object Home
