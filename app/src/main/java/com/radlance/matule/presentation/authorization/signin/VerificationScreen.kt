@@ -1,8 +1,12 @@
 package com.radlance.matule.presentation.authorization.signin
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,7 +23,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -48,7 +54,10 @@ import com.radlance.matule.ui.theme.inputFieldTextColor
 import com.radlance.matule.ui.theme.poppinsFamily
 import com.radlance.matule.ui.theme.ralewayFamily
 import com.radlance.matule.ui.theme.secondaryTextColor
+import com.radlance.matule.ui.theme.verificationSubTextColor
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 @Composable
 fun VerificationScreen(
@@ -60,6 +69,19 @@ fun VerificationScreen(
     val coroutineScope = rememberCoroutineScope()
 
     val scrollState = rememberScrollState()
+
+    var countdown by rememberSaveable { mutableIntStateOf(30) }
+    var isTimerRunning by rememberSaveable { mutableStateOf(true) }
+
+    LaunchedEffect(isTimerRunning) {
+        if (isTimerRunning) {
+            while (countdown > 0) {
+                delay(1000L)
+                countdown--
+            }
+            isTimerRunning = false
+        }
+    }
 
     Column(
         modifier = modifier
@@ -127,6 +149,37 @@ fun VerificationScreen(
                         }
                     },
                     focusRequester = focusRequesters[index]
+                )
+            }
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 22.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = stringResource(R.string.send_again),
+                fontSize = 12.sp,
+                color = verificationSubTextColor,
+                fontFamily = ralewayFamily,
+                fontWeight = FontWeight.Normal,
+                lineHeight = 14.sp,
+                modifier = Modifier.clickable(enabled = !isTimerRunning) {
+                    countdown = 30
+                    isTimerRunning = true
+                }
+            )
+
+            AnimatedVisibility(visible = isTimerRunning, enter = fadeIn(), exit = fadeOut()) {
+                Text(
+                    text = String.format(Locale.getDefault(), "00:%02d", countdown),
+                    fontSize = 12.sp,
+                    color = verificationSubTextColor,
+                    fontFamily = ralewayFamily,
+                    fontWeight = FontWeight.Normal,
+                    lineHeight = 14.sp
                 )
             }
         }

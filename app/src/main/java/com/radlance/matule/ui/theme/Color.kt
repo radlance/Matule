@@ -21,5 +21,8 @@ val componentGrayColorDark = Color(0xFF2C2C2E)
 
 val secondaryTextColor = Color(0xFF707B81)
 val blueButtonColor = Color(0xFF48B2E7)
+
 val inputFieldTextColor = Color(0xFF6A6A6A)
 val inputFieldErrorBorderColor = Color(0xFFF87265)
+
+val verificationSubTextColor = Color(0xFF7D848D)
