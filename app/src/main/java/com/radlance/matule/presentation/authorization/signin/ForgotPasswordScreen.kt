@@ -42,7 +42,7 @@ import com.radlance.matule.ui.theme.secondaryTextColor
 @Composable
 fun ForgotPasswordScreen(
     onBackPressed: () -> Unit,
-    onSuccessSending: () -> Unit,
+    onSuccessSending: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AuthViewModel = hiltViewModel()
 ) {
@@ -57,7 +57,7 @@ fun ForgotPasswordScreen(
     val snackBarHostState = remember { SnackbarHostState() }
 
     sendingOtpUiState.Show(
-        onSuccessResult = onSuccessSending,
+        onSuccessResult = { onSuccessSending(emailFieldValue) },
         snackBarHostState = snackBarHostState
     )
 

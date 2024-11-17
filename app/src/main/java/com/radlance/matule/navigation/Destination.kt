@@ -33,7 +33,9 @@ data object ForgotPassword
 
 @Serializable
 @Keep
-data object Verification
+data class Verification(
+    val email: String
+)
 
 @Serializable
 @Keep

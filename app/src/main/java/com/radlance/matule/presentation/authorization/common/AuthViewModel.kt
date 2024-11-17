@@ -22,8 +22,7 @@ class AuthViewModel @Inject constructor(
     val authUiState: StateFlow<AuthUiState>
         get() = _authUiState.asStateFlow()
 
-    private val _authResultUiState: MutableStateFlow<AuthResultUiState> =
-        MutableStateFlow(AuthResultUiState.Initial)
+    private val _authResultUiState = MutableStateFlow<AuthResultUiState>(AuthResultUiState.Initial)
 
     val authResultUiState: StateFlow<AuthResultUiState>
         get() = _authResultUiState.asStateFlow()
@@ -52,7 +51,7 @@ class AuthViewModel @Inject constructor(
         with(authUiState.value) {
             if (isValidEmail && (isValidPassword && (isSignUp && isValidName || !isSignUp)) || sendOtp) {
                 viewModelScope.launch {
-                    _authResultUiState.value = AuthResultUiState.Loading
+                    _authResultUiState.value = AuthResultUiState.Loading("Загрузка…")
                     updateActionButtonState(false)
 
                     val result = when {

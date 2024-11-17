@@ -28,4 +28,5 @@
     <string name="check_your_email">Пожалуйста, Проверьте Свою Электронную Почту, Чтобы Увидеть Код Подтвверждения</string>
     <string name="otp_code">OTP Код</string>
     <string name="send_again">Отправить заново</string>
+    <string name="sended">Отправлено</string>
 </resources>

@@ -17,6 +17,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.toRoute
 import com.radlance.matule.presentation.authorization.signin.ForgotPasswordScreen
 import com.radlance.matule.presentation.authorization.signin.SignInScreen
 import com.radlance.matule.presentation.authorization.signin.VerificationScreen
@@ -162,7 +163,7 @@ fun NavGraph(navController: NavHostController) {
                     navController.navigateUp()
                 },
                 onSuccessSending = {
-                    navController.navigate(Verification) {
+                    navController.navigate(Verification(email = it)) {
                         popUpTo<ForgotPassword> { inclusive = true }
                     }
                 }
@@ -170,12 +171,14 @@ fun NavGraph(navController: NavHostController) {
         }
 
         composable<Verification> {
+            val args = it.toRoute<Verification>()
             VerificationScreen(
                 onBackPressed = {
                     navController.navigate(ForgotPassword) {
                         popUpTo<Verification> { inclusive = true }
                     }
-                }
+                },
+                email = args.email
             )
         }
 

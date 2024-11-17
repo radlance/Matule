@@ -4,8 +4,6 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.res.stringResource
-import com.radlance.matule.R
 
 interface AuthResultUiState {
     @Composable
@@ -42,10 +40,9 @@ interface AuthResultUiState {
         }
     }
 
-    object Loading : AuthResultUiState {
+    data class Loading(private val message: String) : AuthResultUiState {
         @Composable
         override fun Show(onSuccessResult: () -> Unit, snackBarHostState: SnackbarHostState) {
-            val message = stringResource(R.string.loading)
             LaunchedEffect(message) {
                 snackBarHostState.showSnackbar(message = message)
             }
