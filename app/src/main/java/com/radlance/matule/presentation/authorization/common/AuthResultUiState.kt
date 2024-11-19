@@ -44,7 +44,10 @@ interface AuthResultUiState {
         @Composable
         override fun Show(onSuccessResult: () -> Unit, snackBarHostState: SnackbarHostState) {
             LaunchedEffect(message) {
-                snackBarHostState.showSnackbar(message = message)
+                snackBarHostState.showSnackbar(
+                    message = message,
+                    duration = SnackbarDuration.Indefinite
+                )
             }
         }
     }

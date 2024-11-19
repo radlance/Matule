@@ -10,10 +10,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.radlance.matule.ui.theme.blueButtonColor
@@ -29,12 +28,10 @@ fun NavigationButton(
     ),
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    keyBoardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
 ) {
     Button(
         onClick = {
             onClick()
-            keyBoardController?.hide()
         },
         enabled = enabled,
         modifier = modifier
@@ -44,6 +41,7 @@ fun NavigationButton(
     ) {
         Text(
             text = stringResource(stringResId),
+            textAlign = TextAlign.Center,
             fontSize = 14.sp,
             fontFamily = ralewayFamily,
             fontWeight = FontWeight.SemiBold

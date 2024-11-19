@@ -157,8 +157,10 @@ fun SignInScreen(
             )
             NavigationButton(
                 stringResId = R.string.sign_in,
-                onClick = { viewModel.signIn(emailFieldValue, passwordFieldValue) },
-                keyBoardController = keyboardController,
+                onClick = {
+                    viewModel.signIn(emailFieldValue, passwordFieldValue)
+                    keyboardController?.hide()
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 24.dp)

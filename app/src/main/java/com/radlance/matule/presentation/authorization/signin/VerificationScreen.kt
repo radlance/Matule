@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarDuration
@@ -46,12 +47,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.core.text.isDigitsOnly
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.radlance.matule.R
 import com.radlance.matule.presentation.authorization.common.AuthScaffold
@@ -181,7 +184,7 @@ fun VerificationScreen(
                     OtpInputItem(
                         value = viewModel.getOtpItem(index),
                         onValueChange = { otpValue ->
-                            if (otpValue.length <= 1 && otpValue != " ") {
+                            if (otpValue.length <= 1 && otpValue != " " && otpValue.isDigitsOnly()) {
                                 viewModel.updateOtpItem(index, otpValue)
                                 if (otpValue.isNotEmpty() && index < 5) {
                                     coroutineScope.launch {
@@ -273,6 +276,7 @@ private fun OtpInputItem(
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center
             ),
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
             modifier = Modifier
                 .fillMaxWidth()
                 .focusRequester(focusRequester)

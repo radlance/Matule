@@ -235,6 +235,8 @@ fun SignUpScreen(
                         emailFieldValue,
                         passwordFieldValue
                     )
+
+                    keyboardController?.hide()
                 },
                 enabled = checked && uiState.isEnabledButton,
                 modifier = Modifier

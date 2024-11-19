@@ -21,6 +21,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -54,6 +55,8 @@ fun ForgotPasswordScreen(
 
     val sendingOtpUiState by viewModel.authResultUiState.collectAsState()
     val snackBarHostState = remember { SnackbarHostState() }
+
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     sendingOtpUiState.Show(
         onSuccessResult = { onSuccessSending(emailFieldValue) },
@@ -110,8 +113,13 @@ fun ForgotPasswordScreen(
 
             NavigationButton(
                 stringResId = R.string.send,
-                onClick = { viewModel.sendOtp(emailFieldValue) },
-                modifier = Modifier.fillMaxWidth().padding(top = 40.dp)
+                onClick = {
+                    viewModel.sendOtp(emailFieldValue)
+                    keyboardController?.hide()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 40.dp)
             )
         }
     }
