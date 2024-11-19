@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -44,10 +45,11 @@ fun EnterInputField(
     label: String = "",
     value: String,
     onValueChange: (String) -> Unit,
+    interactionSource: MutableInteractionSource,
     modifier: Modifier = Modifier,
     isPassword: Boolean = false,
     isError: Boolean = false,
-    interactionSource: MutableInteractionSource
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
     var showPassword by rememberSaveable {
         mutableStateOf(!isPassword)
@@ -110,7 +112,8 @@ fun EnterInputField(
                             lineHeight = 16.sp,
                             fontFamily = poppinsFamily,
                             fontWeight = FontWeight.Medium
-                        )
+                        ),
+                        keyboardOptions = keyboardOptions
                     )
 
                     if (isPassword) {
