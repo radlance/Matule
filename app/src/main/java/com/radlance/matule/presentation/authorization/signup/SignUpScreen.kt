@@ -15,11 +15,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -33,8 +33,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -51,7 +51,6 @@ import com.radlance.matule.presentation.component.BackButton
 import com.radlance.matule.presentation.component.EnterInputField
 import com.radlance.matule.presentation.component.NavigationButton
 import com.radlance.matule.ui.theme.MatuleTheme
-import com.radlance.matule.ui.theme.blueButtonColor
 import com.radlance.matule.ui.theme.poppinsFamily
 import com.radlance.matule.ui.theme.ralewayFamily
 import com.radlance.matule.ui.theme.secondaryTextColor
@@ -96,6 +95,8 @@ fun SignUpScreen(
 
     val snackBarHostState = remember { SnackbarHostState() }
 
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     AuthScaffold(snackBarHostState = snackBarHostState, modifier = modifier) {
         signUpResultUiState.Show(
             onSuccessResult = onSuccessSignUp,
@@ -107,6 +108,7 @@ fun SignUpScreen(
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
                 .verticalScroll(scrollState)
+                .safeDrawingPadding()
                 .padding(start = 20.dp, end = 20.dp, top = 66.dp, bottom = 47.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -220,6 +222,7 @@ fun SignUpScreen(
                                 addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                             }
                             context.startActivity(intent)
+                            keyboardController?.hide()
                         }
                 )
             }
@@ -233,18 +236,15 @@ fun SignUpScreen(
                         passwordFieldValue
                     )
                 },
-                buttonColors = ButtonDefaults.buttonColors().copy(
-                    containerColor = blueButtonColor,
-                    disabledContainerColor = MaterialTheme.colorScheme.surfaceTint,
-                    contentColor = Color.White
-                ),
                 enabled = checked && uiState.isEnabledButton,
-                modifier = Modifier.padding(top = 12.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp)
             )
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Row(modifier = Modifier.padding(top = 12.dp)) {
+            Row(modifier = Modifier.padding(top = 24.dp)) {
                 Text(
                     text = stringResource(R.string.have_an_account),
                     color = secondaryTextColor,
@@ -263,7 +263,10 @@ fun SignUpScreen(
                     modifier = Modifier.clickable(
                         indication = null,
                         interactionSource = interactionSource
-                    ) { onSignInTextClicked() }
+                    ) {
+                        onSignInTextClicked()
+                        keyboardController?.hide()
+                    }
                 )
             }
         }

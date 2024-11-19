@@ -29,4 +29,7 @@
     <string name="otp_code">OTP Код</string>
     <string name="send_again">Отправить заново</string>
     <string name="sended">Отправлено</string>
+    <string name="enter_the_quote">Введите фразу, на основе которой будет сгенерирован пароль</string>
+    <string name="generate_password">Сгенерировать</string>
+    <string name="copy">Скопировать</string>
 </resources>

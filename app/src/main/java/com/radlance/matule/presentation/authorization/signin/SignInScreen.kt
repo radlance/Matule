@@ -7,10 +7,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -23,7 +24,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -37,7 +38,6 @@ import com.radlance.matule.presentation.authorization.common.AuthViewModel
 import com.radlance.matule.presentation.component.BackButton
 import com.radlance.matule.presentation.component.EnterInputField
 import com.radlance.matule.presentation.component.NavigationButton
-import com.radlance.matule.ui.theme.blueButtonColor
 import com.radlance.matule.ui.theme.poppinsFamily
 import com.radlance.matule.ui.theme.ralewayFamily
 import com.radlance.matule.ui.theme.secondaryTextColor
@@ -69,6 +69,8 @@ fun SignInScreen(
     val interactionSource = remember { MutableInteractionSource() }
     val snackBarHostState = remember { SnackbarHostState() }
 
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     signInResultUiState.Show(
         onSuccessResult = onSuccessSignIn,
         snackBarHostState = snackBarHostState
@@ -80,6 +82,7 @@ fun SignInScreen(
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
                 .verticalScroll(scrollState)
+                .safeDrawingPadding()
                 .padding(start = 20.dp, end = 20.dp, top = 66.dp, bottom = 47.dp),
 
             horizontalAlignment = Alignment.CenterHorizontally
@@ -149,16 +152,16 @@ fun SignInScreen(
                     .padding(top = 12.dp)
                     .clickable(indication = null, interactionSource = interactionSource) {
                         onRecoverPasswordTextClicked()
+                        keyboardController?.hide()
                     }
             )
             NavigationButton(
                 stringResId = R.string.sign_in,
                 onClick = { viewModel.signIn(emailFieldValue, passwordFieldValue) },
-                buttonColors = ButtonDefaults.buttonColors().copy(
-                    containerColor = blueButtonColor,
-                    contentColor = Color.White
-                ),
-                modifier = Modifier.padding(top = 24.dp)
+                keyBoardController = keyboardController,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 24.dp)
             )
 
             Spacer(modifier = Modifier.weight(1f))
@@ -182,7 +185,10 @@ fun SignInScreen(
                     modifier = Modifier.clickable(
                         indication = null,
                         interactionSource = interactionSource
-                    ) { onSignUpTextClicked() }
+                    ) {
+                        onSignUpTextClicked()
+                        keyboardController?.hide()
+                    }
                 )
             }
         }

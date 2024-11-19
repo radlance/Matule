@@ -142,7 +142,9 @@ fun OnboardingFirst(
                     containerColor = Color.White,
                     contentColor = Color.Black
                 ),
-                modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 36.dp, top = 16.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 20.dp, end = 20.dp, bottom = 36.dp, top = 16.dp)
             )
         }
     }

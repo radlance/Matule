@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -49,6 +50,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.radlance.matule.R
 import com.radlance.matule.presentation.authorization.common.AuthScaffold
@@ -78,11 +81,27 @@ fun VerificationScreen(
 
     var countdown by rememberSaveable { mutableIntStateOf(30) }
     var isTimerRunning by rememberSaveable { mutableStateOf(true) }
+    var dialogFieldValue by rememberSaveable { mutableStateOf("") }
 
     val resendingOtpUiState by viewModel.resendingUiState.collectAsState()
+    val showRecoveryDialog by viewModel.showRecoveryDialog.collectAsState()
+
     val snackBarHostState = remember { SnackbarHostState() }
 
     val context = LocalContext.current
+
+    if (showRecoveryDialog) {
+        Dialog(
+            onDismissRequest = {},
+            properties = DialogProperties(usePlatformDefaultWidth = false)
+        ) {
+            PasswordRecoveryDialog(
+                value = dialogFieldValue,
+                onValueChanged = { dialogFieldValue = it },
+                modifier = Modifier.padding(horizontal = 20.dp)
+            )
+        }
+    }
 
     resendingOtpUiState.Show(
         onSuccessResult = {
@@ -113,7 +132,9 @@ fun VerificationScreen(
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
                 .verticalScroll(scrollState)
+                .safeDrawingPadding()
                 .padding(start = 20.dp, end = 20.dp, top = 66.dp, bottom = 47.dp),
+
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 

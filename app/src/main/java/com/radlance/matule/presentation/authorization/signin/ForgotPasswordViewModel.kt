@@ -9,6 +9,7 @@ import com.radlance.matule.presentation.authorization.common.AuthResultUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,7 +21,11 @@ class ForgotPasswordViewModel @Inject constructor(
     private val otpItems = mutableStateListOf("", "", "", "", "", "")
     private val _resendingUiState = MutableStateFlow<AuthResultUiState>(AuthResultUiState.Initial)
     val resendingUiState: StateFlow<AuthResultUiState>
-        get() = _resendingUiState
+        get() = _resendingUiState.asStateFlow()
+
+    private val _showRecoveryDialog = MutableStateFlow(false)
+    val showRecoveryDialog: StateFlow<Boolean>
+        get() = _showRecoveryDialog
 
     fun getOtpItem(index: Int): String {
         return otpItems[index]
@@ -28,6 +33,9 @@ class ForgotPasswordViewModel @Inject constructor(
 
     fun updateOtpItem(index: Int, value: String) {
         otpItems[index] = value
+        if (otpItems.all { it.isNotEmpty() }) {
+            _showRecoveryDialog.value = true
+        }
     }
 
     fun resendOtp(email: String) {

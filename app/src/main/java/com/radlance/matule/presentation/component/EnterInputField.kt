@@ -41,7 +41,7 @@ import com.radlance.matule.ui.theme.ralewayFamily
 
 @Composable
 fun EnterInputField(
-    label: String,
+    label: String = "",
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,

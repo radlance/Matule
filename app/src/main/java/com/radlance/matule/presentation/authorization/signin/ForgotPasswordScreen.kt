@@ -4,10 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -20,7 +21,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -34,7 +34,6 @@ import com.radlance.matule.presentation.authorization.common.AuthViewModel
 import com.radlance.matule.presentation.component.BackButton
 import com.radlance.matule.presentation.component.EnterInputField
 import com.radlance.matule.presentation.component.NavigationButton
-import com.radlance.matule.ui.theme.blueButtonColor
 import com.radlance.matule.ui.theme.poppinsFamily
 import com.radlance.matule.ui.theme.ralewayFamily
 import com.radlance.matule.ui.theme.secondaryTextColor
@@ -67,6 +66,7 @@ fun ForgotPasswordScreen(
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
                 .verticalScroll(scrollState)
+                .safeDrawingPadding()
                 .padding(start = 20.dp, end = 20.dp, top = 66.dp, bottom = 47.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -95,7 +95,6 @@ fun ForgotPasswordScreen(
             )
 
             EnterInputField(
-                label = "",
                 value = emailFieldValue,
                 onValueChange = {
                     emailFieldValue = it
@@ -112,11 +111,7 @@ fun ForgotPasswordScreen(
             NavigationButton(
                 stringResId = R.string.send,
                 onClick = { viewModel.sendOtp(emailFieldValue) },
-                buttonColors = ButtonDefaults.buttonColors().copy(
-                    containerColor = blueButtonColor,
-                    contentColor = Color.White
-                ),
-                modifier = Modifier.padding(top = 40.dp)
+                modifier = Modifier.fillMaxWidth().padding(top = 40.dp)
             )
         }
     }

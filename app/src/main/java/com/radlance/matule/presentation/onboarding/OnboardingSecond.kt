@@ -122,6 +122,7 @@ fun OnboardingSecond(
             ),
             modifier = Modifier
                 .align(Alignment.BottomCenter)
+                .fillMaxWidth()
                 .padding(start = 20.dp, end = 20.dp, bottom = 36.dp, top = 16.dp)
         )
     }
