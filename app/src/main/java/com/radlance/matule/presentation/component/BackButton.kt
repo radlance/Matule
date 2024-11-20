@@ -1,7 +1,6 @@
 package com.radlance.matule.presentation.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -12,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -19,13 +19,17 @@ fun BackButton(
     onClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     IconButton(
-        onClick = onClicked,
+        onClick = {
+            onClicked()
+            keyboardController?.hide()
+        },
         modifier = modifier
             .clip(CircleShape)
             .size(44.dp)
-            .background(MaterialTheme.colorScheme.surfaceTint)
-            .clickable { onClicked() },
+            .background(MaterialTheme.colorScheme.surfaceTint),
     ) {
         Icon(
             imageVector = Icons.Default.ArrowBackIosNew,

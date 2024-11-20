@@ -1,5 +1,6 @@
 package com.radlance.matule.presentation.authorization.signin
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
@@ -48,6 +49,8 @@ fun ForgotPasswordScreen(
     modifier: Modifier = Modifier,
     viewModel: AuthViewModel = hiltViewModel()
 ) {
+
+    BackHandler { onBackPressed() }
 
     var emailFieldValue by rememberSaveable {
         mutableStateOf("")

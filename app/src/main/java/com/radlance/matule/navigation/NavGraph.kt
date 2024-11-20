@@ -127,8 +127,11 @@ fun NavGraph(navController: NavHostController) {
                     }
                 },
                 onRecoverPasswordTextClicked = {
-                    navController.navigate(ForgotPassword)
+                    navController.navigate(ForgotPassword) {
+                        popUpTo<SignIn> { inclusive = true }
+                    }
                 },
+
                 onSuccessSignIn = {
                     navController.navigate(Home) {
                         popUpTo<SignIn> { inclusive = true }
@@ -160,7 +163,9 @@ fun NavGraph(navController: NavHostController) {
         composable<ForgotPassword> {
             ForgotPasswordScreen(
                 onBackPressed = {
-                    navController.navigateUp()
+                    navController.navigate(SignIn) {
+                        popUpTo<ForgotPassword> { inclusive = true }
+                    }
                 },
                 onSuccessSending = {
                     navController.navigate(Verification(email = it)) {
@@ -181,7 +186,7 @@ fun NavGraph(navController: NavHostController) {
                 email = args.email,
                 onSuccessPasswordUpdating = {
                     navController.navigate(SignIn) {
-                        popUpTo<Verification>() { inclusive = true }
+                        popUpTo<Verification> { inclusive = true }
                     }
                 }
             )
