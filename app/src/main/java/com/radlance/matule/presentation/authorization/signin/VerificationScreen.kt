@@ -32,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -73,10 +74,17 @@ fun VerificationScreen(
     val resendingOtpUiState by viewModel.resendingUiState.collectAsState()
     val verificationUiState by viewModel.verificationUiState.collectAsState()
     val savePasswordUiState by viewModel.savePasswordUiState.collectAsState()
+    val confirmOtpState by viewModel.confirmOtpState.collectAsState()
 
     val snackBarHostState = remember { SnackbarHostState() }
 
     val context = LocalContext.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    confirmOtpState.Show(
+        onSuccessResult = viewModel::showRecoveryDialog,
+        snackBarHostState = snackBarHostState
+    )
 
     if (verificationUiState.showRecoveryDialog) {
         Dialog(
@@ -87,9 +95,7 @@ fun VerificationScreen(
                 value = verificationUiState.currentPassword,
                 onValueChanged = viewModel::updateCurrentPassword,
                 onGenerateButtonClicked = { viewModel.generatePassword() },
-                onSaveClicked = {
-                    viewModel.updateUserPassword(it)
-                },
+                onSaveClicked = viewModel::updateUserPassword,
                 modifier = Modifier.padding(horizontal = 20.dp)
             )
         }
@@ -121,6 +127,10 @@ fun VerificationScreen(
             }
             isTimerRunning = false
         }
+    }
+
+    if(verificationUiState.hideKeyBoard) {
+        keyboardController?.hide()
     }
 
     AuthScaffold(snackBarHostState = snackBarHostState) {
@@ -179,7 +189,7 @@ fun VerificationScreen(
                         value = viewModel.getOtpItem(index),
                         onValueChange = { otpValue ->
                             if (otpValue.length <= 1 && otpValue != " " && otpValue.isDigitsOnly()) {
-                                viewModel.updateOtpItem(index, otpValue)
+                                viewModel.updateOtpItem(index, otpValue, email)
                                 if (otpValue.isNotEmpty() && index < 5) {
                                     focusRequesters[index + 1].requestFocus()
                                 } else if (otpValue.isEmpty() && index > 0) {

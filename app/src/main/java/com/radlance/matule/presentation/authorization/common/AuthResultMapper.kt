@@ -15,7 +15,10 @@ class AuthResultMapper @Inject constructor() : AuthResult.Mapper<AuthResultUiSta
             "Данные введены неверно"
         } else if(statusCode == 422) {
             "Аккаунт с такой почтой уже существует"
-        } else {
+        } else if(statusCode == 403) {
+            "Ошибка верификации"
+        }
+        else {
             "Неизвестная ошибка"
         }
 

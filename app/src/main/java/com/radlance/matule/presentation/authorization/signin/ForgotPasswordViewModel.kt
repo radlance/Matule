@@ -30,6 +30,11 @@ class ForgotPasswordViewModel @Inject constructor(
     val savePasswordUiState: StateFlow<AuthResultUiState>
         get() = _savePasswordUiState.asStateFlow()
 
+    private val _confirmOtpState =
+        MutableStateFlow<AuthResultUiState>(AuthResultUiState.Initial)
+    val confirmOtpState: StateFlow<AuthResultUiState>
+        get() = _confirmOtpState.asStateFlow()
+
     private val _verificationUiState = MutableStateFlow(VerificationUiState())
     val verificationUiState: StateFlow<VerificationUiState>
         get() = _verificationUiState.asStateFlow()
@@ -38,12 +43,20 @@ class ForgotPasswordViewModel @Inject constructor(
         return otpItems[index]
     }
 
-    fun updateOtpItem(index: Int, value: String) {
+    fun updateOtpItem(index: Int, value: String, email: String) {
         otpItems[index] = value
         if (otpItems.all { it.isNotEmpty() }) {
+            confirmOtp(email, otpItems.joinToString(""))
+
             _verificationUiState.update { currentState ->
-                currentState.copy(showRecoveryDialog = true)
+                currentState.copy(hideKeyBoard = true)
             }
+        }
+    }
+
+    fun showRecoveryDialog() {
+        _verificationUiState.update { currentState ->
+            currentState.copy(showRecoveryDialog = true)
         }
     }
 
@@ -64,6 +77,14 @@ class ForgotPasswordViewModel @Inject constructor(
             _savePasswordUiState.value = AuthResultUiState.Loading("Сохранение…")
             val result = authRepository.updatePassword(newPassword)
             _savePasswordUiState.value = result.map(mapper)
+        }
+    }
+
+    private fun confirmOtp(email: String, otp: String) {
+        viewModelScope.launch {
+            _confirmOtpState.value = AuthResultUiState.Loading("Проверка…")
+            val result = authRepository.verifyEmailOtp(email = email, token = otp)
+            _confirmOtpState.value = result.map(mapper)
         }
     }
 

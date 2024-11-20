@@ -76,7 +76,7 @@ fun PasswordRecoveryDialog(
                     NavigationButton(
                         stringResId = R.string.generate_password,
                         onClick = { onGenerateButtonClicked(value) },
-                        enabled = value.trim().length > 2,
+                        enabled = value.trim().length > 4,
                         modifier = Modifier
                             .padding(top = 16.dp)
                             .height(60.dp)
@@ -99,7 +99,7 @@ fun PasswordRecoveryDialog(
                 NavigationButton(
                     stringResId = R.string.save,
                     onClick = { onSaveClicked(value) },
-                    enabled = value.isNotEmpty(),
+                    enabled = value.length >= 6,
                     modifier = Modifier
                         .padding(top = 16.dp)
                         .fillMaxWidth()
