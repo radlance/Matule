@@ -1,26 +1,18 @@
 package com.radlance.matule.presentation.authorization.signin
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarDuration
@@ -38,16 +30,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -60,8 +46,6 @@ import com.radlance.matule.R
 import com.radlance.matule.presentation.authorization.common.AuthScaffold
 import com.radlance.matule.presentation.component.BackButton
 import com.radlance.matule.ui.theme.MatuleTheme
-import com.radlance.matule.ui.theme.inputFieldErrorBorderColor
-import com.radlance.matule.ui.theme.inputFieldTextColor
 import com.radlance.matule.ui.theme.poppinsFamily
 import com.radlance.matule.ui.theme.ralewayFamily
 import com.radlance.matule.ui.theme.secondaryTextColor
@@ -73,6 +57,7 @@ import java.util.Locale
 @Composable
 fun VerificationScreen(
     onBackPressed: () -> Unit,
+    onSuccessPasswordUpdating: () -> Unit,
     email: String,
     viewModel: ForgotPasswordViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
@@ -87,6 +72,7 @@ fun VerificationScreen(
 
     val resendingOtpUiState by viewModel.resendingUiState.collectAsState()
     val verificationUiState by viewModel.verificationUiState.collectAsState()
+    val savePasswordUiState by viewModel.savePasswordUiState.collectAsState()
 
     val snackBarHostState = remember { SnackbarHostState() }
 
@@ -99,12 +85,20 @@ fun VerificationScreen(
         ) {
             PasswordRecoveryDialog(
                 value = verificationUiState.currentPassword,
-                onValueChanged = { viewModel.updateCurrentPassword(it) },
+                onValueChanged = viewModel::updateCurrentPassword,
                 onGenerateButtonClicked = { viewModel.generatePassword() },
+                onSaveClicked = {
+                    viewModel.updateUserPassword(it)
+                },
                 modifier = Modifier.padding(horizontal = 20.dp)
             )
         }
     }
+
+    savePasswordUiState.Show(
+        onSuccessResult = onSuccessPasswordUpdating,
+        snackBarHostState = snackBarHostState
+    )
 
     resendingOtpUiState.Show(
         onSuccessResult = {
@@ -187,13 +181,9 @@ fun VerificationScreen(
                             if (otpValue.length <= 1 && otpValue != " " && otpValue.isDigitsOnly()) {
                                 viewModel.updateOtpItem(index, otpValue)
                                 if (otpValue.isNotEmpty() && index < 5) {
-                                    coroutineScope.launch {
-                                        focusRequesters[index + 1].requestFocus()
-                                    }
+                                    focusRequesters[index + 1].requestFocus()
                                 } else if (otpValue.isEmpty() && index > 0) {
-                                    coroutineScope.launch {
-                                        focusRequesters[index - 1].requestFocus()
-                                    }
+                                    focusRequesters[index - 1].requestFocus()
                                 }
                             }
                         },
@@ -237,61 +227,11 @@ fun VerificationScreen(
     }
 }
 
-@Composable
-private fun OtpInputItem(
-    value: String,
-    onValueChange: (String) -> Unit,
-    focusRequester: FocusRequester,
-    modifier: Modifier = Modifier
-) {
-    var isFocused by remember { mutableStateOf(false) }
-
-    val shapeColor by animateColorAsState(
-        targetValue = if (value.isEmpty() && isFocused) {
-            inputFieldErrorBorderColor
-        } else {
-            Color.Transparent
-        },
-        label = "EnterInputField error"
-    )
-
-    Box(
-        modifier = modifier
-            .height(99.dp)
-            .width(46.dp)
-            .clip(RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colorScheme.surfaceTint)
-            .border(width = 1.dp, color = shapeColor, shape = RoundedCornerShape(12.dp)),
-        contentAlignment = Alignment.Center
-    ) {
-        BasicTextField(
-            value = value,
-            onValueChange = onValueChange,
-            singleLine = true,
-            textStyle = TextStyle(
-                color = inputFieldTextColor,
-                fontSize = 24.sp,
-                lineHeight = 24.sp,
-                fontFamily = poppinsFamily,
-                fontWeight = FontWeight.SemiBold,
-                textAlign = TextAlign.Center
-            ),
-            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-            modifier = Modifier
-                .fillMaxWidth()
-                .focusRequester(focusRequester)
-                .onFocusChanged { focusState ->
-                    isFocused = focusState.isFocused
-                }
-        )
-    }
-}
-
 @Preview
 @Composable
 private fun VerificationScreenPreview() {
     MatuleTheme {
-        VerificationScreen(onBackPressed = {}, email = "")
+        VerificationScreen(onBackPressed = {}, email = "", onSuccessPasswordUpdating = {})
     }
 }
 

@@ -178,7 +178,12 @@ fun NavGraph(navController: NavHostController) {
                         popUpTo<Verification> { inclusive = true }
                     }
                 },
-                email = args.email
+                email = args.email,
+                onSuccessPasswordUpdating = {
+                    navController.navigate(SignIn) {
+                        popUpTo<Verification>() { inclusive = true }
+                    }
+                }
             )
         }
 

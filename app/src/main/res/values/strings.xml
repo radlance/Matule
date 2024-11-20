@@ -32,4 +32,5 @@
     <string name="enter_the_quote">Введите фразу, на основе которой будет сгенерирован пароль</string>
     <string name="generate_password">Сгенерировать</string>
     <string name="copy">Скопировать</string>
+    <string name="save">Сохранить</string>
 </resources>

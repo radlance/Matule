@@ -5,7 +5,7 @@ interface AuthResult {
 
     interface Mapper<T : Any> {
         fun mapSuccess(): T
-        fun mapError(noConnection: Boolean): T
+        fun mapError(noConnection: Boolean, statusCode: Int): T
     }
 
     object Success : AuthResult {
@@ -14,9 +14,11 @@ interface AuthResult {
         }
     }
 
-    data class Error(private val noConnection: Boolean) : AuthResult {
+    data class Error(
+        private val noConnection: Boolean = false, private val statusCode: Int = 522
+    ) : AuthResult {
         override fun <T : Any> map(mapper: Mapper<T>): T {
-            return mapper.mapError(noConnection)
+            return mapper.mapError(noConnection, statusCode)
         }
     }
 }

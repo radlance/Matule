@@ -113,7 +113,7 @@ fun EnterInputField(
                             fontFamily = poppinsFamily,
                             fontWeight = FontWeight.Medium
                         ),
-                        keyboardOptions = keyboardOptions
+                        keyboardOptions = keyboardOptions,
                     )
 
                     if (isPassword) {

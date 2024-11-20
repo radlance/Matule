@@ -8,11 +8,15 @@ class AuthResultMapper @Inject constructor() : AuthResult.Mapper<AuthResultUiSta
         return AuthResultUiState.Success
     }
 
-    override fun mapError(noConnection: Boolean): AuthResultUiState {
+    override fun mapError(noConnection: Boolean, statusCode: Int): AuthResultUiState {
         val message = if(noConnection) {
-            "Нет соединения с интернетом"
+            "Отсутствует соединение с интернетом"
+        } else if(statusCode == 400) {
+            "Данные введены неверно"
+        } else if(statusCode == 422) {
+            "Аккаунт с такой почтой уже существует"
         } else {
-            "Ошибка сервера"
+            "Неизвестная ошибка"
         }
 
         return AuthResultUiState.Error(message)

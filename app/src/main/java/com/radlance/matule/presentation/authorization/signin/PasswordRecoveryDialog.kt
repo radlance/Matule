@@ -37,6 +37,7 @@ fun PasswordRecoveryDialog(
     value: String,
     onValueChanged: (String) -> Unit,
     onGenerateButtonClicked: (String) -> Unit,
+    onSaveClicked: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -70,27 +71,39 @@ fun PasswordRecoveryDialog(
                 modifier = Modifier.padding(top = 8.dp)
             )
 
-            Row {
-                NavigationButton(
-                    stringResId = R.string.generate_password,
-                    onClick = { onGenerateButtonClicked(value) },
-                    enabled = value.trim().length > 2,
-                    modifier = Modifier
-                        .padding(top = 16.dp)
-                        .height(60.dp)
-                        .weight(1f)
-                )
+            Column {
+                Row {
+                    NavigationButton(
+                        stringResId = R.string.generate_password,
+                        onClick = { onGenerateButtonClicked(value) },
+                        enabled = value.trim().length > 2,
+                        modifier = Modifier
+                            .padding(top = 16.dp)
+                            .height(60.dp)
+                            .weight(1f)
+                    )
 
-                Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(16.dp))
+
+                    NavigationButton(
+                        stringResId = R.string.copy,
+                        onClick = { clipBoardManager.setText(AnnotatedString(value)) },
+                        enabled = value.isNotEmpty(),
+                        modifier = Modifier
+                            .padding(top = 16.dp)
+                            .height(60.dp)
+                            .weight(1f)
+                    )
+                }
 
                 NavigationButton(
-                    stringResId = R.string.copy,
-                    onClick = { clipBoardManager.setText(AnnotatedString(value)) },
+                    stringResId = R.string.save,
+                    onClick = { onSaveClicked(value) },
                     enabled = value.isNotEmpty(),
                     modifier = Modifier
                         .padding(top = 16.dp)
+                        .fillMaxWidth()
                         .height(60.dp)
-                        .weight(1f)
                 )
             }
         }
@@ -101,6 +114,11 @@ fun PasswordRecoveryDialog(
 @Composable
 private fun PasswordRecoveryDialogPreview() {
     MatuleTheme {
-        PasswordRecoveryDialog(value = "", onValueChanged = {}, onGenerateButtonClicked = {})
+        PasswordRecoveryDialog(
+            value = "",
+            onValueChanged = {},
+            onGenerateButtonClicked = {},
+            onSaveClicked = {}
+        )
     }
 }

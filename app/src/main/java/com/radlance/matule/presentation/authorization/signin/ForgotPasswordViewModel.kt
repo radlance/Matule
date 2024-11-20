@@ -25,6 +25,11 @@ class ForgotPasswordViewModel @Inject constructor(
     val resendingUiState: StateFlow<AuthResultUiState>
         get() = _resendingUiState.asStateFlow()
 
+    private val _savePasswordUiState =
+        MutableStateFlow<AuthResultUiState>(AuthResultUiState.Initial)
+    val savePasswordUiState: StateFlow<AuthResultUiState>
+        get() = _savePasswordUiState.asStateFlow()
+
     private val _verificationUiState = MutableStateFlow(VerificationUiState())
     val verificationUiState: StateFlow<VerificationUiState>
         get() = _verificationUiState.asStateFlow()
@@ -44,9 +49,21 @@ class ForgotPasswordViewModel @Inject constructor(
 
     fun resendOtp(email: String) {
         viewModelScope.launch {
-            _resendingUiState.value = AuthResultUiState.Loading("Загрузка…")
+            _resendingUiState.value = AuthResultUiState.Loading("Отправка…")
             val result = authRepository.sendOtp(email)
             _resendingUiState.value = result.map(mapper)
+        }
+    }
+
+    fun updateUserPassword(newPassword: String) {
+        _verificationUiState.update { currentState ->
+            currentState.copy(showRecoveryDialog = false)
+        }
+
+        viewModelScope.launch {
+            _savePasswordUiState.value = AuthResultUiState.Loading("Сохранение…")
+            val result = authRepository.updatePassword(newPassword)
+            _savePasswordUiState.value = result.map(mapper)
         }
     }
 
