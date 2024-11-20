@@ -36,6 +36,7 @@ import com.radlance.matule.ui.theme.poppinsFamily
 fun PasswordRecoveryDialog(
     value: String,
     onValueChanged: (String) -> Unit,
+    onGenerateButtonClicked: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -72,7 +73,8 @@ fun PasswordRecoveryDialog(
             Row {
                 NavigationButton(
                     stringResId = R.string.generate_password,
-                    onClick = {},
+                    onClick = { onGenerateButtonClicked(value) },
+                    enabled = value.trim().length > 2,
                     modifier = Modifier
                         .padding(top = 16.dp)
                         .height(60.dp)
@@ -99,6 +101,6 @@ fun PasswordRecoveryDialog(
 @Composable
 private fun PasswordRecoveryDialogPreview() {
     MatuleTheme {
-        PasswordRecoveryDialog(value = "", onValueChanged = {})
+        PasswordRecoveryDialog(value = "", onValueChanged = {}, onGenerateButtonClicked = {})
     }
 }

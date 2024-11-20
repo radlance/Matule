@@ -49,7 +49,7 @@ class AuthViewModel @Inject constructor(
         validateFields(email, password, name)
 
         with(authUiState.value) {
-            if (isValidEmail && (isValidPassword && (isSignUp && isValidName || !isSignUp)) || sendOtp) {
+            if (isValidEmail && (isValidPassword && (isSignUp && isValidName || !isSignUp) || sendOtp)) {
                 viewModelScope.launch {
                     _authResultUiState.value = AuthResultUiState.Loading("Загрузка…")
                     updateActionButtonState(false)

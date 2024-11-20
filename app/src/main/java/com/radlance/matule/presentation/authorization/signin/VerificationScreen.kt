@@ -84,23 +84,23 @@ fun VerificationScreen(
 
     var countdown by rememberSaveable { mutableIntStateOf(30) }
     var isTimerRunning by rememberSaveable { mutableStateOf(true) }
-    var dialogFieldValue by rememberSaveable { mutableStateOf("") }
 
     val resendingOtpUiState by viewModel.resendingUiState.collectAsState()
-    val showRecoveryDialog by viewModel.showRecoveryDialog.collectAsState()
+    val verificationUiState by viewModel.verificationUiState.collectAsState()
 
     val snackBarHostState = remember { SnackbarHostState() }
 
     val context = LocalContext.current
 
-    if (showRecoveryDialog) {
+    if (verificationUiState.showRecoveryDialog) {
         Dialog(
             onDismissRequest = {},
             properties = DialogProperties(usePlatformDefaultWidth = false)
         ) {
             PasswordRecoveryDialog(
-                value = dialogFieldValue,
-                onValueChanged = { dialogFieldValue = it },
+                value = verificationUiState.currentPassword,
+                onValueChanged = { viewModel.updateCurrentPassword(it) },
+                onGenerateButtonClicked = { viewModel.generatePassword() },
                 modifier = Modifier.padding(horizontal = 20.dp)
             )
         }
