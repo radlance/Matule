@@ -33,4 +33,5 @@
     <string name="generate_password">Сгенерировать</string>
     <string name="copy">Скопировать</string>
     <string name="save">Сохранить</string>
+    <string name="main_screen">Главная</string>
 </resources>
