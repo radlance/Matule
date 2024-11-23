@@ -1,5 +1,6 @@
 package com.radlance.matule.presentation.component
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -32,9 +33,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.radlance.matule.R
+import com.radlance.matule.ui.theme.MatuleTheme
 import com.radlance.matule.ui.theme.fillRedColor
 import com.radlance.matule.ui.theme.inputFieldTextColor
 import com.radlance.matule.ui.theme.poppinsFamily
@@ -133,5 +136,19 @@ fun EnterInputField(
 
             }
         }
+    }
+}
+
+@SuppressLint("UnrememberedMutableInteractionSource")
+@Preview
+@Composable
+private fun EnterInputFieldPreview() {
+    MatuleTheme {
+        EnterInputField(
+            label = "",
+            value = "",
+            onValueChange = {},
+            interactionSource = MutableInteractionSource()
+        )
     }
 }
