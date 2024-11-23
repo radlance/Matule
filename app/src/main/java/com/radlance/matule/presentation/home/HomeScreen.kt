@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.radlance.matule.R
+import com.radlance.matule.domain.home.Category
 import com.radlance.matule.ui.theme.MatuleTheme
 
 @Composable
@@ -34,17 +35,17 @@ fun HomeScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
-            .padding(horizontal = 20.dp),
+            .background(MaterialTheme.colorScheme.surface),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Spacer(Modifier.height(dimensionResource(R.dimen.main_top_padding)))
         HomeHeader(
             onMenuIconClicked = {},
             onCartIconClicked = {},
             hasNotification = false,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = dimensionResource(R.dimen.main_top_padding))
+                .padding(horizontal = 20.dp)
         )
 
         Spacer(Modifier.height(19.dp))
@@ -53,7 +54,18 @@ fun HomeScreen(
             value = searchFieldValue,
             onValueChange = { searchFieldValue = it },
             onSettingsClick = {},
-            hint = stringResource(R.string.search)
+            hint = stringResource(R.string.search),
+            modifier = Modifier.padding(horizontal = 20.dp)
+        )
+
+        Spacer(Modifier.height(24.dp))
+
+        CategoriesRow(
+            categories = listOf(
+                Category(id = 1, title = "Все"),
+                Category(id = 2, title = "Outdoor"),
+                Category(id = 3, title = "Tennis")
+            )
         )
     }
 }
