@@ -28,6 +28,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             HomeHeader(
                 onMenuIconClicked = {},
                 onCartIconClicked = {},
+                hasNotification = false,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)
             )
         }

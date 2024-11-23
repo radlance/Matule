@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -27,12 +29,14 @@ import com.radlance.matule.presentation.home.vector.CartIcon
 import com.radlance.matule.presentation.home.vector.Highlight05
 import com.radlance.matule.presentation.home.vector.MenuIcon
 import com.radlance.matule.ui.theme.MatuleTheme
+import com.radlance.matule.ui.theme.fillRedColor
 import com.radlance.matule.ui.theme.ralewayFamily
 
 @Composable
 fun HomeHeader(
     onMenuIconClicked: () -> Unit,
     onCartIconClicked: () -> Unit,
+    hasNotification: Boolean,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -64,18 +68,31 @@ fun HomeHeader(
             )
         }
 
-            IconButton(
-            onClick = onCartIconClicked, modifier = Modifier
-                .clip(CircleShape)
-                .size(44.dp)
-                .background(MaterialTheme.colorScheme.surfaceVariant)
+        BadgedBox(
+            badge = {
+                if (hasNotification) {
+                    Badge(
+                        modifier = Modifier.offset(x = (-2).dp, y = 5.dp),
+                        contentColor = fillRedColor,
+                        containerColor = fillRedColor
+                    )
+                }
+            }
         ) {
-            Icon(
-                imageVector = CartIcon(MaterialTheme.colorScheme.background),
-                tint = MaterialTheme.colorScheme.onSurface,
-                contentDescription = "home_highlight_1"
-            )
+            IconButton(
+                onClick = onCartIconClicked, modifier = Modifier
+                    .clip(CircleShape)
+                    .size(44.dp)
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+            ) {
+                Icon(
+                    imageVector = CartIcon(MaterialTheme.colorScheme.background),
+                    tint = MaterialTheme.colorScheme.onSurface,
+                    contentDescription = "home_highlight_1"
+                )
+            }
         }
+
     }
 }
 
@@ -83,6 +100,6 @@ fun HomeHeader(
 @Composable
 private fun HomeHeaderPreview() {
     MatuleTheme {
-        HomeHeader({}, {}, modifier = Modifier.fillMaxWidth())
+        HomeHeader({}, {}, hasNotification = true, modifier = Modifier.fillMaxWidth())
     }
 }

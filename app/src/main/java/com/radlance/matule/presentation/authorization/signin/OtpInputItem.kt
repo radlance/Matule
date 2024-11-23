@@ -29,7 +29,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.radlance.matule.ui.theme.inputFieldErrorBorderColor
+import com.radlance.matule.ui.theme.fillRedColor
 import com.radlance.matule.ui.theme.inputFieldTextColor
 import com.radlance.matule.ui.theme.poppinsFamily
 
@@ -44,7 +44,7 @@ fun OtpInputItem(
 
     val shapeColor by animateColorAsState(
         targetValue = if (value.isEmpty() && isFocused) {
-            inputFieldErrorBorderColor
+            fillRedColor
         } else {
             Color.Transparent
         },
