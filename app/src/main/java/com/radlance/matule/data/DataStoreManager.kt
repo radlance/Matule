@@ -25,7 +25,20 @@ class DataStoreManager @Inject constructor(private val context: Context) {
         }
     }
 
-    companion object {
-        private val KEY_ONBOARDING_VIEWED = booleanPreferencesKey("viewed")
+    suspend fun setUserLoggedIn() {
+        context.dataStore.edit { settings ->
+            settings[KEY_USER_LOGGED_IN] = true
+        }
+    }
+
+    fun getLoggedInStatus(): Flow<Boolean> {
+        return context.dataStore.data.map { preferences ->
+            preferences[KEY_USER_LOGGED_IN] ?: false
+        }
+    }
+
+    private companion object {
+        val KEY_ONBOARDING_VIEWED = booleanPreferencesKey("viewed")
+        val KEY_USER_LOGGED_IN = booleanPreferencesKey("logged in")
     }
 }

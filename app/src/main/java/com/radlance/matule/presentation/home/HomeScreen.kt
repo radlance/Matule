@@ -1,5 +1,6 @@
 package com.radlance.matule.presentation.home
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,7 +18,11 @@ import com.radlance.matule.R
 import com.radlance.matule.ui.theme.MatuleTheme
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(
+    onBackPressed: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    BackHandler { onBackPressed() }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -39,6 +44,6 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 @Composable
 private fun HomeScreenPreview() {
     MatuleTheme(darkTheme = false) {
-        HomeScreen()
+        HomeScreen({})
     }
 }

@@ -20,7 +20,6 @@ import com.radlance.matule.presentation.authorization.signin.SignInScreen
 import com.radlance.matule.presentation.authorization.signin.VerificationScreen
 import com.radlance.matule.presentation.authorization.signup.SignUpScreen
 import com.radlance.matule.presentation.home.HomeScreen
-import com.radlance.matule.presentation.onboarding.OnBoardingViewModel
 import com.radlance.matule.presentation.onboarding.OnboardingFirst
 import com.radlance.matule.presentation.onboarding.OnboardingSecond
 import com.radlance.matule.presentation.onboarding.OnboardingThird
@@ -32,8 +31,8 @@ fun NavGraph(navController: NavHostController) {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route?.split(".")?.last()
 
-    val onBoardingViewModel = viewModel<OnBoardingViewModel>()
-    val onBoardingAlreadyViewed by onBoardingViewModel.alreadyViewed.collectAsState()
+    val navigationViewModel = viewModel<NavigationViewModel>()
+    val navigationState by navigationViewModel.navigationState.collectAsState()
 
     val context = LocalContext.current
 
@@ -56,15 +55,7 @@ fun NavGraph(navController: NavHostController) {
         composable<Splash> {
             SplashScreen(
                 onDelayFinished = {
-                    if (onBoardingAlreadyViewed) {
-                        navController.navigate(SignIn) {
-                            popUpTo<Splash> { inclusive = true }
-                        }
-                    } else {
-                        navController.navigate(OnboardingFirst) {
-                            popUpTo<Splash> { inclusive = true }
-                        }
-                    }
+                    navigationState.navigate(navController)
                 }
             )
         }
@@ -101,7 +92,7 @@ fun NavGraph(navController: NavHostController) {
                     navController.navigate(SignIn) {
                         popUpTo<OnboardingThird> { inclusive = false }
                     }
-                    onBoardingViewModel.setOnBoardingViewed()
+                    navigationViewModel.setOnBoardingViewed()
                 },
                 onBackPressed = {
                     navController.navigate(OnboardingSecond) {
@@ -133,6 +124,7 @@ fun NavGraph(navController: NavHostController) {
                 onSuccessSignIn = {
                     navController.navigate(Home) {
                         popUpTo<SignIn> { inclusive = true }
+                        navigationViewModel.setUserLoggedIn()
                     }
                 }
             )
@@ -153,6 +145,7 @@ fun NavGraph(navController: NavHostController) {
                 onSuccessSignUp = {
                     navController.navigate(Home) {
                         popUpTo<SignUp> { inclusive = true }
+                        navigationViewModel.setUserLoggedIn()
                     }
                 }
             )
@@ -191,7 +184,11 @@ fun NavGraph(navController: NavHostController) {
         }
 
         composable<Home> {
-            HomeScreen()
+            HomeScreen(
+                onBackPressed = {
+                    (context as Activity).finish()
+                }
+            )
         }
     }
 }

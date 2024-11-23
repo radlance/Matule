@@ -172,7 +172,7 @@ fun SignInScreen(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Row(Modifier.padding(top = 12.dp)) {
+            Row(Modifier.padding(top = 24.dp)) {
                 Text(
                     text = stringResource(R.string.is_first_time),
                     color = secondaryTextColor,
