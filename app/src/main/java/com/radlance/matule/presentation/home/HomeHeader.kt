@@ -25,9 +25,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.radlance.matule.R
-import com.radlance.matule.presentation.home.vector.CartIcon
-import com.radlance.matule.presentation.home.vector.Highlight05
-import com.radlance.matule.presentation.home.vector.MenuIcon
+import com.radlance.matule.ui.vector.BagIcon
+import com.radlance.matule.ui.vector.Highlight05
+import com.radlance.matule.ui.vector.MenuIcon
 import com.radlance.matule.ui.theme.MatuleTheme
 import com.radlance.matule.ui.theme.fillRedColor
 import com.radlance.matule.ui.theme.ralewayFamily
@@ -86,7 +86,7 @@ fun HomeHeader(
                     .background(MaterialTheme.colorScheme.surfaceVariant)
             ) {
                 Icon(
-                    imageVector = CartIcon(MaterialTheme.colorScheme.background),
+                    imageVector = BagIcon(MaterialTheme.colorScheme.background),
                     tint = MaterialTheme.colorScheme.onSurface,
                     contentDescription = "home_highlight_1"
                 )

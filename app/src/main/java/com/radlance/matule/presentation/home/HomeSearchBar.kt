@@ -17,7 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.radlance.matule.presentation.home.vector.SearchSettingsIcon
+import com.radlance.matule.ui.vector.SearchSettingsIcon
 import com.radlance.matule.ui.theme.MatuleTheme
 
 @Composable

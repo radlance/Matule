@@ -1,4 +1,4 @@
-package com.radlance.matule.presentation.home.vector
+package com.radlance.matule.ui.vector
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathFillType

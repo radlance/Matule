@@ -1,4 +1,4 @@
-package com.radlance.matule.presentation.home.vector
+package com.radlance.matule.ui.vector
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathFillType
@@ -9,12 +9,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
-fun CartIcon(mainColor: Color): ImageVector {
+fun BagIcon(mainColor: Color): ImageVector {
 
-    if (_CartIcon != null) {
-        return _CartIcon!!
+    if (_BagIcon != null) {
+        return _BagIcon!!
     }
-    _CartIcon = ImageVector.Builder(
+    _BagIcon = ImageVector.Builder(
         name = "Bag2",
         defaultWidth = 24.dp,
         defaultHeight = 24.dp,
@@ -88,9 +88,9 @@ fun CartIcon(mainColor: Color): ImageVector {
         }
     }.build()
 
-    return _CartIcon!!
+    return _BagIcon!!
 
 }
 
 @Suppress("ObjectPropertyName")
-private var _CartIcon: ImageVector? = null
+private var _BagIcon: ImageVector? = null

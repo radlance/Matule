@@ -67,6 +67,10 @@ fun HomeScreen(
                 Category(id = 3, title = "Tennis")
             )
         )
+
+        Spacer(Modifier.height(24.dp))
+
+        PopularRow()
     }
 }
 

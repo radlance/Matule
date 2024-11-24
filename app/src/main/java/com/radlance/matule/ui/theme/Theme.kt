@@ -13,6 +13,7 @@ private val DarkColorScheme = darkColorScheme(
     tertiary = Pink80,
     surface = defaultDarkBackgroundColor,
     onSurface = Color.White,
+    surfaceContainer = Color.White,
     surfaceVariant = componentGrayColorDark,
     surfaceTint = componentGrayColorDark
 )
@@ -23,6 +24,7 @@ private val LightColorScheme = lightColorScheme(
     secondary = PurpleGrey40,
     surface = lightThemeSurfaceColor,
     onSurface = Color.Black,
+    surfaceContainer = Color.Black,
     surfaceVariant = Color.White,
     tertiary = Pink40,
     surfaceTint = componentGrayColor
