@@ -28,3 +28,4 @@ val inputFieldTextColor = Color(0xFF6A6A6A)
 val fillRedColor = Color(0xFFF87265)
 
 val verificationSubTextColor = Color(0xFF7D848D)
+val salesColor = Color(0xFF674DC5)

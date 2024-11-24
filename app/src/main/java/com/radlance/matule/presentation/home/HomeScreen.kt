@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,12 +32,14 @@ fun HomeScreen(
     modifier: Modifier = Modifier
 ) {
     var searchFieldValue by rememberSaveable { mutableStateOf("") }
+    val scrollState = rememberScrollState()
 
     BackHandler { onBackPressed() }
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface),
+            .background(MaterialTheme.colorScheme.surface)
+            .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(Modifier.height(dimensionResource(R.dimen.main_top_padding)))
@@ -71,6 +75,10 @@ fun HomeScreen(
         Spacer(Modifier.height(24.dp))
 
         PopularRow()
+
+        Spacer(Modifier.height(40.dp))
+
+        SaleBanner(modifier = Modifier.padding(horizontal = 20.dp))
     }
 }
 

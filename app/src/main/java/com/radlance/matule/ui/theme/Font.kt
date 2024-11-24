@@ -19,3 +19,7 @@ val poppinsFamily = FontFamily(
     Font(R.font.poppins_medium, weight = FontWeight.Medium),
     Font(R.font.poppins_semi_bold, weight = FontWeight.SemiBold)
 )
+
+val futuraFamily = FontFamily(
+    Font(R.font.futura_black, weight = FontWeight(900))
+)
