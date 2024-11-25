@@ -3,6 +3,7 @@ package com.radlance.matule.navigation
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -18,6 +19,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,6 +45,7 @@ fun BottomNavigationBar(
     modifier: Modifier = Modifier
 ) {
     val navBackStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
+    val interactionSource = remember { MutableInteractionSource() }
 
     Box(modifier = modifier.fillMaxWidth()) {
         Image(
@@ -93,7 +96,10 @@ fun BottomNavigationBar(
                         )
                     ),
                     contentDescription = "HomeNavigationIcon",
-                    modifier = Modifier.clickable {
+                    modifier = Modifier.clickable(
+                        interactionSource = interactionSource,
+                        indication = null
+                    ) {
                         if (!isSelectedIcon(Base, navBackStackEntry)) {
                             navigationState.navigateTo(Base)
                         }
@@ -108,7 +114,10 @@ fun BottomNavigationBar(
                         )
                     ),
                     contentDescription = "FavoriteNavigationIcon",
-                    modifier = Modifier.clickable {
+                    modifier = Modifier.clickable(
+                        interactionSource = interactionSource,
+                        indication = null
+                    ) {
                         if (!isSelectedIcon(Favorite, navBackStackEntry)) {
                             navigationState.navigateTo(Favorite)
                         }
@@ -129,7 +138,10 @@ fun BottomNavigationBar(
                         )
                     ),
                     contentDescription = "NotificationNavigationIcon",
-                    modifier = Modifier.clickable {
+                    modifier = Modifier.clickable(
+                        interactionSource = interactionSource,
+                        indication = null
+                    ) {
                         if (!isSelectedIcon(Notification, navBackStackEntry)) {
                             navigationState.navigateTo(Notification)
                         }
@@ -144,7 +156,10 @@ fun BottomNavigationBar(
                         )
                     ),
                     contentDescription = "ProfileNavigationIcon",
-                    modifier = Modifier.clickable {
+                    modifier = Modifier.clickable(
+                        interactionSource = interactionSource,
+                        indication = null
+                    ) {
                         if (!isSelectedIcon(Profile, navBackStackEntry)) {
                             navigationState.navigateTo(Profile)
                         }
@@ -171,8 +186,6 @@ private fun isSelectedIcon(
     navBackStackEntry: NavBackStackEntry?
 ): Boolean {
     return navBackStackEntry?.destination?.hierarchy?.any {
-        val route = it.route
-        val string = navigationItem::class.qualifiedName
-        route == string
+        it.route == navigationItem::class.qualifiedName
     } ?: false
 }
