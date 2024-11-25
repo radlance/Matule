@@ -15,7 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.radlance.matule.ui.theme.blueButtonColor
+import com.radlance.matule.ui.theme.bluePrimaryColor
 import com.radlance.matule.ui.theme.ralewayFamily
 
 @Composable
@@ -23,7 +23,7 @@ fun NavigationButton(
     @StringRes stringResId: Int,
     onClick: () -> Unit,
     buttonColors: ButtonColors = ButtonDefaults.buttonColors().copy(
-        containerColor = blueButtonColor,
+        containerColor = bluePrimaryColor,
         contentColor = Color.White
     ),
     modifier: Modifier = Modifier,

@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 private val DarkColorScheme = darkColorScheme(
-    primary = blueButtonColor,
+    primary = bluePrimaryColor,
     secondary = PurpleGrey80,
     tertiary = Pink80,
     surface = defaultDarkBackgroundColor,
@@ -19,7 +19,7 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = blueButtonColor,
+    primary = bluePrimaryColor,
     background = Color.White,
     secondary = PurpleGrey40,
     surface = lightThemeSurfaceColor,

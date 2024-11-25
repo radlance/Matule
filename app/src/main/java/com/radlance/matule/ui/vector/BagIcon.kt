@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
-fun BagIcon(mainColor: Color): ImageVector {
+fun BagIcon(color: Color): ImageVector {
 
     if (_BagIcon != null) {
         return _BagIcon!!
@@ -22,7 +22,7 @@ fun BagIcon(mainColor: Color): ImageVector {
         viewportHeight = 24f
     ).apply {
         path(
-            stroke = SolidColor(mainColor),
+            stroke = SolidColor(color),
             strokeLineWidth = 1.5f,
             strokeLineCap = StrokeCap.Round,
             strokeLineJoin = StrokeJoin.Round
@@ -34,7 +34,7 @@ fun BagIcon(mainColor: Color): ImageVector {
             lineTo(16.5f, 7.89f)
         }
         path(
-            stroke = SolidColor(mainColor),
+            stroke = SolidColor(color),
             strokeLineWidth = 1.5f,
             strokeLineJoin = StrokeJoin.Round
         ) {
@@ -50,7 +50,7 @@ fun BagIcon(mainColor: Color): ImageVector {
             close()
         }
         path(
-            stroke = SolidColor(mainColor),
+            stroke = SolidColor(color),
             strokeLineWidth = 2f,
             strokeLineCap = StrokeCap.Round,
             strokeLineJoin = StrokeJoin.Round
@@ -59,7 +59,7 @@ fun BagIcon(mainColor: Color): ImageVector {
             lineTo(15.5f, 12f)
         }
         path(
-            stroke = SolidColor(mainColor),
+            stroke = SolidColor(color),
             strokeLineWidth = 2f,
             strokeLineCap = StrokeCap.Round,
             strokeLineJoin = StrokeJoin.Round
@@ -68,7 +68,7 @@ fun BagIcon(mainColor: Color): ImageVector {
             lineTo(8.5f, 12f)
         }
         path(
-            fill = SolidColor(mainColor),
+            fill = SolidColor(color),
             fillAlpha = 0f,
             strokeAlpha = 0f,
             pathFillType = PathFillType.EvenOdd

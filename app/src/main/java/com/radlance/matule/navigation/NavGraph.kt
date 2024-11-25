@@ -19,7 +19,6 @@ import com.radlance.matule.presentation.authorization.signin.ForgotPasswordScree
 import com.radlance.matule.presentation.authorization.signin.SignInScreen
 import com.radlance.matule.presentation.authorization.signin.VerificationScreen
 import com.radlance.matule.presentation.authorization.signup.SignUpScreen
-import com.radlance.matule.presentation.home.HomeScreen
 import com.radlance.matule.presentation.onboarding.OnboardingFirst
 import com.radlance.matule.presentation.onboarding.OnboardingSecond
 import com.radlance.matule.presentation.onboarding.OnboardingThird
@@ -184,11 +183,7 @@ fun NavGraph(navController: NavHostController) {
         }
 
         composable<Home> {
-            HomeScreen(
-                onBackPressed = {
-                    (context as Activity).finish()
-                }
-            )
+            MainScreen()
         }
     }
 }

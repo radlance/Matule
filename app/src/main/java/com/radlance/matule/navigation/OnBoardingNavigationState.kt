@@ -2,10 +2,10 @@ package com.radlance.matule.navigation
 
 import androidx.navigation.NavController
 
-interface NavigationState {
+interface OnBoardingNavigationState {
     fun navigate(navController: NavController)
 
-    object NavigateToHome : NavigationState {
+    object NavigateToHome : OnBoardingNavigationState {
         override fun navigate(navController: NavController) {
             navController.navigate(Home) {
                 popUpTo<Splash> { inclusive = true }
@@ -13,7 +13,7 @@ interface NavigationState {
         }
     }
 
-    object NavigateToSignIn : NavigationState {
+    object NavigateToSignIn : OnBoardingNavigationState {
         override fun navigate(navController: NavController) {
             navController.navigate(SignIn) {
                 popUpTo<Splash> { inclusive = true }
@@ -21,7 +21,7 @@ interface NavigationState {
         }
     }
 
-    object NavigateToOnBoardingFirst : NavigationState {
+    object NavigateToOnBoardingFirst : OnBoardingNavigationState {
         override fun navigate(navController: NavController) {
             navController.navigate(OnboardingFirst) {
                 popUpTo<Splash> { inclusive = true }

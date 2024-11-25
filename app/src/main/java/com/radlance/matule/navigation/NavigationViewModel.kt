@@ -18,17 +18,17 @@ class NavigationViewModel @Inject constructor(
     private val onBoardingAlreadyViewed = navigationRepository.getOnBoardingViewingStatus()
     private val userAlreadyLoggedIn = navigationRepository.getLoggedInStatus()
 
-    val navigationState: StateFlow<NavigationState> =
+    val navigationState: StateFlow<OnBoardingNavigationState> =
         combine(onBoardingAlreadyViewed, userAlreadyLoggedIn) { onBoardingViewed, userLoggedIn ->
             when {
-                onBoardingViewed && userLoggedIn -> NavigationState.NavigateToHome
-                onBoardingViewed && !userLoggedIn -> NavigationState.NavigateToSignIn
-                else -> NavigationState.NavigateToOnBoardingFirst
+                onBoardingViewed && userLoggedIn -> OnBoardingNavigationState.NavigateToHome
+                onBoardingViewed && !userLoggedIn -> OnBoardingNavigationState.NavigateToSignIn
+                else -> OnBoardingNavigationState.NavigateToOnBoardingFirst
             }
         }.stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
-            NavigationState.NavigateToOnBoardingFirst
+            OnBoardingNavigationState.NavigateToOnBoardingFirst
         )
 
     fun setOnBoardingViewed() {

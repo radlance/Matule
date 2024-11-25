@@ -22,7 +22,7 @@ val componentGrayColor = Color(0xFFf7f7f9)
 val componentGrayColorDark = Color(0xFF2C2C2E)
 
 val secondaryTextColor = Color(0xFF707B81)
-val blueButtonColor = Color(0xFF48B2E7)
+val bluePrimaryColor = Color(0xFF48B2E7)
 
 val inputFieldTextColor = Color(0xFF6A6A6A)
 val fillRedColor = Color(0xFFF87265)
