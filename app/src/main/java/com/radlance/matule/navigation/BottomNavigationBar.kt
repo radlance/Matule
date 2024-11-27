@@ -85,86 +85,106 @@ fun BottomNavigationBar(
                 .padding(bottom = 30.dp, start = 31.dp, end = 31.dp),
         ) {
             Row(
-                modifier = Modifier.weight(1f),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Image(
-                    imageVector = HomeNavigationIcon(
-                        getNavigationItemColor(
-                            Base,
-                            navBackStackEntry
-                        )
-                    ),
-                    contentDescription = "HomeNavigationIcon",
-                    modifier = Modifier.clickable(
+                modifier = Modifier
+                    .weight(1f)
+                    .clickable(
                         interactionSource = interactionSource,
                         indication = null
                     ) {
                         if (!isSelectedIcon(Base, navBackStackEntry)) {
                             navigationState.navigateTo(Base)
                         }
-                    }
-                )
+                    },
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row(Modifier.weight(1f)) {
+                    Image(
+                        imageVector = HomeNavigationIcon(
+                            getNavigationItemColor(
+                                Base,
+                                navBackStackEntry
+                            )
+                        ),
+                        contentDescription = "HomeNavigationIcon"
+                    )
+                }
 
-                Image(
-                    imageVector = FavoriteNavigationIcon(
-                        getNavigationItemColor(
-                            Favorite,
-                            navBackStackEntry
-                        )
-                    ),
-                    contentDescription = "FavoriteNavigationIcon",
-                    modifier = Modifier.clickable(
-                        interactionSource = interactionSource,
-                        indication = null
-                    ) {
-                        if (!isSelectedIcon(Favorite, navBackStackEntry)) {
-                            navigationState.navigateTo(Favorite)
-                        }
-                    }
-                )
+                Row(
+                    Modifier
+                        .weight(1f)
+                        .clickable(
+                            interactionSource = interactionSource,
+                            indication = null
+                        ) {
+                            if (!isSelectedIcon(Favorite, navBackStackEntry)) {
+                                navigationState.navigateTo(Favorite)
+                            }
+                        }, horizontalArrangement = Arrangement.End
+                ) {
+                    Image(
+                        imageVector = FavoriteNavigationIcon(
+                            getNavigationItemColor(
+                                Favorite,
+                                navBackStackEntry
+                            )
+                        ),
+                        contentDescription = "FavoriteNavigationIcon"
+                    )
+                }
+
             }
             Spacer(Modifier.weight(2f))
             Row(
                 modifier = Modifier.weight(1f),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-
-                Image(
-                    imageVector = NotificationNavigationIcon(
-                        getNavigationItemColor(
-                            Notification,
-                            navBackStackEntry
-                        )
-                    ),
-                    contentDescription = "NotificationNavigationIcon",
-                    modifier = Modifier.clickable(
-                        interactionSource = interactionSource,
-                        indication = null
-                    ) {
-                        if (!isSelectedIcon(Notification, navBackStackEntry)) {
-                            navigationState.navigateTo(Notification)
+                Row(
+                    Modifier
+                        .weight(1f)
+                        .clickable(
+                            interactionSource = interactionSource,
+                            indication = null
+                        ) {
+                            if (!isSelectedIcon(Notification, navBackStackEntry)) {
+                                navigationState.navigateTo(Notification)
+                            }
                         }
-                    }
-                )
+                ) {
+                    Image(
+                        imageVector = NotificationNavigationIcon(
+                            getNavigationItemColor(
+                                Notification,
+                                navBackStackEntry
+                            )
+                        ),
+                        contentDescription = "NotificationNavigationIcon"
+                    )
+                }
 
-                Image(
-                    imageVector = ProfileNavigationIcon(
-                        getNavigationItemColor(
-                            Profile,
-                            navBackStackEntry
-                        )
-                    ),
-                    contentDescription = "ProfileNavigationIcon",
-                    modifier = Modifier.clickable(
-                        interactionSource = interactionSource,
-                        indication = null
-                    ) {
-                        if (!isSelectedIcon(Profile, navBackStackEntry)) {
-                            navigationState.navigateTo(Profile)
+                Row(
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable(
+                            interactionSource = interactionSource,
+                            indication = null
+                        ) {
+                            if (!isSelectedIcon(Profile, navBackStackEntry)) {
+                                navigationState.navigateTo(Profile)
+                            }
                         }
-                    }
-                )
+                ) {
+                    Image(
+                        imageVector = ProfileNavigationIcon(
+                            getNavigationItemColor(
+                                Profile,
+                                navBackStackEntry
+                            )
+                        ),
+                        contentDescription = "ProfileNavigationIcon",
+                        modifier = Modifier
+                    )
+                }
             }
         }
     }
