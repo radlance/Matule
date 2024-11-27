@@ -1,7 +1,6 @@
 package com.radlance.matule.di
 
 import android.content.Context
-import com.radlance.matule.BuildConfig
 import com.radlance.matule.data.DataStoreManager
 import dagger.Module
 import dagger.Provides
@@ -10,8 +9,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.Auth
-import io.github.jan.supabase.createSupabaseClient
-import io.github.jan.supabase.serializer.KotlinXSerializer
+import io.github.jan.supabase.auth.auth
 import javax.inject.Singleton
 
 @Module
@@ -24,17 +22,9 @@ class DataModule {
         return DataStoreManager(applicationContext)
     }
 
-    @Singleton
     @Provides
-    fun provideSupabaseClient(): SupabaseClient {
-        val supabase = createSupabaseClient(
-            supabaseUrl = "https://osoknxtwcppulkimwpjo.supabase.co",
-            supabaseKey = BuildConfig.SUPABASE_KEY
-        ) {
-            install(Auth)
-            defaultSerializer = KotlinXSerializer()
-        }
-
-        return supabase
+    @Singleton
+    fun provideAuth(supabaseClient: SupabaseClient): Auth {
+        return supabaseClient.auth
     }
 }

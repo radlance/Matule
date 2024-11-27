@@ -3,21 +3,20 @@ package com.radlance.matule.data.signup
 import com.radlance.matule.domain.authorization.AuthRepository
 import com.radlance.matule.domain.authorization.AuthResult
 import com.radlance.matule.domain.authorization.User
-import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.auth.OtpType
-import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.exception.AuthRestException
 import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.exceptions.HttpRequestException
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
-    private val supabaseClient: SupabaseClient
+    private val auth: Auth
 ) : AuthRepository {
 
     override suspend fun signUp(user: User): AuthResult {
         return try {
-            supabaseClient.auth.signUpWith(Email) {
+            auth.signUpWith(Email) {
                 email = user.email
                 password = user.password
             }
@@ -33,7 +32,7 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun signIn(user: User): AuthResult {
         return try {
-            supabaseClient.auth.signInWith(Email) {
+            auth.signInWith(Email) {
                 email = user.email
                 password = user.password
             }
@@ -49,7 +48,7 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun sendOtp(email: String): AuthResult {
         return try {
-            supabaseClient.auth.resetPasswordForEmail(email)
+            auth.resetPasswordForEmail(email)
             AuthResult.Success
         } catch (e: Exception) {
             AuthResult.Error(noConnection = e is HttpRequestException)
@@ -58,7 +57,7 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun verifyEmailOtp(email: String, token: String): AuthResult {
         return try {
-            supabaseClient.auth.verifyEmailOtp(
+            auth.verifyEmailOtp(
                 type = OtpType.Email.EMAIL,
                 email = email,
                 token = token
@@ -73,7 +72,7 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun updatePassword(newPassword: String): AuthResult {
         return try {
-            supabaseClient.auth.updateUser {
+            auth.updateUser {
                 password = newPassword
             }
             AuthResult.Success
