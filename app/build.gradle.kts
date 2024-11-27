@@ -56,6 +56,9 @@ kapt {
 }
 
 dependencies {
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.http)
+
     implementation(libs.androidx.room.runtime)
     annotationProcessor(libs.androidx.room.compiler)
     ksp(libs.androidx.room.compiler)

@@ -24,12 +24,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.radlance.matule.R
+import coil3.compose.AsyncImage
 import com.radlance.matule.domain.home.Product
 import com.radlance.matule.presentation.component.PriceRow
 import com.radlance.matule.ui.theme.MatuleTheme
@@ -74,8 +73,8 @@ fun ShoesCard(
                 )
             }
 
-            Image(
-                painter = painterResource(R.drawable.shoe_example),
+            AsyncImage(
+                model = product.imageUrl,
                 contentDescription = "shoe_example",
                 contentScale = ContentScale.FillWidth,
                 modifier = Modifier
