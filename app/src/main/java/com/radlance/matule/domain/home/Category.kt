@@ -1,6 +1,6 @@
 package com.radlance.matule.domain.home
 
 data class Category(
-    val id: Int,
-    val title: String
+    val title: String,
+    val id: Int = 0
 )

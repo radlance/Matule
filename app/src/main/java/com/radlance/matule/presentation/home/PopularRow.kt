@@ -21,13 +21,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.radlance.matule.R
+import com.radlance.matule.domain.home.Product
 import com.radlance.matule.ui.theme.MatuleTheme
 import com.radlance.matule.ui.theme.poppinsFamily
 import com.radlance.matule.ui.theme.ralewayFamily
 import com.radlance.matule.ui.vector.CartIcon
 
 @Composable
-fun PopularRow(modifier: Modifier = Modifier) {
+fun PopularRow(
+    products: List<Product>,
+    onLikeClicked: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(modifier = modifier.fillMaxWidth()) {
         Row(
             modifier = modifier
@@ -60,21 +65,25 @@ fun PopularRow(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .padding(start = 16.dp, end = 20.dp)
         ) {
-            ShoesCard(
-                onLikeClick = {},
-                isFavorite = true,
-                icon = Icons.Filled.Add,
-                modifier = modifier.weight(1f)
-            )
+            if(products.isNotEmpty()) {
+                ShoesCard(
+                    onLikeClick = { onLikeClicked(products.first().id) },
+                    product = products.first(),
+                    isFavorite = products.first().isFavorite,
+                    icon = Icons.Filled.Add,
+                    modifier = modifier.weight(1f)
+                )
 
-            Spacer(Modifier.width(19.dp))
+                Spacer(Modifier.width(19.dp))
 
-            ShoesCard(
-                onLikeClick = {},
-                isFavorite = true,
-                icon = CartIcon,
-                modifier = modifier.weight(1f)
-            )
+                ShoesCard(
+                    onLikeClick = { onLikeClicked(products[1].id) },
+                    product = products[1],
+                    isFavorite = products[1].isFavorite,
+                    icon = CartIcon,
+                    modifier = modifier.weight(1f)
+                )
+            }
         }
     }
 }
@@ -83,6 +92,6 @@ fun PopularRow(modifier: Modifier = Modifier) {
 @Composable
 private fun PopularRowPreview() {
     MatuleTheme {
-        PopularRow()
+        PopularRow(emptyList(), onLikeClicked = {})
     }
 }

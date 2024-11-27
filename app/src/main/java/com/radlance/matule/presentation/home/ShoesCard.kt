@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.radlance.matule.R
+import com.radlance.matule.domain.home.Product
 import com.radlance.matule.presentation.component.PriceRow
 import com.radlance.matule.ui.theme.MatuleTheme
 import com.radlance.matule.ui.theme.fillRedColor
@@ -40,6 +41,7 @@ import com.radlance.matule.ui.vector.LikeIcon
 
 @Composable
 fun ShoesCard(
+    product: Product,
     onLikeClick: () -> Unit,
     isFavorite: Boolean,
     icon: ImageVector,
@@ -95,7 +97,7 @@ fun ShoesCard(
             Spacer(Modifier.height(8.dp))
 
             Text(
-                text = "Nike Air Max",
+                text = product.title,
                 color = inputFieldTextColor,
                 fontSize = 16.sp,
                 fontFamily = ralewayFamily,
@@ -105,7 +107,7 @@ fun ShoesCard(
             )
 
             PriceRow(
-                price = "752.00",
+                price = product.price.toString(),
                 icon = icon,
                 contentDescription = "Add",
             )
@@ -122,7 +124,14 @@ private fun ShoesCardPreview() {
             onLikeClick = {},
             isFavorite = true,
             icon = Icons.Filled.Add,
-            modifier = Modifier.width(160.dp)
+            modifier = Modifier.width(160.dp),
+            product = Product(
+                title = "mock",
+                price = 100.00,
+                imageUrl = "https://",
+                isFavorite = true,
+                categoryId = 1
+            )
         )
     }
 }
