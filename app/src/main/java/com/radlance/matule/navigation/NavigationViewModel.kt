@@ -1,20 +1,18 @@
 package com.radlance.matule.navigation
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.radlance.matule.domain.onboarding.NavigationRepository
+import com.radlance.matule.presentation.common.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class NavigationViewModel @Inject constructor(
     private val navigationRepository: NavigationRepository
-) : ViewModel() {
+) : BaseViewModel() {
     private val onBoardingAlreadyViewed = navigationRepository.getOnBoardingViewingStatus()
     private val userAlreadyLoggedIn = navigationRepository.getLoggedInStatus()
 
@@ -25,10 +23,8 @@ class NavigationViewModel @Inject constructor(
                 onBoardingViewed && !userLoggedIn -> OnBoardingNavigationState.NavigateToSignIn
                 else -> OnBoardingNavigationState.NavigateToOnBoardingFirst
             }
-        }.stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000L),
-            OnBoardingNavigationState.NavigateToOnBoardingFirst
+        }.stateInViewModel(
+            initialValue = OnBoardingNavigationState.NavigateToOnBoardingFirst
         )
 
     fun setOnBoardingViewed() {
