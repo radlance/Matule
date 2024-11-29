@@ -69,7 +69,7 @@ fun PopularRow(
                 ShoesCard(
                     onLikeClick = { onLikeClicked(products.first().id) },
                     product = products.first(),
-                    isFavorite = products.first().isFavorite,
+                    isFavorite = true,
                     icon = Icons.Filled.Add,
                     modifier = modifier.weight(1f)
                 )
@@ -79,7 +79,7 @@ fun PopularRow(
                 ShoesCard(
                     onLikeClick = { onLikeClicked(products[1].id) },
                     product = products[1],
-                    isFavorite = products[1].isFavorite,
+                    isFavorite = true,
                     icon = CartIcon,
                     modifier = modifier.weight(1f)
                 )

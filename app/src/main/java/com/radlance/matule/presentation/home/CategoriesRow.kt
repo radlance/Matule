@@ -28,6 +28,7 @@ fun CategoriesRow(
     categories: List<Category>,
     modifier: Modifier = Modifier
 ) {
+    val allCategories = listOf(Category(id = 0, title = stringResource(R.string.All))) + categories
     Column(modifier = modifier.fillMaxWidth()) {
         Text(
             text = stringResource(R.string.categories),
@@ -47,7 +48,7 @@ fun CategoriesRow(
             contentPadding = PaddingValues(horizontal = 20.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
-            items(items = categories, key = { category -> category.id }) { categoryItem ->
+            items(items = allCategories, key = { category -> category.id }) { categoryItem ->
                 CategoryItem(categoryTitle = categoryItem.title, modifier = Modifier.weight(1f))
             }
         }

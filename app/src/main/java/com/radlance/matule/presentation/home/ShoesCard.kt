@@ -128,7 +128,6 @@ private fun ShoesCardPreview() {
                 title = "mock",
                 price = 100.00,
                 imageUrl = "https://",
-                isFavorite = true,
                 categoryId = 1
             )
         )

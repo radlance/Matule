@@ -1,5 +1,6 @@
 package com.radlance.matule.presentation.home
 
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,7 +33,7 @@ import com.radlance.matule.ui.theme.MatuleTheme
 fun HomeScreen(
     onBackPressed: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: CatalogViewModel = hiltViewModel()
 ) {
     var searchFieldValue by rememberSaveable { mutableStateOf("") }
     val scrollState = rememberScrollState()
@@ -69,13 +71,29 @@ fun HomeScreen(
 
         Spacer(Modifier.height(24.dp))
 
-        CategoriesRow(
-            categories = categories
+        val context = LocalContext.current
+
+        categories.Show(
+            onSuccess = {
+                CategoriesRow(
+                    categories = it
+                )
+            },
+            onError = {
+                Toast.makeText(context, "failed load categories", Toast.LENGTH_SHORT).show()
+            }
         )
 
         Spacer(Modifier.height(24.dp))
 
-        PopularRow(products = products, onLikeClicked = viewModel::switchFavoriteStatus)
+        products.Show(
+            onSuccess = {
+                PopularRow(products = it, onLikeClicked = viewModel::switchFavoriteStatus)
+            },
+            onError = {
+                Toast.makeText(context, "failed load products", Toast.LENGTH_SHORT).show()
+            }
+        )
 
         Spacer(Modifier.height(40.dp))
 
