@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,10 +29,11 @@ fun CategoriesRow(
     categories: List<Category>,
     modifier: Modifier = Modifier
 ) {
-    val allCategories = listOf(Category(id = 0, title = stringResource(R.string.All))) + categories
+    val allCategories = listOf(Category(id = 0, title = stringResource(R.string.all))) + categories
     Column(modifier = modifier.fillMaxWidth()) {
         Text(
             text = stringResource(R.string.categories),
+            color = MaterialTheme.colorScheme.onSurface,
             fontSize = 16.sp,
             fontFamily = ralewayFamily,
             fontWeight = FontWeight.SemiBold,

@@ -43,6 +43,7 @@ fun PopularRow(
         ) {
             Text(
                 text = stringResource(R.string.popular),
+                color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 16.sp,
                 fontFamily = ralewayFamily,
                 fontWeight = FontWeight.Medium,
@@ -50,7 +51,7 @@ fun PopularRow(
             )
 
             Text(
-                text = "Все",
+                text = stringResource(R.string.all),
                 color = MaterialTheme.colorScheme.primary,
                 fontSize = 12.sp,
                 fontFamily = poppinsFamily,

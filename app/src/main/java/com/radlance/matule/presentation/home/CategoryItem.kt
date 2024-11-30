@@ -33,6 +33,7 @@ fun CategoryItem(
     ) {
         Text(
             text = categoryTitle,
+            color = MaterialTheme.colorScheme.onSurface,
             fontSize = 12.sp,
             fontFamily = poppinsFamily,
             fontWeight = FontWeight.Normal,

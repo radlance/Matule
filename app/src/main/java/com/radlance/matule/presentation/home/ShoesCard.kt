@@ -24,11 +24,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.radlance.matule.domain.home.Product
 import com.radlance.matule.presentation.component.PriceRow
 import com.radlance.matule.ui.theme.MatuleTheme
@@ -74,7 +77,10 @@ fun ShoesCard(
             }
 
             AsyncImage(
-                model = product.imageUrl,
+                ImageRequest.Builder(context = LocalContext.current)
+                    .data(product.imageUrl)
+                    .crossfade(true)
+                    .build(),
                 contentDescription = "shoe_example",
                 contentScale = ContentScale.FillWidth,
                 modifier = Modifier

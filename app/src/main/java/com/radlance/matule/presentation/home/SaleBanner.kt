@@ -44,6 +44,7 @@ fun SaleBanner(modifier: Modifier = Modifier) {
         ) {
             Text(
                 text = stringResource(R.string.sales),
+                color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 16.sp,
                 fontFamily = ralewayFamily,
                 fontWeight = FontWeight.SemiBold,
@@ -51,7 +52,7 @@ fun SaleBanner(modifier: Modifier = Modifier) {
             )
 
             Text(
-                text = "Все",
+                text = stringResource(R.string.all),
                 color = MaterialTheme.colorScheme.primary,
                 fontSize = 12.sp,
                 fontFamily = poppinsFamily,
@@ -67,9 +68,7 @@ fun SaleBanner(modifier: Modifier = Modifier) {
                 .clip(RoundedCornerShape(16.dp))
                 .background(MaterialTheme.colorScheme.surfaceVariant)
         ) {
-            Image(
-                painter = painterResource(R.drawable.home_highlight_1),
-                contentDescription = "home_highlight_1",
+            Highlight(
                 modifier = Modifier
                     .align(Alignment.BottomStart)
                     .padding(bottom = 18.dp, start = 8.dp)
@@ -149,7 +148,7 @@ fun SaleBanner(modifier: Modifier = Modifier) {
 
 @Composable
 private fun Highlight(modifier: Modifier = Modifier) {
-    Image(
+    Icon(
         painter = painterResource(R.drawable.home_highlight_1),
         contentDescription = "home_highlight_1",
         modifier = modifier

@@ -40,6 +40,7 @@ fun PriceRow(
     ) {
         Text(
             text = "₽$price",
+            color = MaterialTheme.colorScheme.onSurface,
             fontSize = 14.sp,
             fontFamily = poppinsFamily,
             fontWeight = FontWeight.Medium,
