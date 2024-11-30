@@ -1,7 +1,7 @@
 package com.radlance.matule.di
 
 import android.content.Context
-import com.radlance.matule.data.DataStoreManager
+import com.radlance.matule.data.common.DataStoreManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

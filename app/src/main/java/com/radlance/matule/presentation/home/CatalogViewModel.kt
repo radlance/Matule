@@ -1,15 +1,14 @@
 package com.radlance.matule.presentation.home
 
 import androidx.lifecycle.viewModelScope
+import com.radlance.matule.domain.home.CatalogFetchContent
 import com.radlance.matule.domain.home.HomeRepository
-import com.radlance.matule.domain.remote.FetchResult
 import com.radlance.matule.presentation.common.BaseViewModel
 import com.radlance.matule.presentation.common.FetchResultMapper
 import com.radlance.matule.presentation.common.FetchResultUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,9 +17,10 @@ class CatalogViewModel @Inject constructor(
     private val homeRepository: HomeRepository
 ) : BaseViewModel() {
 
-    val catalogContent = homeRepository.fetchCatalogContent().mappedStateInViewModelWith(
-        initialValue = FetchResultUiState.Loading()
-    )
+    private val _catalogContent =
+        MutableStateFlow<FetchResultUiState<CatalogFetchContent>>(FetchResultUiState.Loading())
+    val catalogContent: StateFlow<FetchResultUiState<CatalogFetchContent>>
+        get() = _catalogContent
 
     fun switchFavoriteStatus(productId: Int) {
         viewModelScope.launch {
@@ -28,9 +28,11 @@ class CatalogViewModel @Inject constructor(
         }
     }
 
-    private fun <T> Flow<FetchResult<T>>.mappedStateInViewModelWith(
-        initialValue: FetchResultUiState<T>
-    ): StateFlow<FetchResultUiState<T>> {
-        return map { it.map(FetchResultMapper()) }.stateInViewModel(initialValue)
+    fun fetchContent() {
+        viewModelScope.launch {
+            _catalogContent.value = FetchResultUiState.Loading()
+            val result = homeRepository.fetchCatalogContent()
+            _catalogContent.value = result.map(FetchResultMapper())
+        }
     }
 }

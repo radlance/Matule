@@ -1,4 +1,4 @@
-package com.radlance.matule.data
+package com.radlance.matule.data.common
 
 import android.content.Context
 import androidx.datastore.core.DataStore
