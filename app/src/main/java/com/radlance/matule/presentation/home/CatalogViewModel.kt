@@ -3,6 +3,7 @@ package com.radlance.matule.presentation.home
 import androidx.lifecycle.viewModelScope
 import com.radlance.matule.domain.home.CatalogFetchContent
 import com.radlance.matule.domain.home.HomeRepository
+import com.radlance.matule.domain.remote.FetchResult
 import com.radlance.matule.presentation.common.BaseViewModel
 import com.radlance.matule.presentation.common.FetchResultMapper
 import com.radlance.matule.presentation.common.FetchResultUiState
@@ -22,17 +23,27 @@ class CatalogViewModel @Inject constructor(
     val catalogContent: StateFlow<FetchResultUiState<CatalogFetchContent>>
         get() = _catalogContent
 
-    fun switchFavoriteStatus(productId: Int) {
-        viewModelScope.launch {
-            homeRepository.switchFavoriteStatus(productId)
-        }
+
+    private val _favoriteResult =
+        MutableStateFlow<FetchResultUiState<Unit>>(FetchResultUiState.Initial())
+    val favoriteResult: StateFlow<FetchResultUiState<Unit>>
+        get() = _favoriteResult
+
+    fun addToFavorite(productId: Int) {
+        updateState(_favoriteResult) { homeRepository.addToFavorites(productId) }
     }
 
     fun fetchContent() {
+        updateState(_catalogContent) { homeRepository.fetchCatalogContent() }
+    }
+
+    private inline fun <T> updateState(
+        stateFlow: MutableStateFlow<FetchResultUiState<T>>,
+        crossinline fetch: suspend () -> FetchResult<T>
+    ) {
         viewModelScope.launch {
-            _catalogContent.value = FetchResultUiState.Loading()
-            val result = homeRepository.fetchCatalogContent()
-            _catalogContent.value = result.map(FetchResultMapper())
+            stateFlow.value = FetchResultUiState.Loading()
+            stateFlow.value = fetch().map(FetchResultMapper())
         }
     }
 }

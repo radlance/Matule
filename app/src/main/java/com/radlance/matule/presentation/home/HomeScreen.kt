@@ -1,5 +1,6 @@
 package com.radlance.matule.presentation.home
 
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,6 +45,9 @@ fun HomeScreen(
     val scrollState = rememberScrollState()
 
     val loadContentResult by viewModel.catalogContent.collectAsState()
+    val addToFavoriteResult by viewModel.favoriteResult.collectAsState()
+
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) { viewModel.fetchContent() }
     BackHandler { onBackPressed() }
@@ -74,6 +80,18 @@ fun HomeScreen(
 
         Spacer(Modifier.height(24.dp))
 
+        addToFavoriteResult.Show(
+            onSuccess = {},
+            onLoading = {},
+            onError = {
+                Toast.makeText(
+                    context,
+                    "Произошла при добавлении товара в избранное",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        )
+
         loadContentResult.Show(
             onSuccess = {
                 CategoriesRow(
@@ -81,9 +99,10 @@ fun HomeScreen(
                 )
 
                 Spacer(Modifier.height(24.dp))
-
-                PopularRow(products = it.products, onLikeClicked = viewModel::switchFavoriteStatus)
+                PopularRow(products = it.products, onLikeClicked = viewModel::addToFavorite)
             },
+
+            onLoading = { CircularProgressIndicator() },
             onError = {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
