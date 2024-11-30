@@ -3,6 +3,7 @@ package com.radlance.matule.data.home
 import com.radlance.matule.data.common.Mapper
 import com.radlance.matule.data.database.remote.entity.CategoryEntity
 import com.radlance.matule.data.database.remote.entity.ProductEntity
+import com.radlance.matule.domain.home.CatalogFetchContent
 import com.radlance.matule.domain.home.Category
 import com.radlance.matule.domain.home.HomeRepository
 import com.radlance.matule.domain.home.Product
@@ -16,19 +17,20 @@ import javax.inject.Inject
 
 class HomeRepositoryImpl @Inject constructor(private val supabaseClient: SupabaseClient) :
     HomeRepository, Mapper() {
-    override fun getCategories(): Flow<FetchResult<List<Category>>> {
-        return flow<FetchResult<List<Category>>> {
+    override fun fetchCatalogContent(): Flow<FetchResult<CatalogFetchContent>> {
+        return flow<FetchResult<CatalogFetchContent>> {
             val categories = supabaseClient.from("category").select().decodeList<CategoryEntity>()
-            emit(FetchResult.Success(categories.map { categoryEntity -> categoryEntity.toCategory() }))
-        }.catch {
-            emit(FetchResult.Error(null))
-        }
-    }
+            val products = supabaseClient.from("product").select().decodeList<ProductEntity>()
 
-    override fun getProducts(): Flow<FetchResult<List<Product>>> {
-        return flow<FetchResult<List<Product>>> {
-            val categories = supabaseClient.from("product").select().decodeList<ProductEntity>()
-            emit(FetchResult.Success(categories.map { productEntity -> productEntity.toProduct() }))
+            emit(
+                FetchResult.Success(
+                    CatalogFetchContent(
+                        categories = categories.map { it.toCategory() },
+                        products = products.map { it.toProduct() }
+                    )
+                )
+            )
+
         }.catch {
             emit(FetchResult.Error(null))
         }

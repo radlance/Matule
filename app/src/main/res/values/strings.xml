@@ -40,4 +40,5 @@
     <string name="sales">Акции</string>
     <string name="sale_15_off">15% OFF</string>
     <string name="All">Все</string>
+    <string name="load_error">Ошибка загрузки</string>
 </resources>

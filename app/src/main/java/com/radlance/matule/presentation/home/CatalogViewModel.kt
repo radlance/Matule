@@ -17,13 +17,10 @@ import javax.inject.Inject
 class CatalogViewModel @Inject constructor(
     private val homeRepository: HomeRepository
 ) : BaseViewModel() {
-    val categories = homeRepository.getCategories().mappedStateInViewModelWith(
-            initialValue = FetchResultUiState.Loading()
-        )
 
-    val products = homeRepository.getProducts().mappedStateInViewModelWith(
-            initialValue = FetchResultUiState.Loading()
-        )
+    val catalogContent = homeRepository.fetchCatalogContent().mappedStateInViewModelWith(
+        initialValue = FetchResultUiState.Loading()
+    )
 
     fun switchFavoriteStatus(productId: Int) {
         viewModelScope.launch {

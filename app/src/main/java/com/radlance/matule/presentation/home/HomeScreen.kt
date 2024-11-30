@@ -1,8 +1,8 @@
 package com.radlance.matule.presentation.home
 
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -20,7 +21,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,8 +38,7 @@ fun HomeScreen(
     var searchFieldValue by rememberSaveable { mutableStateOf("") }
     val scrollState = rememberScrollState()
 
-    val categories by viewModel.categories.collectAsState()
-    val products by viewModel.products.collectAsState()
+    val loadContentResult by viewModel.catalogContent.collectAsState()
 
     BackHandler { onBackPressed() }
     Column(
@@ -71,27 +70,21 @@ fun HomeScreen(
 
         Spacer(Modifier.height(24.dp))
 
-        val context = LocalContext.current
-
-        categories.Show(
+        loadContentResult.Show(
             onSuccess = {
                 CategoriesRow(
-                    categories = it
+                    categories = it.categories
                 )
+
+                Spacer(Modifier.height(24.dp))
+
+                PopularRow(products = it.products, onLikeClicked = viewModel::switchFavoriteStatus)
             },
             onError = {
-                Toast.makeText(context, "failed load categories", Toast.LENGTH_SHORT).show()
-            }
-        )
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text(text = stringResource(R.string.load_error))
+                }
 
-        Spacer(Modifier.height(24.dp))
-
-        products.Show(
-            onSuccess = {
-                PopularRow(products = it, onLikeClicked = viewModel::switchFavoriteStatus)
-            },
-            onError = {
-                Toast.makeText(context, "failed load products", Toast.LENGTH_SHORT).show()
             }
         )
 
