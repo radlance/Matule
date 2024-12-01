@@ -32,13 +32,30 @@ class HomeRepositoryImpl @Inject constructor(private val supabaseClient: Supabas
         }
     }
 
-    override suspend fun addToFavorites(productId: Int): FetchResult<Unit> {
+    override suspend fun addToFavorite(productId: Int): FetchResult<Unit> {
+        return handleFavoriteOperation { userId ->
+            supabaseClient.from("favorite").insert(
+                FavoriteEntity(productId = productId, userId = userId)
+            )
+        }
+    }
+
+    override suspend fun removeFromFavorite(productId: Int): FetchResult<Unit> {
+        return handleFavoriteOperation { userId ->
+            supabaseClient.from("favorite").delete {
+                filter {
+                    FavoriteEntity::productId eq productId
+                    FavoriteEntity::userId eq userId
+                }
+            }
+        }
+    }
+
+    private inline fun handleFavoriteOperation(operation: (String) -> Unit): FetchResult<Unit> {
         val user = supabaseClient.auth.currentSessionOrNull()?.user
         return try {
             user?.let {
-                supabaseClient.from("favorite").insert(
-                    FavoriteEntity(productId = productId, userId = it.id)
-                )
+                operation(it.id)
             }
             FetchResult.Success(Unit)
         } catch (e: Exception) {

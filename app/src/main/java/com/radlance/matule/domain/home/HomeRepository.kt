@@ -4,5 +4,6 @@ import com.radlance.matule.domain.remote.FetchResult
 
 interface HomeRepository {
     suspend fun fetchCatalogContent(): FetchResult<CatalogFetchContent>
-    suspend fun addToFavorites(productId: Int): FetchResult<Unit>
+    suspend fun addToFavorite(productId: Int): FetchResult<Unit>
+    suspend fun removeFromFavorite(productId: Int): FetchResult<Unit>
 }

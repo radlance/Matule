@@ -99,7 +99,10 @@ fun HomeScreen(
                 )
 
                 Spacer(Modifier.height(24.dp))
-                PopularRow(products = it.products, onLikeClicked = viewModel::addToFavorite)
+                PopularRow(
+                    products = it.products,
+                    onLikeClicked = viewModel::changeFavoriteStatus
+                )
             },
 
             onLoading = { CircularProgressIndicator() },

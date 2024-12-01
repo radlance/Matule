@@ -44,7 +44,7 @@ import com.radlance.matule.ui.vector.LikeIcon
 @Composable
 fun ShoesCard(
     product: Product,
-    onLikeClick: () -> Unit,
+    onLikeClick: (Boolean) -> Unit,
     isFavorite: Boolean,
     icon: ImageVector,
     modifier: Modifier = Modifier,
@@ -57,7 +57,7 @@ fun ShoesCard(
     ) {
         Column {
             IconButton(
-                onClick = onLikeClick,
+                onClick = { onLikeClick(isFavorite) },
                 modifier = Modifier
                     .padding(start = 9.dp, top = 3.dp)
                     .clip(CircleShape)

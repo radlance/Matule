@@ -29,8 +29,12 @@ class CatalogViewModel @Inject constructor(
     val favoriteResult: StateFlow<FetchResultUiState<Unit>>
         get() = _favoriteResult
 
-    fun addToFavorite(productId: Int) {
-        updateState(_favoriteResult) { homeRepository.addToFavorites(productId) }
+    fun changeFavoriteStatus(productId: Int, isFavorite: Boolean) {
+        if(!isFavorite) {
+            updateState(_favoriteResult) { homeRepository.addToFavorite(productId) }
+        } else {
+            updateState(_favoriteResult) { homeRepository.removeFromFavorite(productId) }
+        }
     }
 
     fun fetchContent() {
