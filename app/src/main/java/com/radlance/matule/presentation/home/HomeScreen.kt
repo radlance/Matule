@@ -1,6 +1,5 @@
 package com.radlance.matule.presentation.home
 
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -47,9 +46,6 @@ fun HomeScreen(
     val loadContentResult by viewModel.catalogContent.collectAsState()
     val addToFavoriteResult by viewModel.favoriteResult.collectAsState()
 
-    val context = LocalContext.current
-
-    LaunchedEffect(Unit) { viewModel.fetchContent() }
     BackHandler { onBackPressed() }
     Column(
         modifier = modifier
@@ -82,13 +78,11 @@ fun HomeScreen(
 
         addToFavoriteResult.Show(
             onSuccess = {},
-            onLoading = {},
-            onError = {
-                Toast.makeText(
-                    context,
-                    "Произошла при добавлении товара в избранное",
-                    Toast.LENGTH_LONG
-                ).show()
+            onLoading = { productId ->
+                ChangeFavoriteStatus(productId, viewModel)
+            },
+            onError = { productId ->
+                ChangeFavoriteStatus(productId, viewModel)
             }
         )
 
@@ -121,6 +115,16 @@ fun HomeScreen(
         Spacer(Modifier.height(40.dp))
 
         SaleBanner(modifier = Modifier.padding(horizontal = 20.dp))
+    }
+}
+
+@Composable
+private fun ChangeFavoriteStatus(
+    productId: Int?,
+    viewModel: CatalogViewModel
+) {
+    LaunchedEffect(Unit) {
+        productId?.let { viewModel.changeStateFavoriteStatus(productId) }
     }
 }
 

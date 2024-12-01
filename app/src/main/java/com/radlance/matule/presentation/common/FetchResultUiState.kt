@@ -1,6 +1,5 @@
 package com.radlance.matule.presentation.common
 
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 
 interface FetchResultUiState<T> {
@@ -8,14 +7,14 @@ interface FetchResultUiState<T> {
     fun Show(
         onSuccess: @Composable (T) -> Unit,
         onError: @Composable (T?) -> Unit,
-        onLoading: @Composable () -> Unit,
+        onLoading: @Composable (T?) -> Unit,
     )
-    data class Success<T>(private val data: T) : FetchResultUiState<T> {
+    data class Success<T>(val data: T) : FetchResultUiState<T> {
         @Composable
         override fun Show(
             onSuccess: @Composable (T) -> Unit,
             onError: @Composable (T?) -> Unit,
-            onLoading: @Composable () -> Unit
+            onLoading: @Composable (T?) -> Unit
         ) {
             onSuccess(data)
         }
@@ -26,20 +25,20 @@ interface FetchResultUiState<T> {
         override fun Show(
             onSuccess: @Composable (T) -> Unit,
             onError: @Composable (T?) -> Unit,
-            onLoading: @Composable () -> Unit
+            onLoading: @Composable (T?) -> Unit
         ) {
             onError(data)
         }
     }
 
-    class Loading<T> : FetchResultUiState<T> {
+    class Loading<T>(private val data: T? = null) : FetchResultUiState<T> {
         @Composable
         override fun Show(
             onSuccess: @Composable (T) -> Unit,
             onError: @Composable (T?) -> Unit,
-            onLoading: @Composable () -> Unit
+            onLoading: @Composable (T?) -> Unit
         ) {
-            onLoading()
+            onLoading(data)
         }
     }
 
@@ -48,7 +47,7 @@ interface FetchResultUiState<T> {
         override fun Show(
             onSuccess: @Composable (T) -> Unit,
             onError: @Composable (T?) -> Unit,
-            onLoading: @Composable () -> Unit
+            onLoading: @Composable (T?) -> Unit
         ) {}
     }
 }

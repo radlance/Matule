@@ -25,12 +25,41 @@ class CatalogViewModel @Inject constructor(
 
 
     private val _favoriteResult =
-        MutableStateFlow<FetchResultUiState<Unit>>(FetchResultUiState.Initial())
-    val favoriteResult: StateFlow<FetchResultUiState<Unit>>
+        MutableStateFlow<FetchResultUiState<Int>>(FetchResultUiState.Initial())
+    val favoriteResult: StateFlow<FetchResultUiState<Int>>
         get() = _favoriteResult
 
+    init {
+        fetchContent()
+    }
+
     fun changeFavoriteStatus(productId: Int) {
-        updateState(_favoriteResult) { homeRepository.changeFavoriteStatus(productId) }
+
+        updateState(stateFlow = _favoriteResult, loadingData = productId) {
+            homeRepository.changeFavoriteStatus(productId)
+        }
+    }
+
+    fun changeStateFavoriteStatus(productId: Int) {
+        val currentState = _catalogContent.value
+        if (currentState is FetchResultUiState.Success) {
+            changeFavoriteByResult(currentState, productId)
+        }
+    }
+
+    private fun changeFavoriteByResult(
+        currentState: FetchResultUiState.Success<CatalogFetchContent>,
+        productId: Int
+    ) {
+        val updatedProducts = currentState.data.products.map { product ->
+            if (product.id == productId) {
+                product.copy(isFavorite = !product.isFavorite)
+            } else {
+                product
+            }
+        }
+        val updatedContent = currentState.data.copy(products = updatedProducts)
+        _catalogContent.value = FetchResultUiState.Success(updatedContent)
     }
 
     fun fetchContent() {
@@ -39,10 +68,11 @@ class CatalogViewModel @Inject constructor(
 
     private inline fun <T> updateState(
         stateFlow: MutableStateFlow<FetchResultUiState<T>>,
+        loadingData: T? = null,
         crossinline fetch: suspend () -> FetchResult<T>
     ) {
         viewModelScope.launch {
-            stateFlow.value = FetchResultUiState.Loading()
+            stateFlow.value = FetchResultUiState.Loading(loadingData)
             stateFlow.value = fetch().map(FetchResultMapper())
         }
     }

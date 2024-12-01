@@ -32,7 +32,7 @@ class HomeRepositoryImpl @Inject constructor(private val supabaseClient: Supabas
         }
     }
 
-    override suspend fun changeFavoriteStatus(productId: Int): FetchResult<Unit> {
+    override suspend fun changeFavoriteStatus(productId: Int): FetchResult<Int> {
         val user = supabaseClient.auth.currentSessionOrNull()?.user
         return try {
             user?.let {
@@ -49,32 +49,9 @@ class HomeRepositoryImpl @Inject constructor(private val supabaseClient: Supabas
                     )
                 }
             }
-            FetchResult.Success(Unit)
+            FetchResult.Success(productId)
         } catch (e: Exception) {
-            FetchResult.Error(null)
-        }
-    }
-
-    override suspend fun removeFromFavorite(productId: Int): FetchResult<Unit> {
-        return handleFavoriteOperation { userId ->
-            supabaseClient.from("favorite").delete {
-                filter {
-                    FavoriteEntity::productId eq productId
-                    FavoriteEntity::userId eq userId
-                }
-            }
-        }
-    }
-
-    private inline fun handleFavoriteOperation(operation: (String) -> Unit): FetchResult<Unit> {
-        val user = supabaseClient.auth.currentSessionOrNull()?.user
-        return try {
-            user?.let {
-                operation(it.id)
-            }
-            FetchResult.Success(Unit)
-        } catch (e: Exception) {
-            FetchResult.Error(null)
+            FetchResult.Error(productId)
         }
     }
 
