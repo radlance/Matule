@@ -18,6 +18,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,11 +48,12 @@ import com.radlance.matule.ui.vector.LikeIcon
 @Composable
 fun ShoesCard(
     product: Product,
-    onLikeClick: (Boolean) -> Unit,
+    onLikeClick: () -> Unit,
     isFavorite: Boolean,
     icon: ImageVector,
     modifier: Modifier = Modifier,
 ) {
+    var localFavoriteState by rememberSaveable { mutableStateOf(isFavorite) }
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -57,14 +62,17 @@ fun ShoesCard(
     ) {
         Column {
             IconButton(
-                onClick = { onLikeClick(isFavorite) },
+                onClick = {
+                    onLikeClick()
+                    localFavoriteState = !localFavoriteState
+                },
                 modifier = Modifier
                     .padding(start = 9.dp, top = 3.dp)
                     .clip(CircleShape)
                     .size(28.dp)
                     .background(MaterialTheme.colorScheme.surfaceTint),
             ) {
-                val fillColor = if (isFavorite) {
+                val fillColor = if (localFavoriteState) {
                     fillRedColor
                 } else {
                     Color.LightGray

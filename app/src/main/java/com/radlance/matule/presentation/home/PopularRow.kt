@@ -30,7 +30,7 @@ import com.radlance.matule.ui.vector.CartIcon
 @Composable
 fun PopularRow(
     products: List<Product>,
-    onLikeClicked: (productId: Int, isFavorite: Boolean) -> Unit,
+    onLikeClicked: (productId: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
@@ -69,7 +69,7 @@ fun PopularRow(
             if(products.isNotEmpty()) {
                 ShoesCard(
                     onLikeClick = {
-                        onLikeClicked(products.first().id, products.first().isFavorite)
+                        onLikeClicked(products.first().id)
                     },
                     product = products.first(),
                     isFavorite = products.first().isFavorite,
@@ -80,7 +80,7 @@ fun PopularRow(
                 Spacer(Modifier.width(19.dp))
 
                 ShoesCard(
-                    onLikeClick = { onLikeClicked(products[1].id, products[1].isFavorite) },
+                    onLikeClick = { onLikeClicked(products[1].id) },
                     product = products[1],
                     isFavorite = products[1].isFavorite,
                     icon = CartIcon,
@@ -95,6 +95,6 @@ fun PopularRow(
 @Composable
 private fun PopularRowPreview() {
     MatuleTheme {
-        PopularRow(emptyList(), onLikeClicked = { _, _ -> })
+        PopularRow(emptyList(), onLikeClicked = { })
     }
 }

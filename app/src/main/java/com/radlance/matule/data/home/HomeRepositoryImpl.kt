@@ -23,7 +23,7 @@ class HomeRepositoryImpl @Inject constructor(private val supabaseClient: Supabas
                 FetchResult.Success(
                     CatalogFetchContent(
                         categories = categories.map { it.toCategory() },
-                        products = products.map { it.toProduct(it.isFavoriteProduct()) }
+                        products = products.map { it.toProduct(isFavoriteProduct(productId = it.id)) }
                     )
                 )
 
@@ -32,11 +32,26 @@ class HomeRepositoryImpl @Inject constructor(private val supabaseClient: Supabas
         }
     }
 
-    override suspend fun addToFavorite(productId: Int): FetchResult<Unit> {
-        return handleFavoriteOperation { userId ->
-            supabaseClient.from("favorite").insert(
-                FavoriteEntity(productId = productId, userId = userId)
-            )
+    override suspend fun changeFavoriteStatus(productId: Int): FetchResult<Unit> {
+        val user = supabaseClient.auth.currentSessionOrNull()?.user
+        return try {
+            user?.let {
+                if (isFavoriteProduct(productId)) {
+                    supabaseClient.from("favorite").delete {
+                        filter {
+                            FavoriteEntity::productId eq productId
+                            FavoriteEntity::userId eq user.id
+                        }
+                    }
+                } else {
+                    supabaseClient.from("favorite").insert(
+                        FavoriteEntity(productId = productId, userId = user.id)
+                    )
+                }
+            }
+            FetchResult.Success(Unit)
+        } catch (e: Exception) {
+            FetchResult.Error(null)
         }
     }
 
@@ -63,13 +78,13 @@ class HomeRepositoryImpl @Inject constructor(private val supabaseClient: Supabas
         }
     }
 
-    private suspend fun ProductEntity.isFavoriteProduct(): Boolean {
+    private suspend fun isFavoriteProduct(productId: Int): Boolean {
         val user = supabaseClient.auth.currentSessionOrNull()?.user
         return try {
             if (user != null) {
                 val favorites = supabaseClient.from("favorite").select {
                     filter {
-                        FavoriteEntity::productId eq this@isFavoriteProduct.id
+                        FavoriteEntity::productId eq productId
                         FavoriteEntity::userId eq user.id
                     }
                 }.decodeList<FavoriteEntity>()
