@@ -11,6 +11,14 @@ data object Base: BottomDestination
 
 @Serializable
 @Keep
+data object Catalog : BottomDestination
+
+@Serializable
+@Keep
+data object Cart : BottomDestination
+
+@Serializable
+@Keep
 data object Favorite: BottomDestination
 
 @Serializable
