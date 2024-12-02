@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,12 +23,13 @@ import com.radlance.matule.domain.home.Product
 import com.radlance.matule.ui.theme.MatuleTheme
 import com.radlance.matule.ui.theme.poppinsFamily
 import com.radlance.matule.ui.theme.ralewayFamily
-import com.radlance.matule.ui.vector.CartIcon
 
 @Composable
 fun PopularRow(
     products: List<Product>,
     onLikeClicked: (productId: Int) -> Unit,
+    onAddCartClicked: (productId: Int) -> Unit,
+    onNavigateToCart: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
@@ -67,25 +66,39 @@ fun PopularRow(
                 .padding(start = 16.dp, end = 20.dp)
         ) {
             if(products.isNotEmpty()) {
-                ShoesCard(
-                    onLikeClick = {
-                        onLikeClicked(products.first().id)
-                    },
-                    product = products.first(),
-                    isFavorite = products.first().isFavorite,
-                    icon = Icons.Filled.Add,
-                    modifier = modifier.weight(1f)
-                )
+                with(products.first()) {
+                    ShoesCard(
+                        onLikeClick = {
+                            onLikeClicked(id)
+                        },
+                        product = this,
+                        onCartClicked = {
+                            if (!inCart) {
+                                onAddCartClicked(id)
+                            } else {
+                                onNavigateToCart()
+                            }
+                        },
+                        modifier = modifier.weight(1f)
+                    )
+                }
 
                 Spacer(Modifier.width(19.dp))
 
-                ShoesCard(
-                    onLikeClick = { onLikeClicked(products[1].id) },
-                    product = products[1],
-                    isFavorite = products[1].isFavorite,
-                    icon = CartIcon,
-                    modifier = modifier.weight(1f)
-                )
+                with(products[1]) {
+                    ShoesCard(
+                        onLikeClick = { onLikeClicked(products[1].id) },
+                        product = products[1],
+                        onCartClicked = {
+                            if (!inCart) {
+                                onAddCartClicked(id)
+                            } else {
+                                onNavigateToCart()
+                            }
+                        },
+                        modifier = modifier.weight(1f)
+                    )
+                }
             }
         }
     }
@@ -95,6 +108,6 @@ fun PopularRow(
 @Composable
 private fun PopularRowPreview() {
     MatuleTheme {
-        PopularRow(emptyList(), onLikeClicked = { })
+        PopularRow(emptyList(), onLikeClicked = {}, onAddCartClicked = {}, onNavigateToCart = {})
     }
 }

@@ -10,13 +10,17 @@ abstract class Mapper {
         return Category(id = id, title = title)
     }
 
-    protected fun ProductEntity.toProduct(isFavorite: Boolean): Product {
+    protected fun ProductEntity.toProduct(
+        isFavorite: Boolean,
+        inCart: Boolean
+    ): Product {
         return Product(
             id = id,
             title = title,
             price = price,
             imageUrl = imageUrl,
             isFavorite = isFavorite,
+            inCart = inCart,
             categoryId = categoryId
         )
     }

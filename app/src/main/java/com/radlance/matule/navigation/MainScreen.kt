@@ -21,7 +21,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
         modifier = modifier
     ) {
         BottomNavGraph(
-            navController = navigationState.navHostController,
+            navigationState = navigationState,
             modifier = Modifier
         )
     }

@@ -29,14 +29,31 @@ class CatalogViewModel @Inject constructor(
     val favoriteResult: StateFlow<FetchResultUiState<Int>>
         get() = _favoriteResult
 
+    private val _inCartResult =
+        MutableStateFlow<FetchResultUiState<Int>>(FetchResultUiState.Initial())
+    val inCartResult: StateFlow<FetchResultUiState<Int>>
+        get() = _inCartResult
+
     init {
         fetchContent()
     }
 
     fun changeFavoriteStatus(productId: Int) {
-
         updateState(stateFlow = _favoriteResult, loadingData = productId) {
             homeRepository.changeFavoriteStatus(productId)
+        }
+    }
+
+    fun addProductToCart(productId: Int) {
+        updateState(stateFlow = _inCartResult, loadingData = productId) {
+            homeRepository.addProductToCart(productId)
+        }
+    }
+
+    fun changeStateInCartStatus(productId: Int) {
+        val currentState = _catalogContent.value
+        if (currentState is FetchResultUiState.Success) {
+            changeInCartByResult(currentState, productId)
         }
     }
 
@@ -45,6 +62,22 @@ class CatalogViewModel @Inject constructor(
         if (currentState is FetchResultUiState.Success) {
             changeFavoriteByResult(currentState, productId)
         }
+    }
+
+    private fun changeInCartByResult(
+        currentState: FetchResultUiState.Success<CatalogFetchContent>,
+        productId: Int
+    ) {
+        val updatedProducts = currentState.data.products.map { product ->
+            if (product.id == productId) {
+                product.copy(inCart = true)
+            } else {
+                product
+            }
+        }
+
+        val updatedContent = currentState.data.copy(products = updatedProducts)
+        _catalogContent.value = FetchResultUiState.Success(updatedContent)
     }
 
     private fun changeFavoriteByResult(

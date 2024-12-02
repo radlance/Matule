@@ -40,3 +40,7 @@ data class Verification(
 @Serializable
 @Keep
 data object Home
+
+@Serializable
+@Keep
+data object Cart

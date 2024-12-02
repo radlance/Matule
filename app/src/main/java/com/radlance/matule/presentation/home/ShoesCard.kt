@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -45,8 +42,7 @@ import com.radlance.matule.ui.vector.LikeIcon
 fun ShoesCard(
     product: Product,
     onLikeClick: () -> Unit,
-    isFavorite: Boolean,
-    icon: ImageVector,
+    onCartClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -64,7 +60,7 @@ fun ShoesCard(
                     .size(28.dp)
                     .background(MaterialTheme.colorScheme.surfaceTint),
             ) {
-                val fillColor = if (isFavorite) {
+                val fillColor = if (product.isFavorite) {
                     fillRedColor
                 } else {
                     Color.LightGray
@@ -113,8 +109,9 @@ fun ShoesCard(
 
             PriceRow(
                 price = product.price.toString(),
-                icon = icon,
-                contentDescription = "Add",
+                onCartClicked = onCartClicked,
+                inCart = product.inCart,
+                contentDescription = "Add"
             )
         }
     }
@@ -127,14 +124,14 @@ private fun ShoesCardPreview() {
     MatuleTheme {
         ShoesCard(
             onLikeClick = {},
-            isFavorite = true,
-            icon = Icons.Filled.Add,
+            onCartClicked = {},
             modifier = Modifier.width(160.dp),
             product = Product(
                 title = "mock",
                 price = 100.00,
                 imageUrl = "https://",
                 isFavorite = true,
+                inCart = true,
                 categoryId = 1
             )
         )

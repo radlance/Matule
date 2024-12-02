@@ -25,7 +25,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,6 +36,7 @@ import com.radlance.matule.ui.theme.MatuleTheme
 @Composable
 fun HomeScreen(
     onBackPressed: () -> Unit,
+    onNavigateToCart: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CatalogViewModel = hiltViewModel()
 ) {
@@ -45,6 +45,7 @@ fun HomeScreen(
 
     val loadContentResult by viewModel.catalogContent.collectAsState()
     val addToFavoriteResult by viewModel.favoriteResult.collectAsState()
+    val addToCartResult by viewModel.inCartResult.collectAsState()
 
     BackHandler { onBackPressed() }
     Column(
@@ -79,10 +80,20 @@ fun HomeScreen(
         addToFavoriteResult.Show(
             onSuccess = {},
             onLoading = { productId ->
-                ChangeFavoriteStatus(productId, viewModel)
+                ChangeProductStatus(productId, viewModel::changeStateFavoriteStatus)
             },
             onError = { productId ->
-                ChangeFavoriteStatus(productId, viewModel)
+                ChangeProductStatus(productId, viewModel::changeStateFavoriteStatus)
+            }
+        )
+
+        addToCartResult.Show(
+            onSuccess = {},
+            onLoading = { productId ->
+                ChangeProductStatus(productId, viewModel::changeStateInCartStatus)
+            },
+            onError = { productId ->
+                ChangeProductStatus(productId, viewModel::changeStateInCartStatus)
             }
         )
 
@@ -95,7 +106,9 @@ fun HomeScreen(
                 Spacer(Modifier.height(24.dp))
                 PopularRow(
                     products = it.products,
-                    onLikeClicked = viewModel::changeFavoriteStatus
+                    onLikeClicked = viewModel::changeFavoriteStatus,
+                    onAddCartClicked = viewModel::addProductToCart,
+                    onNavigateToCart = onNavigateToCart
                 )
             },
 
@@ -119,12 +132,12 @@ fun HomeScreen(
 }
 
 @Composable
-private fun ChangeFavoriteStatus(
+private fun ChangeProductStatus(
     productId: Int?,
-    viewModel: CatalogViewModel
+    onStatusChanged: (Int) -> Unit
 ) {
     LaunchedEffect(Unit) {
-        productId?.let { viewModel.changeStateFavoriteStatus(productId) }
+        productId?.let { onStatusChanged(productId) }
     }
 }
 
@@ -132,7 +145,7 @@ private fun ChangeFavoriteStatus(
 @Composable
 private fun HomeScreenPreview() {
     MatuleTheme(darkTheme = false) {
-        HomeScreen({})
+        HomeScreen({}, {})
     }
 }
 
@@ -140,6 +153,6 @@ private fun HomeScreenPreview() {
 @Composable
 private fun HomeScreenExpandedPreview() {
     MatuleTheme(darkTheme = false) {
-        HomeScreen({})
+        HomeScreen({}, {})
     }
 }

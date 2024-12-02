@@ -8,16 +8,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.radlance.matule.presentation.home.HomeScreen
 
 @Composable
 fun BottomNavGraph(
-    navController: NavHostController,
+    navigationState: BottomNavigationState,
     modifier: Modifier = Modifier
 ) {
+    val navController = navigationState.navHostController
     val context = LocalContext.current
     NavHost(
         navController = navController,
@@ -28,6 +28,9 @@ fun BottomNavGraph(
             HomeScreen(
                 onBackPressed = {
                     (context as Activity).finish()
+                },
+                onNavigateToCart = {
+                    navigationState.navigateTo(Cart)
                 }
             )
         }
@@ -53,6 +56,12 @@ fun BottomNavGraph(
         composable<Profile> {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text(Profile.toString())
+            }
+        }
+
+        composable<Cart> {
+            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text(text = "cart")
             }
         }
     }
