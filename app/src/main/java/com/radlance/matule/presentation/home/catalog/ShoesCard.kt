@@ -61,7 +61,7 @@ fun ShoesCard(
     ) {
         Column {
             IconButton(
-                onClick = { onLikeClick() },
+                onClick = onLikeClick,
                 modifier = Modifier
                     .padding(start = 9.dp, top = 3.dp)
                     .clip(CircleShape)

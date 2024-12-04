@@ -1,5 +1,6 @@
 package com.radlance.matule.presentation.home.details
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,6 +15,8 @@ import com.radlance.matule.ui.theme.MatuleTheme
 
 @Composable
 fun DetailsAdditionalRow(
+    selectedProductId: Int,
+    onItemClick: (Product) -> Unit,
     otherProducts: List<Product>,
     modifier: Modifier = Modifier
 ) {
@@ -24,7 +27,13 @@ fun DetailsAdditionalRow(
         horizontalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         items(items = otherProducts, key = { product -> product.id }) { product ->
-            AdditionalRowItem(product = product, modifier = Modifier.padding(7.dp))
+            AdditionalRowItem(
+                product = product,
+                selected = product.id == selectedProductId,
+                modifier = Modifier.padding(7.dp).clickable {
+                    onItemClick(product)
+                }
+            )
         }
     }
 }
@@ -45,7 +54,9 @@ private fun DetailsAdditionalRowPreview() {
                     inCart = true,
                     categoryId = 1
                 )
-            }
+            },
+            selectedProductId = 1,
+            onItemClick = {}
         )
     }
 }

@@ -3,6 +3,7 @@ package com.radlance.matule.presentation.home
 import androidx.lifecycle.viewModelScope
 import com.radlance.matule.domain.home.CatalogFetchContent
 import com.radlance.matule.domain.home.HomeRepository
+import com.radlance.matule.domain.home.Product
 import com.radlance.matule.domain.remote.FetchResult
 import com.radlance.matule.presentation.common.BaseViewModel
 import com.radlance.matule.presentation.common.FetchResultMapper
@@ -10,6 +11,7 @@ import com.radlance.matule.presentation.common.FetchResultUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,18 +23,22 @@ class HomeViewModel @Inject constructor(
     private val _catalogContent =
         MutableStateFlow<FetchResultUiState<CatalogFetchContent>>(FetchResultUiState.Loading())
     val catalogContent: StateFlow<FetchResultUiState<CatalogFetchContent>>
-        get() = _catalogContent
+        get() = _catalogContent.asStateFlow()
 
 
     private val _favoriteResult =
         MutableStateFlow<FetchResultUiState<Int>>(FetchResultUiState.Initial())
     val favoriteResult: StateFlow<FetchResultUiState<Int>>
-        get() = _favoriteResult
+        get() = _favoriteResult.asStateFlow()
 
     private val _inCartResult =
         MutableStateFlow<FetchResultUiState<Int>>(FetchResultUiState.Initial())
     val inCartResult: StateFlow<FetchResultUiState<Int>>
-        get() = _inCartResult
+        get() = _inCartResult.asStateFlow()
+
+    private val _selectedProduct = MutableStateFlow<Product?>(null)
+    val selectedProduct: StateFlow<Product?>
+        get() = _selectedProduct.asStateFlow()
 
     init {
         fetchContent()
@@ -97,6 +103,10 @@ class HomeViewModel @Inject constructor(
 
     fun fetchContent() {
         updateState(_catalogContent) { homeRepository.fetchCatalogContent() }
+    }
+
+    fun selectProduct(product: Product) {
+        _selectedProduct.value = product
     }
 
     private inline fun <T> updateState(

@@ -14,6 +14,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -74,27 +77,40 @@ fun ProductDetailsScreen(
 
         catalogContent.Show(
             onSuccess = { fetchContent ->
-                val selectedProduct = fetchContent.products.first { it.id == selectedProductId }
-                ProductDetails(selectedProduct = selectedProduct)
-                Spacer(Modifier.height(10.dp))
 
-                DetailsAdditionalRow(otherProducts = fetchContent.products)
-                Spacer(Modifier.height(33.dp))
+                var currentProductId by rememberSaveable { mutableIntStateOf(selectedProductId) }
+                val selectedProduct by viewModel.selectedProduct.collectAsState()
 
-                ProductDetailsDescription(
-                    selectedProduct = selectedProduct,
-                    modifier = Modifier.align(Alignment.End)
-                )
-                Spacer(Modifier.weight(1f))
+                viewModel.selectProduct(fetchContent.products.first { it.id == currentProductId })
+
+                selectedProduct?.let { product ->
+                    ProductDetails(selectedProduct = product)
+                    Spacer(Modifier.height(10.dp))
+
+                    DetailsAdditionalRow(
+                        otherProducts = fetchContent.products,
+                        selectedProductId = product.id,
+                        onItemClick = { currentProductId = it.id }
+                    )
+                    Spacer(Modifier.height(33.dp))
+
+                    ProductDetailsDescription(
+                        selectedProduct = product,
+                        modifier = Modifier.align(Alignment.End)
+                    )
+                    Spacer(Modifier.weight(1f))
 
 
-                ProductDetailsBottomContent(
-                    isFavorite = selectedProduct.isFavorite,
-                    inCart = selectedProduct.inCart,
-                    onLikeClick = { viewModel.changeFavoriteStatus(selectedProductId) },
-                    onCartClick = { viewModel.addProductToCart(selectedProductId) },
-                    onNavigateToCart = onNavigateToCart
-                )
+                    ProductDetailsBottomContent(
+                        isFavorite = product.isFavorite,
+                        inCart = product.inCart,
+                        onLikeClick = {
+                            viewModel.changeFavoriteStatus(product.id)
+                        },
+                        onCartClick = { viewModel.addProductToCart(product.id) },
+                        onNavigateToCart = onNavigateToCart
+                    )
+                }
             },
             onError = {},
             onLoading = {
