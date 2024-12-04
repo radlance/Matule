@@ -19,6 +19,12 @@ data object Cart : BottomDestination
 
 @Serializable
 @Keep
+data class Details(
+    val productId: Int
+) : BottomDestination
+
+@Serializable
+@Keep
 data object Favorite: BottomDestination
 
 @Serializable

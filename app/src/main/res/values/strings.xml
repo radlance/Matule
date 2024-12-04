@@ -42,4 +42,6 @@
     <string name="all">Все</string>
     <string name="load_error">Ошибка загрузки</string>
     <string name="retry">Повторить</string>
+    <string name="sneaker_shop">Sneaker Shop</string>
+    <string name="in_cart">В Корзину</string>
 </resources>

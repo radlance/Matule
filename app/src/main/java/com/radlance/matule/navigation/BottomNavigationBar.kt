@@ -126,7 +126,7 @@ fun BottomNavigationBar(
                             getNavigationItemColor(
                                 Favorite,
                                 navBackStackEntry
-                            )
+                            ),
                         ),
                         contentDescription = "FavoriteNavigationIcon"
                     )

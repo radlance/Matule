@@ -27,8 +27,9 @@ import com.radlance.matule.ui.theme.ralewayFamily
 @Composable
 fun PopularRow(
     products: List<Product>,
-    onLikeClicked: (productId: Int) -> Unit,
-    onAddCartClicked: (productId: Int) -> Unit,
+    onLikeClick: (productId: Int) -> Unit,
+    onAddCartClick: (productId: Int) -> Unit,
+    onCardClick: (Int) -> Unit,
     onNavigateToCart: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -69,16 +70,17 @@ fun PopularRow(
                 with(products.first()) {
                     ShoesCard(
                         onLikeClick = {
-                            onLikeClicked(id)
+                            onLikeClick(id)
                         },
                         product = this,
-                        onCartClicked = {
+                        onCartClick = {
                             if (!inCart) {
-                                onAddCartClicked(id)
+                                onAddCartClick(id)
                             } else {
                                 onNavigateToCart()
                             }
                         },
+                        onCardClick = onCardClick,
                         modifier = modifier.weight(1f)
                     )
                 }
@@ -87,15 +89,16 @@ fun PopularRow(
 
                 with(products[1]) {
                     ShoesCard(
-                        onLikeClick = { onLikeClicked(products[1].id) },
+                        onLikeClick = { onLikeClick(products[1].id) },
                         product = products[1],
-                        onCartClicked = {
+                        onCartClick = {
                             if (!inCart) {
-                                onAddCartClicked(id)
+                                onAddCartClick(id)
                             } else {
                                 onNavigateToCart()
                             }
                         },
+                        onCardClick = onCardClick,
                         modifier = modifier.weight(1f)
                     )
                 }
@@ -108,6 +111,12 @@ fun PopularRow(
 @Composable
 private fun PopularRowPreview() {
     MatuleTheme {
-        PopularRow(emptyList(), onLikeClicked = {}, onAddCartClicked = {}, onNavigateToCart = {})
+        PopularRow(
+            emptyList(),
+            onLikeClick = {},
+            onAddCartClick = {},
+            onNavigateToCart = {},
+            onCardClick = {}
+        )
     }
 }

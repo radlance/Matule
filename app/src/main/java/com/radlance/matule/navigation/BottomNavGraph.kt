@@ -8,10 +8,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.toRoute
+import com.radlance.matule.presentation.home.CatalogViewModel
 import com.radlance.matule.presentation.home.HomeScreen
+import com.radlance.matule.presentation.home.ProductDetailsScreen
 
 @Composable
 fun BottomNavGraph(
@@ -20,6 +24,8 @@ fun BottomNavGraph(
 ) {
     val navController = navigationState.navHostController
     val context = LocalContext.current
+
+    val sharedViewModel = hiltViewModel<CatalogViewModel>()
     NavHost(
         navController = navController,
         startDestination = Base,
@@ -33,7 +39,12 @@ fun BottomNavGraph(
                     },
                     onNavigateToCart = {
                         navController.navigate(Cart)
-                    }
+                    },
+
+                    onNavigateToDetails = {
+                        navController.navigate(Details(it))
+                    },
+                    viewModel = sharedViewModel
                 )
             }
 
@@ -41,6 +52,16 @@ fun BottomNavGraph(
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text(text = "cart")
                 }
+            }
+
+            composable<Details> {
+                val args = it.toRoute<Details>()
+
+                ProductDetailsScreen(
+                    selectedProductId = args.productId,
+                    onBackPressed = navController::navigateUp,
+                    viewModel = sharedViewModel
+                )
             }
         }
 

@@ -6,13 +6,18 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-fun LikeIcon(fillColor: Color): ImageVector {
+fun LikeIcon(
+    fillColor: Color,
+    width: Dp = 13.2.dp,
+    height: Dp = 11.867.dp
+): ImageVector {
     return ImageVector.Builder(
         name = "Path",
-        defaultWidth = 13.2.dp,
-        defaultHeight = 11.867.dp,
+        defaultWidth = width,
+        defaultHeight = height,
         viewportWidth = 13.2f,
         viewportHeight = 11.867f
     ).apply {

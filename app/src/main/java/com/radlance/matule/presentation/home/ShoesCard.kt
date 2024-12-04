@@ -2,6 +2,8 @@ package com.radlance.matule.presentation.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +18,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,14 +45,19 @@ import com.radlance.matule.ui.vector.LikeIcon
 fun ShoesCard(
     product: Product,
     onLikeClick: () -> Unit,
-    onCartClicked: () -> Unit,
+    onCartClick: () -> Unit,
+    onCardClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
     Box(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant)
+            .clickable(interactionSource = interactionSource, indication = null) {
+                onCardClick(product.id)
+            }
     ) {
         Column {
             IconButton(
@@ -109,7 +117,7 @@ fun ShoesCard(
 
             PriceRow(
                 price = product.price.toString(),
-                onCartClicked = onCartClicked,
+                onCartClicked = onCartClick,
                 inCart = product.inCart,
                 contentDescription = "Add"
             )
@@ -124,16 +132,18 @@ private fun ShoesCardPreview() {
     MatuleTheme {
         ShoesCard(
             onLikeClick = {},
-            onCartClicked = {},
+            onCartClick = {},
             modifier = Modifier.width(160.dp),
             product = Product(
                 title = "mock",
                 price = 100.00,
+                description = "",
                 imageUrl = "https://",
                 isFavorite = true,
                 inCart = true,
                 categoryId = 1
-            )
+            ),
+            onCardClick = {}
         )
     }
 }

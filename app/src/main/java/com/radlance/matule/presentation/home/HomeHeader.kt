@@ -25,73 +25,30 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.radlance.matule.R
-import com.radlance.matule.ui.vector.BagIcon
-import com.radlance.matule.ui.vector.Highlight05
-import com.radlance.matule.ui.vector.MenuIcon
 import com.radlance.matule.ui.theme.MatuleTheme
 import com.radlance.matule.ui.theme.fillRedColor
 import com.radlance.matule.ui.theme.ralewayFamily
+import com.radlance.matule.ui.vector.BagIcon
+import com.radlance.matule.ui.vector.Highlight05
+import com.radlance.matule.ui.vector.MenuIcon
 
 @Composable
 fun HomeHeader(
-    onMenuIconClicked: () -> Unit,
-    onCartIconClicked: () -> Unit,
-    hasNotification: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    startContent: @Composable () -> Unit,
+    middleContent: @Composable () -> Unit,
+    endContent: @Composable () -> Unit
 ) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        IconButton(onClick = onMenuIconClicked) {
-            Image(
-                imageVector = MenuIcon(MaterialTheme.colorScheme.onSurface),
-                contentDescription = "home_highlight_1"
-            )
-        }
-
+        startContent()
         Box {
-            Icon(
-                imageVector = Highlight05,
-                contentDescription = "Highlight05",
-                tint = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.offset(x = (-12).dp, y = (-7).dp)
-            )
-            Text(
-                text = stringResource(R.string.main_screen),
-                fontSize = 32.sp,
-                fontFamily = ralewayFamily,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface,
-                lineHeight = 38.sp
-            )
+            middleContent()
         }
-
-        BadgedBox(
-            badge = {
-                if (hasNotification) {
-                    Badge(
-                        modifier = Modifier.offset(x = (-2).dp, y = 5.dp),
-                        contentColor = fillRedColor,
-                        containerColor = fillRedColor
-                    )
-                }
-            }
-        ) {
-            IconButton(
-                onClick = onCartIconClicked, modifier = Modifier
-                    .clip(CircleShape)
-                    .size(44.dp)
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
-            ) {
-                Icon(
-                    imageVector = BagIcon(MaterialTheme.colorScheme.background),
-                    tint = MaterialTheme.colorScheme.onSurface,
-                    contentDescription = "home_highlight_1"
-                )
-            }
-        }
+        endContent()
     }
 }
 
@@ -99,6 +56,56 @@ fun HomeHeader(
 @Composable
 private fun HomeHeaderPreview() {
     MatuleTheme {
-        HomeHeader({}, {}, hasNotification = true, modifier = Modifier.fillMaxWidth())
+        HomeHeader(
+            modifier = Modifier.fillMaxWidth(),
+            startContent = {
+                IconButton(onClick = {}) {
+                    Image(
+                        imageVector = MenuIcon(MaterialTheme.colorScheme.onSurface),
+                        contentDescription = "home_highlight_1"
+                    )
+                }
+            },
+            middleContent = {
+                Icon(
+                    imageVector = Highlight05,
+                    contentDescription = "Highlight05",
+                    tint = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.offset(x = (-12).dp, y = (-7).dp)
+                )
+                Text(
+                    text = stringResource(R.string.main_screen),
+                    fontSize = 32.sp,
+                    fontFamily = ralewayFamily,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    lineHeight = 38.sp
+                )
+            },
+            endContent = {
+                BadgedBox(
+                    badge = {
+                        Badge(
+                            modifier = Modifier.offset(x = (-2).dp, y = 5.dp),
+                            contentColor = fillRedColor,
+                            containerColor = fillRedColor
+                        )
+                    }
+                ) {
+                    IconButton(
+                        onClick = {}, modifier = Modifier
+                            .clip(CircleShape)
+                            .size(44.dp)
+                            .background(MaterialTheme.colorScheme.surfaceVariant)
+                    ) {
+                        Icon(
+                            imageVector = BagIcon(MaterialTheme.colorScheme.background),
+                            tint = MaterialTheme.colorScheme.onSurface,
+                            contentDescription = "home_highlight_1"
+                        )
+                    }
+                }
+            }
+        )
     }
 }

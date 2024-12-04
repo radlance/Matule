@@ -18,6 +18,7 @@ abstract class Mapper {
             id = id,
             title = title,
             price = price,
+            description = description,
             imageUrl = imageUrl,
             isFavorite = isFavorite,
             inCart = inCart,

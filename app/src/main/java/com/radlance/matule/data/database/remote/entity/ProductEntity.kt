@@ -7,7 +7,8 @@ import kotlinx.serialization.Serializable
 data class ProductEntity(
     val id: Int,
     val title: String,
+    val description: String,
     val price: Double,
     @SerialName("image_url") val imageUrl: String,
-    @SerialName("category_id") val categoryId: Int
+    @SerialName("category_id") val categoryId: Int,
 )
