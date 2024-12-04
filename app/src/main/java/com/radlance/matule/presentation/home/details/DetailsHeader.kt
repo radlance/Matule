@@ -35,7 +35,10 @@ fun DetailsHeader(
             .fillMaxWidth(),
 
         startContent = {
-            BackButton(onClicked = onBackPressed)
+            BackButton(
+                onClicked = onBackPressed,
+                backgroundColor = MaterialTheme.colorScheme.surfaceVariant
+            )
         },
         middleContent = {
             Text(

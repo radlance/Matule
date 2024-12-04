@@ -22,18 +22,42 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.radlance.matule.R
 import com.radlance.matule.presentation.home.HomeViewModel
+import com.radlance.matule.presentation.home.common.ChangeProductStatus
 import com.radlance.matule.ui.theme.MatuleTheme
 
 @Composable
 fun ProductDetailsScreen(
     selectedProductId: Int,
     onBackPressed: () -> Unit,
+    onNavigateToCart: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val scrollState = rememberScrollState()
     val catalogContent by viewModel.catalogContent.collectAsState()
 
+    val addToFavoriteResult by viewModel.favoriteResult.collectAsState()
+    val addToCartResult by viewModel.inCartResult.collectAsState()
+
+    addToFavoriteResult.Show(
+        onSuccess = {},
+        onLoading = { productId ->
+            ChangeProductStatus(productId, viewModel::changeStateFavoriteStatus)
+        },
+        onError = { productId ->
+            ChangeProductStatus(productId, viewModel::changeStateFavoriteStatus)
+        }
+    )
+
+    addToCartResult.Show(
+        onSuccess = {},
+        onLoading = { productId ->
+            ChangeProductStatus(productId, viewModel::changeStateInCartStatus)
+        },
+        onError = { productId ->
+            ChangeProductStatus(productId, viewModel::changeStateInCartStatus)
+        }
+    )
 
     Column(
         modifier = modifier
@@ -63,9 +87,13 @@ fun ProductDetailsScreen(
                 )
                 Spacer(Modifier.weight(1f))
 
+
                 ProductDetailsBottomContent(
                     isFavorite = selectedProduct.isFavorite,
-                    inCart = selectedProduct.inCart
+                    inCart = selectedProduct.inCart,
+                    onLikeClick = { viewModel.changeFavoriteStatus(selectedProductId) },
+                    onCartClick = { viewModel.addProductToCart(selectedProductId) },
+                    onNavigateToCart = onNavigateToCart
                 )
             },
             onError = {},
@@ -83,6 +111,6 @@ fun ProductDetailsScreen(
 @Composable
 private fun ProductDetailsScreenPreview() {
     MatuleTheme {
-        ProductDetailsScreen(selectedProductId = 1, onBackPressed = {})
+        ProductDetailsScreen(selectedProductId = 1, onBackPressed = {}, onNavigateToCart = {})
     }
 }

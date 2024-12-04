@@ -38,7 +38,7 @@ fun BottomNavGraph(
                         (context as Activity).finish()
                     },
                     onNavigateToCart = {
-                        navController.navigate(Cart)
+                        navigationState.navigateTo(Bag)
                     },
 
                     onNavigateToDetails = {
@@ -48,18 +48,15 @@ fun BottomNavGraph(
                 )
             }
 
-            composable<Cart> {
-                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(text = "cart")
-                }
-            }
-
             composable<Details> {
                 val args = it.toRoute<Details>()
 
                 ProductDetailsScreen(
                     selectedProductId = args.productId,
                     onBackPressed = navController::navigateUp,
+                    onNavigateToCart = {
+                        navigationState.navigateTo(Bag)
+                    },
                     viewModel = sharedViewModel
                 )
             }

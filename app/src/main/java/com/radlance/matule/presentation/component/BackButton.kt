@@ -11,12 +11,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun BackButton(
     onClicked: () -> Unit,
+    backgroundColor: Color = MaterialTheme.colorScheme.surfaceTint,
     modifier: Modifier = Modifier
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -29,7 +31,7 @@ fun BackButton(
         modifier = modifier
             .clip(CircleShape)
             .size(44.dp)
-            .background(MaterialTheme.colorScheme.surfaceTint),
+            .background(backgroundColor),
     ) {
         Icon(
             imageVector = Icons.Default.ArrowBackIosNew,

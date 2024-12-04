@@ -15,7 +15,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.radlance.matule.R
 import com.radlance.matule.presentation.home.HomeViewModel
+import com.radlance.matule.presentation.home.common.ChangeProductStatus
 import com.radlance.matule.ui.theme.MatuleTheme
 
 @Composable
@@ -123,16 +123,6 @@ fun HomeScreen(
         Spacer(Modifier.height(40.dp))
 
         SaleBanner(modifier = Modifier.padding(horizontal = 20.dp))
-    }
-}
-
-@Composable
-private fun ChangeProductStatus(
-    productId: Int?,
-    onStatusChanged: (Int) -> Unit
-) {
-    LaunchedEffect(Unit) {
-        productId?.let { onStatusChanged(productId) }
     }
 }
 

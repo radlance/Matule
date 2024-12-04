@@ -29,6 +29,9 @@ import com.radlance.matule.ui.vector.LikeIcon
 fun ProductDetailsBottomContent(
     isFavorite: Boolean,
     inCart: Boolean,
+    onLikeClick: () -> Unit,
+    onCartClick: () -> Unit,
+    onNavigateToCart: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -38,12 +41,12 @@ fun ProductDetailsBottomContent(
             .padding(bottom = 140.dp)
     ) {
         IconButton(
-            onClick = { },
+            onClick = onLikeClick,
             modifier = Modifier
                 .padding(start = 9.dp, top = 3.dp)
                 .clip(CircleShape)
                 .size(52.dp)
-                .background(MaterialTheme.colorScheme.surfaceTint),
+                .background(MaterialTheme.colorScheme.surfaceVariant),
         ) {
             val fillColor = if (isFavorite) {
                 fillRedColor
@@ -74,10 +77,15 @@ fun ProductDetailsBottomContent(
         } else {
             BagIcon(MaterialTheme.colorScheme.onSurface)
         }
+        val action: () -> Unit = if(inCart) {
+            onNavigateToCart
+        } else {
+            onCartClick
+        }
 
         NavigationButton(
             stringResId = buttonText,
-            onClick = {},
+            onClick = action,
             icon = icon,
             modifier = Modifier
                 .weight(1f)
