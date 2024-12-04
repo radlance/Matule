@@ -44,4 +44,7 @@
     <string name="retry">Повторить</string>
     <string name="sneaker_shop">Sneaker Shop</string>
     <string name="in_cart">В Корзину</string>
+    <string name="move_to_cart">Перейти в корзину</string>
+    <string name="hide">Скрыть</string>
+    <string name="more">Подробнее</string>
 </resources>

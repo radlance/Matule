@@ -13,9 +13,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.toRoute
-import com.radlance.matule.presentation.home.CatalogViewModel
-import com.radlance.matule.presentation.home.HomeScreen
-import com.radlance.matule.presentation.home.ProductDetailsScreen
+import com.radlance.matule.presentation.home.HomeViewModel
+import com.radlance.matule.presentation.home.catalog.HomeScreen
+import com.radlance.matule.presentation.home.details.ProductDetailsScreen
 
 @Composable
 fun BottomNavGraph(
@@ -25,7 +25,7 @@ fun BottomNavGraph(
     val navController = navigationState.navHostController
     val context = LocalContext.current
 
-    val sharedViewModel = hiltViewModel<CatalogViewModel>()
+    val sharedViewModel = hiltViewModel<HomeViewModel>()
     NavHost(
         navController = navController,
         startDestination = Base,

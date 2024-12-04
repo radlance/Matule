@@ -1,4 +1,4 @@
-package com.radlance.matule.presentation.home
+package com.radlance.matule.presentation.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -33,7 +33,7 @@ import com.radlance.matule.ui.vector.Highlight05
 import com.radlance.matule.ui.vector.MenuIcon
 
 @Composable
-fun HomeHeader(
+fun CommonHeader(
     modifier: Modifier = Modifier,
     startContent: @Composable () -> Unit,
     middleContent: @Composable () -> Unit,
@@ -54,9 +54,9 @@ fun HomeHeader(
 
 @Preview(showBackground = true)
 @Composable
-private fun HomeHeaderPreview() {
+private fun CommonHeaderPreview() {
     MatuleTheme {
-        HomeHeader(
+        CommonHeader(
             modifier = Modifier.fillMaxWidth(),
             startContent = {
                 IconButton(onClick = {}) {
