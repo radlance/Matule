@@ -47,4 +47,6 @@
     <string name="move_to_cart">Перейти в корзину</string>
     <string name="hide">Скрыть</string>
     <string name="more">Подробнее</string>
+    <string name="no_favorite_products">Нет избранных товаров</string>
+    <string name="favorites">Избранное</string>
 </resources>

@@ -37,12 +37,13 @@ fun CommonHeader(
     modifier: Modifier = Modifier,
     startContent: @Composable () -> Unit,
     middleContent: @Composable () -> Unit,
-    endContent: @Composable () -> Unit
+    endContent: @Composable () -> Unit,
+    horizontalArrangement: Arrangement.Horizontal = Arrangement.SpaceBetween
 ) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = horizontalArrangement
     ) {
         startContent()
         Box {

@@ -13,8 +13,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.toRoute
+import com.radlance.matule.presentation.favorite.FavoriteScreen
 import com.radlance.matule.presentation.home.HomeViewModel
-import com.radlance.matule.presentation.home.catalog.HomeScreen
+import com.radlance.matule.presentation.home.HomeScreen
 import com.radlance.matule.presentation.home.details.ProductDetailsScreen
 
 @Composable
@@ -63,9 +64,16 @@ fun BottomNavGraph(
         }
 
         composable<Favorite> {
-            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(Favorite.toString())
-            }
+            FavoriteScreen(
+                onNavigateToCart = {
+                    navigationState.navigateTo(Bag)
+                },
+
+                onNavigateToDetails = {
+                    navController.navigate(Details(it))
+                },
+                viewModel = sharedViewModel
+            )
         }
 
         composable<Bag> {
