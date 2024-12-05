@@ -49,4 +49,5 @@
     <string name="more">Подробнее</string>
     <string name="no_favorite_products">Нет избранных товаров</string>
     <string name="favorites">Избранное</string>
+    <string name="cart">Корзина</string>
 </resources>

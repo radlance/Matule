@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.toRoute
+import com.radlance.matule.presentation.cart.CartScreen
 import com.radlance.matule.presentation.favorite.FavoriteScreen
 import com.radlance.matule.presentation.home.HomeViewModel
 import com.radlance.matule.presentation.home.HomeScreen
@@ -39,7 +40,7 @@ fun BottomNavGraph(
                         (context as Activity).finish()
                     },
                     onNavigateToCart = {
-                        navigationState.navigateTo(Bag)
+                        navigationState.navigateTo(Cart)
                     },
 
                     onNavigateToDetails = {
@@ -56,7 +57,7 @@ fun BottomNavGraph(
                     selectedProductId = args.productId,
                     onBackPressed = navController::navigateUp,
                     onNavigateToCart = {
-                        navigationState.navigateTo(Bag)
+                        navigationState.navigateTo(Cart)
                     },
                     viewModel = sharedViewModel
                 )
@@ -66,7 +67,7 @@ fun BottomNavGraph(
         composable<Favorite> {
             FavoriteScreen(
                 onNavigateToCart = {
-                    navigationState.navigateTo(Bag)
+                    navigationState.navigateTo(Cart)
                 },
 
                 onNavigateToDetails = {
@@ -76,10 +77,8 @@ fun BottomNavGraph(
             )
         }
 
-        composable<Bag> {
-            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(Bag.toString())
-            }
+        composable<Cart> {
+            CartScreen(viewModel = sharedViewModel)
         }
 
         composable<Notification> {

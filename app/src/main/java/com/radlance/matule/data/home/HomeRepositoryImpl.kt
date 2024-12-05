@@ -1,6 +1,5 @@
 package com.radlance.matule.data.home
 
-import android.util.Log
 import com.radlance.matule.data.common.Mapper
 import com.radlance.matule.data.database.remote.entity.CartEntity
 import com.radlance.matule.data.database.remote.entity.CategoryEntity
@@ -19,7 +18,6 @@ class HomeRepositoryImpl @Inject constructor(private val supabaseClient: Supabas
     override suspend fun fetchCatalogContent(): FetchResult<CatalogFetchContent> {
         return try {
             val categories = supabaseClient.from("category").select().decodeList<CategoryEntity>()
-
             val products = supabaseClient.from("product").select().decodeList<ProductEntity>()
 
                 FetchResult.Success(
@@ -58,7 +56,6 @@ class HomeRepositoryImpl @Inject constructor(private val supabaseClient: Supabas
             }
             FetchResult.Success(productId)
         } catch (e: Exception) {
-            Log.e("HomeRepositoryImpl", e.message!!)
             FetchResult.Error(productId)
         }
     }

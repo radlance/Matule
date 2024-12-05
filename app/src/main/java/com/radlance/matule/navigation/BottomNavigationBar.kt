@@ -61,8 +61,8 @@ fun BottomNavigationBar(
 
         IconButton(
             onClick = {
-                if (!isSelectedIcon(Bag, navBackStackEntry)) {
-                    navigationState.navigateTo(Bag)
+                if (!isSelectedIcon(Cart, navBackStackEntry)) {
+                    navigationState.navigateTo(Cart)
                 }
             },
             modifier = Modifier

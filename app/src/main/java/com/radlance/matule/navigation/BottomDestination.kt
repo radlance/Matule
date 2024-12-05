@@ -25,7 +25,7 @@ data object Favorite: BottomDestination
 
 @Serializable
 @Keep
-data object Bag: BottomDestination
+data object Cart: BottomDestination
 
 @Serializable
 @Keep
