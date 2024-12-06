@@ -29,7 +29,6 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.radlance.matule.domain.home.Product
 import com.radlance.matule.ui.theme.MatuleTheme
-import com.radlance.matule.ui.theme.componentGrayColor
 import com.radlance.matule.ui.theme.poppinsFamily
 import com.radlance.matule.ui.theme.ralewayFamily
 
@@ -58,7 +57,7 @@ fun CartItem(
                     .fillMaxHeight()
                     .padding(top = 9.dp, bottom = 10.dp)
                     .clip(RoundedCornerShape(16.dp))
-                    .background(componentGrayColor)
+                    .background(MaterialTheme.colorScheme.surfaceTint)
             ) {
                 AsyncImage(
                     ImageRequest.Builder(context = LocalContext.current)

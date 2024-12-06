@@ -32,6 +32,7 @@ fun CartScreen(
 ) {
     val catalogContent by viewModel.catalogContent.collectAsState()
 
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -44,7 +45,7 @@ fun CartScreen(
 
         catalogContent.Show(
             onSuccess = { fetchContent ->
-                CartProductColumn(fetchContent.products)
+                CartProductColumn(fetchContent.products, modifier = Modifier.weight(4f))
             },
             onError = {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -62,6 +63,18 @@ fun CartScreen(
                 }
             }
         )
+
+
+
+        Box(
+            modifier = Modifier.weight(3f)
+        ) {
+            CartResult(
+                productsPrice = 753.95,
+                deliveryPrice = 60.20,
+                onPlaceOrderClick = {}
+            )
+        }
     }
 }
 

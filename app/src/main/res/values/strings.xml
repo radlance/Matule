@@ -50,4 +50,8 @@
     <string name="no_favorite_products">Нет избранных товаров</string>
     <string name="favorites">Избранное</string>
     <string name="cart">Корзина</string>
+    <string name="sum">Сумма</string>
+    <string name="delivery">Доставка</string>
+    <string name="result">Итого</string>
+    <string name="place_order">Оформить Заказ</string>
 </resources>

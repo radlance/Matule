@@ -38,7 +38,8 @@ fun SaleBanner(modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         Row(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+            ,
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -64,6 +65,7 @@ fun SaleBanner(modifier: Modifier = Modifier) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(bottom = 144.dp)
                 .height(95.dp)
                 .clip(RoundedCornerShape(16.dp))
                 .background(MaterialTheme.colorScheme.surfaceVariant)

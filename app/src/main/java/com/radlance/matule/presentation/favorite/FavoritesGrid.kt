@@ -26,7 +26,7 @@ fun FavoritesGrid(
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(start = 21.dp, end = 21.dp, top = 20.dp),
+        contentPadding = PaddingValues(start = 21.dp, end = 21.dp, top = 20.dp, bottom = 140.dp),
         horizontalArrangement = Arrangement.spacedBy(13.dp),
         verticalArrangement = Arrangement.spacedBy(13.dp)
     ) {
