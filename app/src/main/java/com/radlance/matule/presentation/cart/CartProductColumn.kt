@@ -19,6 +19,7 @@ import com.radlance.matule.ui.theme.poppinsFamily
 @Composable
 fun CartProductColumn(
     products: List<Product>,
+    onChangeQuantityClick: (productId: Int, quantity: Int, increment: Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -38,7 +39,23 @@ fun CartProductColumn(
         }
 
         items(items = products, key = { product -> product.id }) { product ->
-            CartItem(product = product)
+            CartItem(
+                product = product,
+                onIncrementClick = {
+                    onChangeQuantityClick(
+                        product.id,
+                        product.quantityInCart.inc(),
+                        true
+                    )
+                },
+                onDecrementClick = {
+                    onChangeQuantityClick(
+                        product.id,
+                        product.quantityInCart.dec(),
+                        false
+                    )
+                }
+            )
         }
     }
 }
@@ -56,7 +73,8 @@ private fun getProductCountText(count: Int): String {
 private fun CartProductColumnPreview() {
     MatuleTheme {
         CartProductColumn(
-            List(20) {
+            onChangeQuantityClick = { _, _, _ -> },
+            products = List(20) {
                 Product(
                     id = it,
                     title = "mock$it",

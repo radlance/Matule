@@ -54,4 +54,5 @@
     <string name="delivery">Доставка</string>
     <string name="result">Итого</string>
     <string name="place_order">Оформить Заказ</string>
+    <string name="cart_is_empty">Корзина пуста</string>
 </resources>

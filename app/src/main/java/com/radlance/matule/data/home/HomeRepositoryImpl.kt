@@ -76,6 +76,27 @@ class HomeRepositoryImpl @Inject constructor(private val supabaseClient: Supabas
         }
     }
 
+    override suspend fun updateQuantity(productId: Int, quantity: Int): FetchResult<Int> {
+        val user = supabaseClient.auth.currentSessionOrNull()?.user
+        return try {
+            user?.let {
+                supabaseClient.from("cart").update(
+                    {
+                        CartEntity::quantity setTo quantity
+                    }
+                ) {
+                    filter {
+                        CartEntity::productId eq productId
+                        CartEntity::userId eq user.id
+                    }
+                }
+            }
+            FetchResult.Success(productId)
+        } catch (e: Exception) {
+            FetchResult.Error(productId)
+        }
+    }
+
     private suspend fun getProductQuantityInCart(productId: Int): Int {
         val user = supabaseClient.auth.currentSessionOrNull()?.user
         return try {
@@ -86,7 +107,7 @@ class HomeRepositoryImpl @Inject constructor(private val supabaseClient: Supabas
                         CartEntity::userId eq user.id
                     }
                 }.decodeList<CartEntity>()
-                cartEntities.size
+                cartEntities.first().quantity
             } ?: -1
 
         } catch (e: Exception) {

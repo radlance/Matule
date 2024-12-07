@@ -36,6 +36,11 @@ class HomeViewModel @Inject constructor(
     val inCartResult: StateFlow<FetchResultUiState<Int>>
         get() = _inCartResult.asStateFlow()
 
+    private val _quantityResult =
+        MutableStateFlow<FetchResultUiState<Int>>(FetchResultUiState.Initial())
+    val quantityResult: StateFlow<FetchResultUiState<Int>>
+        get() = _quantityResult.asStateFlow()
+
     private val _selectedProduct = MutableStateFlow<Product?>(null)
     val selectedProduct: StateFlow<Product?>
         get() = _selectedProduct.asStateFlow()
@@ -56,17 +61,27 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun updateProductQuantity(productId: Int, currentQuantity: Int) {
+        updateState(stateFlow = _quantityResult, loadingData = productId) {
+            homeRepository.updateQuantity(productId, currentQuantity)
+        }
+    }
+
     fun changeStateInCartStatus(productId: Int) {
-        val currentState = _catalogContent.value
-        if (currentState is FetchResultUiState.Success) {
-            changeInCartByResult(currentState, productId)
+        updateCatalogState(productId) { currentState, id ->
+            changeInCartByResult(currentState, id)
         }
     }
 
     fun changeStateFavoriteStatus(productId: Int) {
-        val currentState = _catalogContent.value
-        if (currentState is FetchResultUiState.Success) {
-            changeFavoriteByResult(currentState, productId)
+        updateCatalogState(productId) { currentState, id ->
+            changeFavoriteByResult(currentState, id)
+        }
+    }
+
+    fun updateCurrentQuantity(productId: Int, increment: Boolean) {
+        updateCatalogState(productId) { currentState, id ->
+            updateCartItemQuantity(currentState, id, increment)
         }
     }
 
@@ -101,12 +116,41 @@ class HomeViewModel @Inject constructor(
         _catalogContent.value = FetchResultUiState.Success(updatedContent)
     }
 
+    private fun updateCartItemQuantity(
+        currentState: FetchResultUiState.Success<CatalogFetchContent>,
+        productId: Int,
+        increment: Boolean
+    ) {
+        val updatedProducts = currentState.data.products.map { product ->
+            if (product.id == productId) {
+                val newQuantity =
+                    if (increment) product.quantityInCart.inc() else product.quantityInCart.dec()
+                product.copy(quantityInCart = newQuantity)
+            } else {
+                product
+            }
+        }
+
+        val updatedContent = currentState.data.copy(products = updatedProducts)
+        _catalogContent.value = FetchResultUiState.Success(updatedContent)
+    }
+
     fun fetchContent() {
         updateState(_catalogContent) { homeRepository.fetchCatalogContent() }
     }
 
     fun selectProduct(product: Product) {
         _selectedProduct.value = product
+    }
+
+    private inline fun updateCatalogState(
+        productId: Int,
+        action: (FetchResultUiState.Success<CatalogFetchContent>, Int) -> Unit
+    ) {
+        val currentState = _catalogContent.value
+        if (currentState is FetchResultUiState.Success) {
+            action(currentState, productId)
+        }
     }
 
     private inline fun <T> updateState(
