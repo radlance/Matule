@@ -39,23 +39,31 @@ fun CartProductColumn(
         }
 
         items(items = products, key = { product -> product.id }) { product ->
-            CartItem(
+            CartItemContainer(
                 product = product,
-                onIncrementClick = {
+                onIncrement = {
                     onChangeQuantityClick(
                         product.id,
                         product.quantityInCart.inc(),
                         true
                     )
                 },
-                onDecrementClick = {
+                onDecrement = {
                     onChangeQuantityClick(
                         product.id,
                         product.quantityInCart.dec(),
                         false
                     )
-                }
-            )
+                },
+
+                onRemove = {}
+
+            ) { item ->
+                CartItem(
+                    product = item,
+                    modifier = Modifier.weight(1f)
+                )
+            }
         }
     }
 }
