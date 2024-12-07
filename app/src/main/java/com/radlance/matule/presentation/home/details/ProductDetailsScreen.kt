@@ -103,7 +103,7 @@ fun ProductDetailsScreen(
 
                     ProductDetailsBottomContent(
                         isFavorite = product.isFavorite,
-                        inCart = product.inCart,
+                        inCart = product.quantityInCart != 0,
                         onLikeClick = {
                             viewModel.changeFavoriteStatus(product.id)
                         },

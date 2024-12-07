@@ -74,7 +74,7 @@ fun PopularRow(
                         },
                         product = this,
                         onCartClick = {
-                            if (!inCart) {
+                            if (quantityInCart == 0) {
                                 onAddCartClick(id)
                             } else {
                                 onNavigateToCart()
@@ -92,7 +92,7 @@ fun PopularRow(
                         onLikeClick = { onLikeClick(products[1].id) },
                         product = products[1],
                         onCartClick = {
-                            if (!inCart) {
+                            if (quantityInCart == 0) {
                                 onAddCartClick(id)
                             } else {
                                 onNavigateToCart()

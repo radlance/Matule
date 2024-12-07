@@ -118,7 +118,7 @@ fun ShoesCard(
             PriceRow(
                 price = product.price.toString(),
                 onCartClicked = onCartClick,
-                inCart = product.inCart,
+                inCart = product.quantityInCart != 0,
                 contentDescription = "Add"
             )
         }
@@ -140,7 +140,7 @@ private fun ShoesCardPreview() {
                 description = "",
                 imageUrl = "https://",
                 isFavorite = true,
-                inCart = true,
+                quantityInCart = 1,
                 categoryId = 1
             ),
             onCardClick = {}

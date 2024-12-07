@@ -26,7 +26,7 @@ class HomeRepositoryImpl @Inject constructor(private val supabaseClient: Supabas
                         products = products.map {
                             it.toProduct(
                                 isFavorite = isFavoriteProduct(productId = it.id),
-                                inCart = isProductInCart(productId = it.id)
+                                quantityInCart = getProductQuantityInCart(productId = it.id)
                             )
                         }
                     )
@@ -64,7 +64,7 @@ class HomeRepositoryImpl @Inject constructor(private val supabaseClient: Supabas
         val user = supabaseClient.auth.currentSessionOrNull()?.user
         return try {
             user?.let {
-                if (!isProductInCart(productId)) {
+                if (getProductQuantityInCart(productId) == 0) {
                     supabaseClient.from("cart").insert(
                         CartEntity(productId = productId, userId = user.id, quantity = 1)
                     )
@@ -76,7 +76,7 @@ class HomeRepositoryImpl @Inject constructor(private val supabaseClient: Supabas
         }
     }
 
-    private suspend fun isProductInCart(productId: Int): Boolean {
+    private suspend fun getProductQuantityInCart(productId: Int): Int {
         val user = supabaseClient.auth.currentSessionOrNull()?.user
         return try {
             user?.let {
@@ -86,11 +86,11 @@ class HomeRepositoryImpl @Inject constructor(private val supabaseClient: Supabas
                         CartEntity::userId eq user.id
                     }
                 }.decodeList<CartEntity>()
-                cartEntities.size == 1
-            } ?: false
+                cartEntities.size
+            } ?: -1
 
         } catch (e: Exception) {
-            false
+            0
         }
     }
 

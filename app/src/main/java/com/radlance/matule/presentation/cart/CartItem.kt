@@ -82,7 +82,7 @@ fun CartItem(
                 )
                 Spacer(Modifier.height(6.dp))
                 Text(
-                    text = "₽${product.price}",
+                    text = "₽${product.price * product.quantityInCart}",
                     fontFamily = poppinsFamily,
                     fontWeight = FontWeight.Medium,
                     fontSize = 14.sp,
@@ -105,7 +105,7 @@ private fun CartItemPreview() {
                 price = 100.00,
                 imageUrl = "https://",
                 isFavorite = true,
-                inCart = true,
+                quantityInCart = 1,
                 categoryId = 1
             )
         )

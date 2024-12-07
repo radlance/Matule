@@ -65,7 +65,7 @@ private fun AdditionalRowItemPreview() {
                 description = "",
                 imageUrl = "https://",
                 isFavorite = true,
-                inCart = true,
+                quantityInCart = 1,
                 categoryId = 1
             ),
             selected = true

@@ -76,7 +76,7 @@ class HomeViewModel @Inject constructor(
     ) {
         val updatedProducts = currentState.data.products.map { product ->
             if (product.id == productId) {
-                product.copy(inCart = true)
+                product.copy(quantityInCart = 1)
             } else {
                 product
             }

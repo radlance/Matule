@@ -45,7 +45,22 @@ fun CartScreen(
 
         catalogContent.Show(
             onSuccess = { fetchContent ->
-                CartProductColumn(fetchContent.products, modifier = Modifier.weight(4f))
+                val productsInCart = fetchContent.products.filter { product ->
+                    product.quantityInCart != 0
+                }
+                CartProductColumn(
+                    productsInCart,
+                    modifier = Modifier.weight(4f)
+                )
+                Box(
+                    modifier = Modifier.weight(3f)
+                ) {
+                    CartResult(
+                        productsPrice = productsInCart.sumOf { it.price * it.quantityInCart },
+                        deliveryPrice = 60.20,
+                        onPlaceOrderClick = {}
+                    )
+                }
             },
             onError = {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -65,16 +80,6 @@ fun CartScreen(
         )
 
 
-
-        Box(
-            modifier = Modifier.weight(3f)
-        ) {
-            CartResult(
-                productsPrice = 753.95,
-                deliveryPrice = 60.20,
-                onPlaceOrderClick = {}
-            )
-        }
     }
 }
 

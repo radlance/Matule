@@ -35,7 +35,7 @@ fun FavoritesGrid(
                 product = product,
                 onLikeClick = { onLikeClicked(product.id) },
                 onCartClick = {
-                    if (!product.inCart) {
+                    if (product.quantityInCart == 0) {
                         onAddToCartClick(product.id)
                     } else {
                         onNavigateToCart()
@@ -60,7 +60,7 @@ private fun FavoritesGridPreview() {
                     price = 100.00 * it,
                     imageUrl = "https://",
                     isFavorite = true,
-                    inCart = true,
+                    quantityInCart = 1,
                     categoryId = 1
                 )
             },

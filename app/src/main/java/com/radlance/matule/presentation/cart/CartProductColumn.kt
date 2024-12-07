@@ -64,7 +64,7 @@ private fun CartProductColumnPreview() {
                     price = 100.00 * it,
                     imageUrl = "https://",
                     isFavorite = true,
-                    inCart = true,
+                    quantityInCart = 1,
                     categoryId = 1
                 )
             }
