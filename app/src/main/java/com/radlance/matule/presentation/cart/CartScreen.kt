@@ -39,6 +39,7 @@ fun CartScreen(
 ) {
     val catalogContent by viewModel.catalogContent.collectAsState()
     val quantityResult by viewModel.quantityResult.collectAsState()
+    val removeResult by viewModel.removeResult.collectAsState()
 
     var incrementCurrent by rememberSaveable { mutableStateOf(false) }
     Column(
@@ -51,11 +52,33 @@ fun CartScreen(
         CartHeader()
         Spacer(Modifier.height(16.dp))
 
+        removeResult.Show(
+            onSuccess = {},
+            onError = { productId ->
+                ChangeProductStatus(
+                    productId = productId,
+                    onStatusChanged = {
+                        viewModel.deleteCartItemFromCurrentState(
+                            productId = it,
+                            recover = true
+                        )
+                    }
+                )
+
+            },
+            onLoading = { productId ->
+                ChangeProductStatus(
+                    productId = productId,
+                    onStatusChanged = viewModel::deleteCartItemFromCurrentState
+                )
+            }
+        )
+
         quantityResult.Show(
             onSuccess = {},
             onError = { productId ->
                 ChangeProductStatus(productId) {
-                    viewModel.updateCurrentQuantity(it, incrementCurrent)
+                    viewModel.updateCurrentQuantity(it, !incrementCurrent)
                 }
             },
             onLoading = { productId ->
@@ -89,9 +112,7 @@ fun CartScreen(
                             incrementCurrent = increment
                         },
 
-                        onRemoveProduct = {
-
-                        },
+                        onRemoveProduct = viewModel::removeProductFromCart,
 
                         modifier = Modifier.weight(4f)
                     )

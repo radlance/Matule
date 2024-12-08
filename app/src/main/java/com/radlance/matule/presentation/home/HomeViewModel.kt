@@ -25,7 +25,6 @@ class HomeViewModel @Inject constructor(
     val catalogContent: StateFlow<FetchResultUiState<CatalogFetchContent>>
         get() = _catalogContent.asStateFlow()
 
-
     private val _favoriteResult =
         MutableStateFlow<FetchResultUiState<Int>>(FetchResultUiState.Initial())
     val favoriteResult: StateFlow<FetchResultUiState<Int>>
@@ -41,9 +40,16 @@ class HomeViewModel @Inject constructor(
     val quantityResult: StateFlow<FetchResultUiState<Int>>
         get() = _quantityResult.asStateFlow()
 
+    private val _removeResult =
+        MutableStateFlow<FetchResultUiState<Int>>(FetchResultUiState.Initial())
+    val removeResult: StateFlow<FetchResultUiState<Int>>
+        get() = _removeResult.asStateFlow()
+
     private val _selectedProduct = MutableStateFlow<Product?>(null)
     val selectedProduct: StateFlow<Product?>
         get() = _selectedProduct.asStateFlow()
+
+    private val removedProductQuantity = MutableStateFlow(0)
 
     init {
         fetchContent()
@@ -67,9 +73,15 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun changeStateInCartStatus(productId: Int) {
+    fun removeProductFromCart(productId: Int) {
+        updateState(stateFlow = _removeResult, loadingData = productId) {
+            homeRepository.removeProductFromCart(productId)
+        }
+    }
+
+    fun changeStateInCartStatus(productId: Int, recover: Boolean = false) {
         updateCatalogState(productId) { currentState, id ->
-            changeInCartByResult(currentState, id)
+            changeInCartByResult(currentState, id, recover)
         }
     }
 
@@ -85,13 +97,21 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun deleteCartItemFromCurrentState(productId: Int, recover: Boolean = false) {
+        updateCatalogState(productId) { currentState, id ->
+            deleteCartItem(currentState, id, recover)
+        }
+    }
+
     private fun changeInCartByResult(
         currentState: FetchResultUiState.Success<CatalogFetchContent>,
-        productId: Int
+        productId: Int,
+        recover: Boolean
     ) {
         val updatedProducts = currentState.data.products.map { product ->
             if (product.id == productId) {
-                product.copy(quantityInCart = 1)
+                val newQuantity = if(recover) 0 else 1
+                product.copy(quantityInCart = newQuantity)
             } else {
                 product
             }
@@ -131,6 +151,27 @@ class HomeViewModel @Inject constructor(
             }
         }
 
+        val updatedContent = currentState.data.copy(products = updatedProducts)
+        _catalogContent.value = FetchResultUiState.Success(updatedContent)
+    }
+
+    private fun deleteCartItem(
+        currentState: FetchResultUiState.Success<CatalogFetchContent>,
+        productId: Int,
+        recover: Boolean
+    ) {
+        val updatedProducts = currentState.data.products.map { product ->
+            if (product.id == productId) {
+                if(!recover) {
+                    removedProductQuantity.value = product.quantityInCart
+                    product.copy(quantityInCart = 0)
+                } else {
+                    product.copy(quantityInCart = removedProductQuantity.value)
+                }
+            } else {
+                product
+            }
+        }
         val updatedContent = currentState.data.copy(products = updatedProducts)
         _catalogContent.value = FetchResultUiState.Success(updatedContent)
     }

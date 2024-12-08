@@ -97,6 +97,23 @@ class HomeRepositoryImpl @Inject constructor(private val supabaseClient: Supabas
         }
     }
 
+    override suspend fun removeProductFromCart(productId: Int): FetchResult<Int> {
+        val user = supabaseClient.auth.currentSessionOrNull()?.user
+        return try {
+            user?.let {
+                supabaseClient.from("cart").delete {
+                    filter {
+                        CartEntity::productId eq productId
+                        CartEntity::userId eq user.id
+                    }
+                }
+            }
+            FetchResult.Success(productId)
+        }  catch (e: Exception) {
+            FetchResult.Error(productId)
+        }
+    }
+
     private suspend fun getProductQuantityInCart(productId: Int): Int {
         val user = supabaseClient.auth.currentSessionOrNull()?.user
         return try {

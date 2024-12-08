@@ -7,4 +7,5 @@ interface HomeRepository {
     suspend fun changeFavoriteStatus(productId: Int): FetchResult<Int>
     suspend fun addProductToCart(productId: Int): FetchResult<Int>
     suspend fun updateQuantity(productId: Int, quantity: Int): FetchResult<Int>
+    suspend fun removeProductFromCart(productId: Int): FetchResult<Int>
 }

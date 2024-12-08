@@ -58,7 +58,10 @@ fun ProductDetailsScreen(
             ChangeProductStatus(productId, viewModel::changeStateInCartStatus)
         },
         onError = { productId ->
-            ChangeProductStatus(productId, viewModel::changeStateInCartStatus)
+            ChangeProductStatus(
+                productId = productId,
+                onStatusChanged = { viewModel.changeStateInCartStatus(it, recover = true) }
+            )
         }
     )
 
