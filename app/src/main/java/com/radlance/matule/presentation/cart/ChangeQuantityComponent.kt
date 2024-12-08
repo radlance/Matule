@@ -3,15 +3,18 @@ package com.radlance.matule.presentation.cart
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,6 +35,15 @@ fun ChangeQuantityComponent(
     onDecrementClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val changeQuantityColorState =
+        if (quantity <= 1 || quantity >= 1000) {
+            ButtonDefaults.buttonColors().disabledContainerColor
+        } else {
+            MaterialTheme.colorScheme.primary
+        }
+
+    val interactionSource = remember { MutableInteractionSource() }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
@@ -39,13 +51,16 @@ fun ChangeQuantityComponent(
             .height(104.dp)
             .width(58.dp)
             .clip(RoundedCornerShape(8.dp))
-            .background(MaterialTheme.colorScheme.primary)
+            .background(changeQuantityColorState)
     ) {
         Spacer(Modifier.height(14.dp))
         Image(
             painter = painterResource(R.drawable.ic_increment),
             contentDescription = "ic_increment",
-            modifier = Modifier.clickable { onIncrementClick() }
+            modifier = Modifier.clickable(
+                interactionSource = interactionSource,
+                indication = null
+            ) { if (quantity < 1000) onIncrementClick() }
         )
 
         Text(
@@ -59,7 +74,10 @@ fun ChangeQuantityComponent(
         Image(
             painter = painterResource(R.drawable.ic_decrement),
             contentDescription = "ic_decrement",
-            modifier = Modifier.clickable { onDecrementClick() }
+            modifier = Modifier.clickable(
+                interactionSource = interactionSource,
+                indication = null
+            ) { if (quantity > 1) onDecrementClick() }
         )
         Spacer(Modifier.height(14.dp))
 

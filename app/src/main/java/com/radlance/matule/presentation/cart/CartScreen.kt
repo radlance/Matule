@@ -88,6 +88,11 @@ fun CartScreen(
                             viewModel.updateProductQuantity(productId, quantity)
                             incrementCurrent = increment
                         },
+
+                        onRemoveProduct = {
+
+                        },
+
                         modifier = Modifier.weight(4f)
                     )
                     Box(

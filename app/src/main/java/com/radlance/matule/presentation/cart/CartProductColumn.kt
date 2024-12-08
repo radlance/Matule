@@ -20,6 +20,7 @@ import com.radlance.matule.ui.theme.poppinsFamily
 fun CartProductColumn(
     products: List<Product>,
     onChangeQuantityClick: (productId: Int, quantity: Int, increment: Boolean) -> Unit,
+    onRemoveProduct: (productId: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -56,7 +57,7 @@ fun CartProductColumn(
                     )
                 },
 
-                onRemove = {}
+                onRemove = { onRemoveProduct(product.id) }
 
             ) { item ->
                 CartItem(
@@ -81,6 +82,7 @@ private fun getProductCountText(count: Int): String {
 private fun CartProductColumnPreview() {
     MatuleTheme {
         CartProductColumn(
+            onRemoveProduct = {},
             onChangeQuantityClick = { _, _, _ -> },
             products = List(20) {
                 Product(

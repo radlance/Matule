@@ -51,7 +51,12 @@ fun CartItemContainer(
 
         content(product)
         AnimatedVisibility(visible = showRemoveElement) {
-            RemoveComponent(onRemoveClick = onRemove, modifier = Modifier.weight(1f))
+            RemoveComponent(
+                onRemoveClick = onRemove,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 10.dp)
+            )
         }
     }
 }
