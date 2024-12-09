@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -30,6 +29,13 @@ fun OrderCard(modifier: Modifier = Modifier) {
                 email = "emmanueloyiboke@gmail.com",
                 modifier = Modifier.padding(horizontal = 20.dp)
             )
+
+            Spacer(Modifier.height(12.dp))
+
+            OrderAddress(
+                address = "1082 Аэропорт, Нигерии",
+                modifier = Modifier.padding(start = 20.dp, end = 32.dp)
+            )
         }
     }
 }
@@ -38,8 +44,22 @@ fun OrderCard(modifier: Modifier = Modifier) {
 @Composable
 private fun OrderCardPreview() {
     MatuleTheme {
-        OrderCard(modifier = Modifier
-            .height(425.dp)
-            .width(347.dp))
+        OrderCard(
+            modifier = Modifier
+                .height(425.dp)
+                .fillMaxWidth()
+        )
+    }
+}
+
+@Preview(device = "spec:width=673dp,height=841dp")
+@Composable
+private fun OrderCardExpandedPreview() {
+    MatuleTheme {
+        OrderCard(
+            modifier = Modifier
+                .height(425.dp)
+                .fillMaxWidth()
+        )
     }
 }

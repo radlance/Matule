@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.sp
 import com.radlance.matule.R
 import com.radlance.matule.domain.home.Product
 import com.radlance.matule.ui.theme.inputFieldTextColor
-import com.radlance.matule.ui.theme.moreDetailsColor
+import com.radlance.matule.ui.theme.brightBlueColor
 import com.radlance.matule.ui.theme.poppinsFamily
 
 @Composable
@@ -62,7 +62,7 @@ fun ProductDetailsDescription(
         Text(
             text = stringResource(moreDetailsText),
             fontSize = 14.sp,
-            color = moreDetailsColor,
+            color = brightBlueColor,
             fontFamily = poppinsFamily,
             fontWeight = FontWeight.Normal,
             lineHeight = 21.sp,
