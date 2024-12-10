@@ -15,9 +15,10 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.toRoute
 import com.radlance.matule.presentation.cart.CartScreen
 import com.radlance.matule.presentation.favorite.FavoriteScreen
-import com.radlance.matule.presentation.home.HomeViewModel
 import com.radlance.matule.presentation.home.HomeScreen
+import com.radlance.matule.presentation.home.HomeViewModel
 import com.radlance.matule.presentation.home.details.ProductDetailsScreen
+import com.radlance.matule.presentation.order.OrderScreen
 
 @Composable
 fun BottomNavGraph(
@@ -40,7 +41,7 @@ fun BottomNavGraph(
                         (context as Activity).finish()
                     },
                     onNavigateToCart = {
-                        navigationState.navigateTo(Cart)
+                        navigationState.navigateTo(Payment)
                     },
 
                     onNavigateToDetails = {
@@ -57,7 +58,7 @@ fun BottomNavGraph(
                     selectedProductId = args.productId,
                     onBackPressed = navController::navigateUp,
                     onNavigateToCart = {
-                        navigationState.navigateTo(Cart)
+                        navigationState.navigateTo(Payment)
                     },
                     viewModel = sharedViewModel
                 )
@@ -67,7 +68,7 @@ fun BottomNavGraph(
         composable<Favorite> {
             FavoriteScreen(
                 onNavigateToCart = {
-                    navigationState.navigateTo(Cart)
+                    navigationState.navigateTo(Payment)
                 },
 
                 onNavigateToDetails = {
@@ -77,8 +78,20 @@ fun BottomNavGraph(
             )
         }
 
-        composable<Cart> {
-            CartScreen(viewModel = sharedViewModel)
+        navigation<Payment>(startDestination = Cart) {
+            composable<Cart> {
+                CartScreen(
+                    onPlaceOrderClick = { navigationState.navigateTo(Order) },
+                    viewModel = sharedViewModel
+                )
+            }
+
+            composable<Order> {
+                OrderScreen(
+                    onBackPressed = { navigationState.navigateTo(Cart) },
+                    viewModel = sharedViewModel
+                )
+            }
         }
 
         composable<Notification> {

@@ -25,7 +25,15 @@ data object Favorite: BottomDestination
 
 @Serializable
 @Keep
+data object Payment: BottomDestination
+
+@Serializable
+@Keep
 data object Cart: BottomDestination
+
+@Serializable
+@Keep
+data object Order: BottomDestination
 
 @Serializable
 @Keep

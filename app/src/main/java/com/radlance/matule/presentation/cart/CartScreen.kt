@@ -34,6 +34,7 @@ import com.radlance.matule.ui.theme.ralewayFamily
 
 @Composable
 fun CartScreen(
+    onPlaceOrderClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -123,7 +124,7 @@ fun CartScreen(
                             productsPrice = productsInCart.sumOf { it.price * it.quantityInCart },
                             deliveryPrice = 60.20,
                             buttonStringResId = R.string.place_order,
-                            onButtonClick = {}
+                            onButtonClick = onPlaceOrderClick
                         )
                     }
                 }
@@ -155,6 +156,6 @@ fun CartScreen(
 @Composable
 private fun CartScreenPreview() {
     MatuleTheme {
-        CartScreen()
+        CartScreen({})
     }
 }

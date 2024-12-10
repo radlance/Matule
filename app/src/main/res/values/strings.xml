@@ -60,4 +60,5 @@
     <string name="address">Адрес</string>
     <string name="see_on_map">Посмотреть на карте</string>
     <string name="payment_method">Способ оплаты</string>
+    <string name="confirm">Подтвердить</string>
 </resources>
