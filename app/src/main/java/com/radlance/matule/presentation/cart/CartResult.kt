@@ -44,7 +44,8 @@ import kotlin.math.roundToLong
 fun CartResult(
     productsPrice: Double,
     deliveryPrice: Double,
-    onPlaceOrderClick: () -> Unit,
+    @StringRes buttonStringResId: Int,
+    onButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
@@ -93,8 +94,8 @@ fun CartResult(
             Spacer(Modifier.height(30.dp))
 
             NavigationButton(
-                R.string.place_order,
-                onClick = onPlaceOrderClick,
+                buttonStringResId,
+                onClick = onButtonClick,
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(Modifier.height(120.dp))
@@ -158,6 +159,6 @@ private fun ResultSection(
 @Composable
 private fun CartResultPreview() {
     MatuleTheme {
-        CartResult(productsPrice = 753.95, deliveryPrice = 60.20, onPlaceOrderClick = {})
+        CartResult(productsPrice = 753.95, deliveryPrice = 60.20, onButtonClick = {}, buttonStringResId = R.string.place_order)
     }
 }

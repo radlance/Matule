@@ -122,7 +122,8 @@ fun CartScreen(
                         CartResult(
                             productsPrice = productsInCart.sumOf { it.price * it.quantityInCart },
                             deliveryPrice = 60.20,
-                            onPlaceOrderClick = {}
+                            buttonStringResId = R.string.place_order,
+                            onButtonClick = {}
                         )
                     }
                 }
