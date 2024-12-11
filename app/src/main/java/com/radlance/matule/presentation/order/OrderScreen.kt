@@ -27,6 +27,8 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.radlance.matule.R
 import com.radlance.matule.presentation.cart.CartResult
@@ -45,6 +47,19 @@ fun OrderScreen(
     val context = LocalContext.current
 
     var placeOrderButtonEnabled by rememberSaveable { mutableStateOf(true) }
+    var showSuccessOrderPlaceDialog by rememberSaveable { mutableStateOf(false) }
+
+    if (showSuccessOrderPlaceDialog) {
+        Dialog(
+            onDismissRequest = {},
+            properties = DialogProperties(usePlatformDefaultWidth = false)
+        ) {
+            SuccessOrderPlaceDialog(
+                navigateToCatalog = {},
+                modifier = Modifier.padding(horizontal = 20.dp)
+            )
+        }
+    }
 
     Column(
         modifier = modifier
@@ -97,14 +112,7 @@ fun OrderScreen(
         )
 
         placeOrderResult.Show(
-            onSuccess = {
-                placeOrderButtonEnabled = true
-                Toast.makeText(
-                    context,
-                    stringResource(R.string.place_order_success),
-                    Toast.LENGTH_LONG
-                ).show()
-            },
+            onSuccess = { showSuccessOrderPlaceDialog = true },
             onLoading = { placeOrderButtonEnabled = false },
             onError = {
                 placeOrderButtonEnabled = true
@@ -114,8 +122,8 @@ fun OrderScreen(
                     Toast.LENGTH_SHORT
                 ).show()
             }
-            )
-        }
+        )
+    }
 }
 
 @Preview

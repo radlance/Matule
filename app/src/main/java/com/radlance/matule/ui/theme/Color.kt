@@ -30,3 +30,5 @@ val fillRedColor = Color(0xFFF87265)
 val verificationSubTextColor = Color(0xFF7D848D)
 val salesColor = Color(0xFF674DC5)
 val brightBlueColor = Color(0xFF0D6EFD)
+
+val lightBlueColor = Color(0xFFDFEFFF)
