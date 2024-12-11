@@ -7,6 +7,7 @@ import com.radlance.matule.data.database.remote.entity.FavoriteEntity
 import com.radlance.matule.data.database.remote.entity.ProductEntity
 import com.radlance.matule.domain.home.CatalogFetchContent
 import com.radlance.matule.domain.home.HomeRepository
+import com.radlance.matule.domain.home.Product
 import com.radlance.matule.domain.remote.FetchResult
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
@@ -111,6 +112,23 @@ class HomeRepositoryImpl @Inject constructor(private val supabaseClient: Supabas
             FetchResult.Success(productId)
         }  catch (e: Exception) {
             FetchResult.Error(productId)
+        }
+    }
+
+    override suspend fun placeOrder(products: List<Product>): FetchResult<Unit> {
+        val user = supabaseClient.auth.currentSessionOrNull()?.user
+        return try {
+            user?.let {
+                products.forEach { product ->
+                    val cartEntity = product.toCartEntity(user.id)
+
+                    supabaseClient.from("history").insert(cartEntity)
+                }
+            }
+            FetchResult.Success(Unit)
+
+        } catch (e: Exception) {
+            FetchResult.Error(Unit)
         }
     }
 

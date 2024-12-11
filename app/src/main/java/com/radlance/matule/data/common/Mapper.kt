@@ -1,5 +1,6 @@
 package com.radlance.matule.data.common
 
+import com.radlance.matule.data.database.remote.entity.CartEntity
 import com.radlance.matule.data.database.remote.entity.CategoryEntity
 import com.radlance.matule.data.database.remote.entity.ProductEntity
 import com.radlance.matule.domain.home.Category
@@ -23,6 +24,14 @@ abstract class Mapper {
             isFavorite = isFavorite,
             quantityInCart = quantityInCart,
             categoryId = categoryId
+        )
+    }
+
+    protected fun Product.toCartEntity(userId: String): CartEntity {
+        return CartEntity(
+            productId = id,
+            quantity = quantityInCart,
+            userId = userId
         )
     }
 }

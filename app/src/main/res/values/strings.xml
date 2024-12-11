@@ -61,4 +61,6 @@
     <string name="see_on_map">Посмотреть на карте</string>
     <string name="payment_method">Способ оплаты</string>
     <string name="confirm">Подтвердить</string>
+    <string name="place_order_error">Ошибка оформления заказа</string>
+    <string name="place_order_success">Заказ успешно оформлен</string>
 </resources>

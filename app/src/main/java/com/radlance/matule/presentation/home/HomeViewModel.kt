@@ -12,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,8 +23,15 @@ class HomeViewModel @Inject constructor(
 
     private val _catalogContent =
         MutableStateFlow<FetchResultUiState<CatalogFetchContent>>(FetchResultUiState.Loading())
-    val catalogContent: StateFlow<FetchResultUiState<CatalogFetchContent>>
-        get() = _catalogContent.asStateFlow()
+    val catalogContent: StateFlow<FetchResultUiState<CatalogFetchContent>> =
+        _catalogContent.onStart { fetchContent() }.stateInViewModel(
+            FetchResultUiState.Loading()
+        )
+
+    private val _placeOrderResult =
+        MutableStateFlow<FetchResultUiState<Unit>>(FetchResultUiState.Initial())
+    val placeOrderResult: StateFlow<FetchResultUiState<Unit>>
+        get() = _placeOrderResult.asStateFlow()
 
     private val _favoriteResult =
         MutableStateFlow<FetchResultUiState<Int>>(FetchResultUiState.Initial())
@@ -51,10 +59,6 @@ class HomeViewModel @Inject constructor(
 
     private val removedProductQuantity = MutableStateFlow(0)
 
-    init {
-        fetchContent()
-    }
-
     fun changeFavoriteStatus(productId: Int) {
         updateState(stateFlow = _favoriteResult, loadingData = productId) {
             homeRepository.changeFavoriteStatus(productId)
@@ -76,6 +80,12 @@ class HomeViewModel @Inject constructor(
     fun removeProductFromCart(productId: Int) {
         updateState(stateFlow = _removeResult, loadingData = productId) {
             homeRepository.removeProductFromCart(productId)
+        }
+    }
+
+    fun placeOrder(products: List<Product>) {
+        updateState(stateFlow = _placeOrderResult) {
+            homeRepository.placeOrder(products)
         }
     }
 

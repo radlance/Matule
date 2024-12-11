@@ -46,7 +46,8 @@ fun CartResult(
     deliveryPrice: Double,
     @StringRes buttonStringResId: Int,
     onButtonClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    buttonEnabled: Boolean = true
 ) {
     val scrollState = rememberScrollState()
     Box(
@@ -96,6 +97,7 @@ fun CartResult(
             NavigationButton(
                 buttonStringResId,
                 onClick = onButtonClick,
+                enabled = buttonEnabled,
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(Modifier.height(120.dp))
