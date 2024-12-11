@@ -89,6 +89,7 @@ fun BottomNavGraph(
             composable<Order> {
                 OrderScreen(
                     onBackPressed = { navigationState.navigateTo(Cart) },
+                    navigateToCatalog = { navigationState.navigateTo(Catalog) },
                     viewModel = sharedViewModel
                 )
             }

@@ -1,6 +1,7 @@
 package com.radlance.matule.presentation.order
 
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,9 +40,12 @@ import com.radlance.matule.ui.theme.MatuleTheme
 @Composable
 fun OrderScreen(
     onBackPressed: () -> Unit,
+    navigateToCatalog: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
+    BackHandler { onBackPressed() }
+
     val catalogContent by viewModel.catalogContent.collectAsState()
     val placeOrderResult by viewModel.placeOrderResult.collectAsState()
 
@@ -55,7 +60,11 @@ fun OrderScreen(
             properties = DialogProperties(usePlatformDefaultWidth = false)
         ) {
             SuccessOrderPlaceDialog(
-                navigateToCatalog = {},
+                navigateToCatalog = {
+                    navigateToCatalog()
+                    showSuccessOrderPlaceDialog = false
+                    viewModel.resetPlaceOrderResult()
+                },
                 modifier = Modifier.padding(horizontal = 20.dp)
             )
         }
@@ -112,7 +121,11 @@ fun OrderScreen(
         )
 
         placeOrderResult.Show(
-            onSuccess = { showSuccessOrderPlaceDialog = true },
+            onSuccess = {
+                LaunchedEffect(Unit) {
+                    showSuccessOrderPlaceDialog = true
+                }
+            },
             onLoading = { placeOrderButtonEnabled = false },
             onError = {
                 placeOrderButtonEnabled = true
@@ -130,7 +143,7 @@ fun OrderScreen(
 @Composable
 private fun OrderScreenPreview() {
     MatuleTheme {
-        OrderScreen(onBackPressed = {})
+        OrderScreen(onBackPressed = {}, navigateToCatalog = {})
     }
 }
 
@@ -138,6 +151,6 @@ private fun OrderScreenPreview() {
 @Composable
 private fun OrderScreenSmallPreview() {
     MatuleTheme {
-        OrderScreen(onBackPressed = {})
+        OrderScreen(onBackPressed = {}, navigateToCatalog = {})
     }
 }

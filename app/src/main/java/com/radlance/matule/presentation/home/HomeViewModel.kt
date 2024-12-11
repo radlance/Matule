@@ -89,6 +89,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun resetPlaceOrderResult() {
+        _placeOrderResult.value = FetchResultUiState.Initial()
+    }
+
     fun changeStateInCartStatus(productId: Int, recover: Boolean = false) {
         updateCatalogState(productId) { currentState, id ->
             changeInCartByResult(currentState, id, recover)
