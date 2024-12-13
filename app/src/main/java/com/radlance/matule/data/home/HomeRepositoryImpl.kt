@@ -123,6 +123,12 @@ class HomeRepositoryImpl @Inject constructor(private val supabaseClient: Supabas
                     val cartEntity = product.toCartEntity(user.id)
 
                     supabaseClient.from("history").insert(cartEntity)
+                    supabaseClient.from("cart").delete {
+                        filter {
+                            CartEntity::productId eq product.id
+                            CartEntity::userId eq user.id
+                        }
+                    }
                 }
             }
             FetchResult.Success(Unit)

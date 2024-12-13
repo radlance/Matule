@@ -59,6 +59,10 @@ class HomeViewModel @Inject constructor(
 
     private val removedProductQuantity = MutableStateFlow(0)
 
+    fun fetchContent() {
+        updateState(_catalogContent) { homeRepository.fetchCatalogContent() }
+    }
+
     fun changeFavoriteStatus(productId: Int) {
         updateState(stateFlow = _favoriteResult, loadingData = productId) {
             homeRepository.changeFavoriteStatus(productId)
@@ -114,6 +118,12 @@ class HomeViewModel @Inject constructor(
     fun deleteCartItemFromCurrentState(productId: Int, recover: Boolean = false) {
         updateCatalogState(productId) { currentState, id ->
             deleteCartItem(currentState, id, recover)
+        }
+    }
+
+    fun updateStateAfterPlaceOrder() {
+        updateCatalogState(Unit) { currentState, _ ->
+            updateCartItemsAfterPlaceOrder(currentState)
         }
     }
 
@@ -190,21 +200,28 @@ class HomeViewModel @Inject constructor(
         _catalogContent.value = FetchResultUiState.Success(updatedContent)
     }
 
-    fun fetchContent() {
-        updateState(_catalogContent) { homeRepository.fetchCatalogContent() }
+    private fun updateCartItemsAfterPlaceOrder(
+        currentState: FetchResultUiState.Success<CatalogFetchContent>
+    ) {
+        val updatedProducts = currentState.data.products.map { product ->
+            product.copy(quantityInCart = 0)
+        }
+        val updatedContent = currentState.data.copy(products = updatedProducts)
+        _catalogContent.value = FetchResultUiState.Success(updatedContent)
     }
+
 
     fun selectProduct(product: Product) {
         _selectedProduct.value = product
     }
 
-    private inline fun updateCatalogState(
-        productId: Int,
-        action: (FetchResultUiState.Success<CatalogFetchContent>, Int) -> Unit
+    private inline fun <T> updateCatalogState(
+        value: T,
+        action: (FetchResultUiState.Success<CatalogFetchContent>, T) -> Unit
     ) {
         val currentState = _catalogContent.value
         if (currentState is FetchResultUiState.Success) {
-            action(currentState, productId)
+            action(currentState, value)
         }
     }
 

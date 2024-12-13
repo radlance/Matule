@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -45,6 +46,8 @@ fun OrderScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     BackHandler { onBackPressed() }
+
+    var resultSum by rememberSaveable { mutableDoubleStateOf(0.0) }
 
     val catalogContent by viewModel.catalogContent.collectAsState()
     val placeOrderResult by viewModel.placeOrderResult.collectAsState()
@@ -94,8 +97,12 @@ fun OrderScreen(
                 Box(
                     modifier = Modifier.weight(3f)
                 ) {
+                    if (resultSum == 0.0) {
+                        resultSum = productsInCart.sumOf { it.price * it.quantityInCart }
+                    }
+
                     CartResult(
-                        productsPrice = productsInCart.sumOf { it.price * it.quantityInCart },
+                        productsPrice = resultSum,
                         deliveryPrice = 60.20,
                         buttonStringResId = R.string.confirm,
                         buttonEnabled = placeOrderButtonEnabled,
@@ -124,6 +131,7 @@ fun OrderScreen(
             onSuccess = {
                 LaunchedEffect(Unit) {
                     showSuccessOrderPlaceDialog = true
+                    viewModel.updateStateAfterPlaceOrder()
                 }
             },
             onLoading = { placeOrderButtonEnabled = false },
