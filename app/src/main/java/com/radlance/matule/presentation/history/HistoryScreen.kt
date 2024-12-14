@@ -42,7 +42,16 @@ fun HistoryScreen(
 
         fetchHistoryResult.Show(
             onSuccess = { history ->
-                HistoryList(history)
+                if (history.isEmpty()) {
+                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text(
+                            text = stringResource(R.string.no_orders),
+                            modifier = Modifier.offset(y = (-55).dp)
+                        )
+                    }
+                } else {
+                    HistoryList(history)
+                }
             },
 
             onLoading = {

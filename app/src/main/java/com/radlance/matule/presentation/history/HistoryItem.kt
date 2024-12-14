@@ -35,7 +35,9 @@ import com.radlance.matule.ui.theme.poppinsFamily
 import com.radlance.matule.ui.theme.ralewayFamily
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toJavaLocalTime
 import kotlinx.datetime.toLocalDateTime
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun HistoryItem(
@@ -92,8 +94,12 @@ fun HistoryItem(
             }
             Spacer(Modifier.weight(1f))
 
+            val time = historyProduct.orderTime
+                .toLocalDateTime(TimeZone.UTC).time.toJavaLocalTime()
+                .format(DateTimeFormatter.ofPattern("HH:mm"))
+
             Text(
-                text = historyProduct.orderTime.toLocalDateTime(TimeZone.UTC).date.toString(),
+                text = time,
                 fontSize = 14.sp,
                 fontFamily = poppinsFamily,
                 fontWeight = FontWeight.Medium,

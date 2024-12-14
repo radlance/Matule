@@ -65,4 +65,7 @@
     <string name="place_order_success">Вы успешно оформили заказ</string>
     <string name="back_to_shopping">Вернуться к покупкам</string>
     <string name="orders">Заказы</string>
+    <string name="recently">Недавно</string>
+    <string name="yesterday">Вчера</string>
+    <string name="no_orders">Заказов нет</string>
 </resources>
