@@ -22,11 +22,12 @@ import com.radlance.matule.ui.theme.MatuleTheme
 import com.radlance.matule.ui.theme.ralewayFamily
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
 import kotlinx.datetime.toJavaLocalDate
+import kotlinx.datetime.toKotlinLocalDateTime
 import kotlinx.datetime.toLocalDateTime
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
@@ -69,7 +70,7 @@ private fun List<HistoryProduct>.groupByDate(context: Context): Map<String, List
 
     val groupedHistoryByDate: Map<String, List<HistoryProduct>> = groupBy { historyProduct ->
         val localDate =
-            historyProduct.orderTime.toLocalDateTime(TimeZone.currentSystemDefault()).date
+            historyProduct.orderTime.date
         when (localDate) {
             currentDate -> context.getString(R.string.recently)
             currentDate.minus(1, DateTimeUnit.DAY) -> context.getString(R.string.yesterday)
@@ -92,7 +93,7 @@ private fun HistoryListPreview() {
                     title = "mock$it",
                     price = 100.0 * it,
                     imageUrl = "https://",
-                    orderTime = Instant.fromEpochSeconds(Clock.System.now().epochSeconds - 86400 * it)
+                    orderTime = LocalDateTime.now().toKotlinLocalDateTime()
                 )
             }
         )

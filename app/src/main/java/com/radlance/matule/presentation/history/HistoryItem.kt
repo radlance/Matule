@@ -33,10 +33,9 @@ import com.radlance.matule.ui.theme.MatuleTheme
 import com.radlance.matule.ui.theme.inputFieldTextColor
 import com.radlance.matule.ui.theme.poppinsFamily
 import com.radlance.matule.ui.theme.ralewayFamily
-import kotlinx.datetime.Clock
-import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toJavaLocalTime
-import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.toKotlinLocalDateTime
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -94,8 +93,7 @@ fun HistoryItem(
             }
             Spacer(Modifier.weight(1f))
 
-            val time = historyProduct.orderTime
-                .toLocalDateTime(TimeZone.UTC).time.toJavaLocalTime()
+            val time = historyProduct.orderTime.time.toJavaLocalTime()
                 .format(DateTimeFormatter.ofPattern("HH:mm"))
 
             Text(
@@ -122,7 +120,7 @@ private fun HistoryItemPreview() {
                 title = "mock",
                 price = 100.0,
                 imageUrl = "https://",
-                orderTime = Clock.System.now()
+                orderTime = LocalDateTime.now().toKotlinLocalDateTime()
             ),
         )
     }
