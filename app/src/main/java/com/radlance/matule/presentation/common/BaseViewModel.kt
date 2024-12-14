@@ -2,10 +2,13 @@ package com.radlance.matule.presentation.common
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.radlance.matule.domain.remote.FetchResult
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 abstract class BaseViewModel : ViewModel() {
     protected fun <T> Flow<T>.stateInViewModel(initialValue: T): StateFlow<T> {
@@ -14,5 +17,16 @@ abstract class BaseViewModel : ViewModel() {
             started = SharingStarted.WhileSubscribed(5000L),
             initialValue = initialValue
         )
+    }
+
+    protected inline fun <T> updateState(
+        stateFlow: MutableStateFlow<FetchResultUiState<T>>,
+        loadingData: T? = null,
+        crossinline fetch: suspend () -> FetchResult<T>
+    ) {
+        viewModelScope.launch {
+            stateFlow.value = FetchResultUiState.Loading(loadingData)
+            stateFlow.value = fetch().map(FetchResultMapper())
+        }
     }
 }

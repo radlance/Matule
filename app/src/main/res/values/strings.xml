@@ -64,4 +64,5 @@
     <string name="place_order_error">Ошибка оформления заказа</string>
     <string name="place_order_success">Вы успешно оформили заказ</string>
     <string name="back_to_shopping">Вернуться к покупкам</string>
+    <string name="orders">Заказы</string>
 </resources>

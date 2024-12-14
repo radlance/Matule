@@ -15,6 +15,7 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.toRoute
 import com.radlance.matule.presentation.cart.CartScreen
 import com.radlance.matule.presentation.favorite.FavoriteScreen
+import com.radlance.matule.presentation.history.HistoryScreen
 import com.radlance.matule.presentation.home.HomeScreen
 import com.radlance.matule.presentation.home.HomeViewModel
 import com.radlance.matule.presentation.home.details.ProductDetailsScreen
@@ -96,9 +97,7 @@ fun BottomNavGraph(
         }
 
         composable<Notification> {
-            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(Notification.toString())
-            }
+            HistoryScreen()
         }
 
         composable<Profile> {
