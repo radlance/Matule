@@ -9,6 +9,6 @@ interface ProductRepository {
     suspend fun addProductToCart(productId: Int): FetchResult<Int>
     suspend fun updateQuantity(productId: Int, quantity: Int): FetchResult<Int>
     suspend fun removeProductFromCart(productId: Int): FetchResult<Int>
-    suspend fun placeOrder(products: List<Product>): FetchResult<Unit>
+    suspend fun placeOrder(products: List<Product>): FetchResult<List<Product>>
     suspend fun loadHistory(): FetchResult<List<HistoryProduct>>
 }

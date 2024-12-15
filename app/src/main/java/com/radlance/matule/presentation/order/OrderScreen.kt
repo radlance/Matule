@@ -131,7 +131,7 @@ fun OrderScreen(
             onSuccess = {
                 LaunchedEffect(Unit) {
                     showSuccessOrderPlaceDialog = true
-                    viewModel.updateStateAfterPlaceOrder()
+                    viewModel.updateStateAfterPlaceOrder(it)
                 }
             },
             onLoading = { placeOrderButtonEnabled = false },

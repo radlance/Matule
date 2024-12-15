@@ -117,7 +117,7 @@ class ProductRepositoryImpl @Inject constructor(private val supabaseClient: Supa
         }
     }
 
-    override suspend fun placeOrder(products: List<Product>): FetchResult<Unit> {
+    override suspend fun placeOrder(products: List<Product>): FetchResult<List<Product>> {
         val user = supabaseClient.auth.currentSessionOrNull()?.user
         return try {
             user?.let {
@@ -133,10 +133,10 @@ class ProductRepositoryImpl @Inject constructor(private val supabaseClient: Supa
                     }
                 }
             }
-            FetchResult.Success(Unit)
+            FetchResult.Success(products)
 
         } catch (e: Exception) {
-            FetchResult.Error(Unit)
+            FetchResult.Error(emptyList())
         }
     }
 

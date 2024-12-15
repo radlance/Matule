@@ -2,13 +2,15 @@ package com.radlance.matule.presentation.common
 
 import com.radlance.matule.domain.history.HistoryProduct
 import com.radlance.matule.domain.home.CatalogFetchContent
-import com.radlance.matule.domain.home.ProductRepository
 import com.radlance.matule.domain.home.Product
+import com.radlance.matule.domain.home.ProductRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.onStart
+import kotlinx.datetime.toKotlinLocalDateTime
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,8 +33,8 @@ class ProductViewModel @Inject constructor(
         )
 
     private val _placeOrderResult =
-        MutableStateFlow<FetchResultUiState<Unit>>(FetchResultUiState.Initial())
-    val placeOrderResult: StateFlow<FetchResultUiState<Unit>>
+        MutableStateFlow<FetchResultUiState<List<Product>>>(FetchResultUiState.Initial())
+    val placeOrderResult: StateFlow<FetchResultUiState<List<Product>>>
         get() = _placeOrderResult.asStateFlow()
 
     private val _favoriteResult =
@@ -104,32 +106,36 @@ class ProductViewModel @Inject constructor(
     }
 
     fun changeStateInCartStatus(productId: Int, recover: Boolean = false) {
-        updateCatalogState(productId) { currentState, id ->
-            changeInCartByResult(currentState, id, recover)
+        updateLocalState(_catalogContent) { currentState ->
+            changeInCartByResult(currentState, productId, recover)
         }
     }
 
     fun changeStateFavoriteStatus(productId: Int) {
-        updateCatalogState(productId) { currentState, id ->
-            changeFavoriteByResult(currentState, id)
+        updateLocalState(_catalogContent) { currentState ->
+            changeFavoriteByResult(currentState, productId)
         }
     }
 
     fun updateCurrentQuantity(productId: Int, increment: Boolean) {
-        updateCatalogState(productId) { currentState, id ->
-            updateCartItemQuantity(currentState, id, increment)
+        updateLocalState(_catalogContent) { currentState ->
+            updateCartItemQuantity(currentState, productId, increment)
         }
     }
 
     fun deleteCartItemFromCurrentState(productId: Int, recover: Boolean = false) {
-        updateCatalogState(productId) { currentState, id ->
-            deleteCartItem(currentState, id, recover)
+        updateLocalState(_catalogContent) { currentState ->
+            deleteCartItem(currentState, productId, recover)
         }
     }
 
-    fun updateStateAfterPlaceOrder() {
-        updateCatalogState(Unit) { currentState, _ ->
+    fun updateStateAfterPlaceOrder(order: List<Product>) {
+        updateLocalState(_catalogContent) { currentState ->
             updateCartItemsAfterPlaceOrder(currentState)
+        }
+
+        updateLocalState(_historyResult) { currentState ->
+            saveOrderToHistory(currentState, order)
         }
     }
 
@@ -216,20 +222,41 @@ class ProductViewModel @Inject constructor(
         _catalogContent.value = FetchResultUiState.Success(updatedContent)
     }
 
+    private fun saveOrderToHistory(
+        currentState: FetchResultUiState.Success<List<HistoryProduct>>,
+        products: List<Product>
+    ) {
+        val currentHistory = currentState.data.toMutableList()
+        currentHistory.addAll(
+            products.map {
+                with(it) {
+                    HistoryProduct(
+                        id = id,
+                        title = title,
+                        price = price,
+                        imageUrl = imageUrl,
+                        orderTime = LocalDateTime.now().toKotlinLocalDateTime()
+                    )
+                }
+            }
+        )
+
+        _historyResult.value = currentState.copy(data = currentHistory)
+    }
+
 
     fun selectProduct(product: Product) {
         _selectedProduct.value = product
     }
 
-    private inline fun <T> updateCatalogState(
-        value: T,
-        action: (FetchResultUiState.Success<CatalogFetchContent>, T) -> Unit
+    private inline fun <T> updateLocalState(
+        state: StateFlow<FetchResultUiState<T>>,
+        action: (FetchResultUiState.Success<T>) -> Unit
     ) {
-        val currentState = _catalogContent.value
-        if (currentState is FetchResultUiState.Success) {
-            action(currentState, value)
+        val value = state.value
+
+        if (value is FetchResultUiState.Success) {
+            action(value)
         }
     }
-
-
 }
