@@ -1,12 +1,13 @@
 package com.radlance.matule.data.common
 
-import com.radlance.matule.data.database.remote.entity.CartEntity
 import com.radlance.matule.data.database.remote.entity.CategoryEntity
 import com.radlance.matule.data.database.remote.entity.HistoryEntity
 import com.radlance.matule.data.database.remote.entity.ProductEntity
 import com.radlance.matule.domain.history.HistoryProduct
 import com.radlance.matule.domain.home.Category
 import com.radlance.matule.domain.home.Product
+import kotlinx.datetime.toKotlinLocalDateTime
+import java.time.LocalDateTime
 
 abstract class Mapper {
     protected fun CategoryEntity.toCategory(): Category {
@@ -29,11 +30,12 @@ abstract class Mapper {
         )
     }
 
-    protected fun Product.toCartEntity(userId: String): CartEntity {
-        return CartEntity(
+    protected fun Product.toHistoryEntity(userId: String): HistoryEntity {
+        return HistoryEntity(
+            userId = userId,
             productId = id,
             quantity = quantityInCart,
-            userId = userId
+            orderDate = LocalDateTime.now().toKotlinLocalDateTime()
         )
     }
 

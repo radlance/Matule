@@ -8,8 +8,8 @@ import com.radlance.matule.data.database.remote.entity.HistoryEntity
 import com.radlance.matule.data.database.remote.entity.ProductEntity
 import com.radlance.matule.domain.history.HistoryProduct
 import com.radlance.matule.domain.home.CatalogFetchContent
-import com.radlance.matule.domain.home.ProductRepository
 import com.radlance.matule.domain.home.Product
+import com.radlance.matule.domain.home.ProductRepository
 import com.radlance.matule.domain.remote.FetchResult
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
@@ -122,9 +122,9 @@ class ProductRepositoryImpl @Inject constructor(private val supabaseClient: Supa
         return try {
             user?.let {
                 products.forEach { product ->
-                    val cartEntity = product.toCartEntity(user.id)
+                    val historyEntity = product.toHistoryEntity(user.id)
 
-                    supabaseClient.from("history").insert(cartEntity)
+                    supabaseClient.from("history").insert(historyEntity)
                     supabaseClient.from("cart").delete {
                         filter {
                             CartEntity::productId eq product.id

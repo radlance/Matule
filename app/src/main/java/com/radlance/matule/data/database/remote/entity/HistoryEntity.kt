@@ -6,9 +6,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class HistoryEntity(
-    val id: Int,
     @SerialName("user_id") val userId: String,
     @SerialName("product_id") val productId: Int,
     val quantity: Int,
-    @SerialName("order_date") val orderDate: LocalDateTime
+    @SerialName("order_date") val orderDate: LocalDateTime,
+    val id: Int = 0
 )
