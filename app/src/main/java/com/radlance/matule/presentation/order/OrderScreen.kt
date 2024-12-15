@@ -35,7 +35,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.radlance.matule.R
 import com.radlance.matule.presentation.cart.CartResult
-import com.radlance.matule.presentation.home.HomeViewModel
+import com.radlance.matule.presentation.common.ProductViewModel
 import com.radlance.matule.ui.theme.MatuleTheme
 
 @Composable
@@ -43,7 +43,7 @@ fun OrderScreen(
     onBackPressed: () -> Unit,
     navigateToCatalog: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: ProductViewModel = hiltViewModel()
 ) {
     BackHandler { onBackPressed() }
 

@@ -1,12 +1,14 @@
-package com.radlance.matule.data.home
+package com.radlance.matule.data.product
 
 import com.radlance.matule.data.common.Mapper
 import com.radlance.matule.data.database.remote.entity.CartEntity
 import com.radlance.matule.data.database.remote.entity.CategoryEntity
 import com.radlance.matule.data.database.remote.entity.FavoriteEntity
+import com.radlance.matule.data.database.remote.entity.HistoryEntity
 import com.radlance.matule.data.database.remote.entity.ProductEntity
+import com.radlance.matule.domain.history.HistoryProduct
 import com.radlance.matule.domain.home.CatalogFetchContent
-import com.radlance.matule.domain.home.HomeRepository
+import com.radlance.matule.domain.home.ProductRepository
 import com.radlance.matule.domain.home.Product
 import com.radlance.matule.domain.remote.FetchResult
 import io.github.jan.supabase.SupabaseClient
@@ -14,8 +16,8 @@ import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.postgrest.from
 import javax.inject.Inject
 
-class HomeRepositoryImpl @Inject constructor(private val supabaseClient: SupabaseClient) :
-    HomeRepository, Mapper() {
+class ProductRepositoryImpl @Inject constructor(private val supabaseClient: SupabaseClient) :
+    ProductRepository, Mapper() {
     override suspend fun fetchCatalogContent(): FetchResult<CatalogFetchContent> {
         return try {
             val categories = supabaseClient.from("category").select().decodeList<CategoryEntity>()
@@ -135,6 +137,35 @@ class HomeRepositoryImpl @Inject constructor(private val supabaseClient: Supabas
 
         } catch (e: Exception) {
             FetchResult.Error(Unit)
+        }
+    }
+
+    override suspend fun loadHistory(): FetchResult<List<HistoryProduct>> {
+        val user = supabaseClient.auth.currentSessionOrNull()?.user
+        return try {
+            if (user != null) {
+                val historyEntities =
+                    supabaseClient.from("history").select {
+                        filter {
+                            HistoryEntity::userId eq user.id
+                        }
+                    }.decodeList<HistoryEntity>()
+                val products = supabaseClient.from("product").select().decodeList<ProductEntity>()
+
+                FetchResult.Success(
+                    historyEntities.map { historyEntity ->
+                        historyEntity.toHistoryProduct(
+                            products.first { productEntity ->
+                                productEntity.id == historyEntity.productId
+                            }
+                        )
+                    }
+                )
+            } else {
+                FetchResult.Error(emptyList())
+            }
+        } catch (e: Exception) {
+            FetchResult.Error(emptyList())
         }
     }
 

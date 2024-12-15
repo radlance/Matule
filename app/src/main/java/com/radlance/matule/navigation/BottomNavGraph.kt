@@ -17,7 +17,7 @@ import com.radlance.matule.presentation.cart.CartScreen
 import com.radlance.matule.presentation.favorite.FavoriteScreen
 import com.radlance.matule.presentation.history.HistoryScreen
 import com.radlance.matule.presentation.home.HomeScreen
-import com.radlance.matule.presentation.home.HomeViewModel
+import com.radlance.matule.presentation.common.ProductViewModel
 import com.radlance.matule.presentation.home.details.ProductDetailsScreen
 import com.radlance.matule.presentation.order.OrderScreen
 
@@ -29,7 +29,7 @@ fun BottomNavGraph(
     val navController = navigationState.navHostController
     val context = LocalContext.current
 
-    val sharedViewModel = hiltViewModel<HomeViewModel>()
+    val sharedViewModel = hiltViewModel<ProductViewModel>()
     NavHost(
         navController = navController,
         startDestination = Base,
@@ -97,7 +97,7 @@ fun BottomNavGraph(
         }
 
         composable<Notification> {
-            HistoryScreen()
+            HistoryScreen(viewModel = sharedViewModel)
         }
 
         composable<Profile> {

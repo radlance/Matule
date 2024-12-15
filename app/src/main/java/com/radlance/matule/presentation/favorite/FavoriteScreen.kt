@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.radlance.matule.R
-import com.radlance.matule.presentation.home.HomeViewModel
+import com.radlance.matule.presentation.common.ProductViewModel
 import com.radlance.matule.presentation.home.common.ChangeProductStatus
 import com.radlance.matule.ui.theme.MatuleTheme
 import com.radlance.matule.ui.theme.ralewayFamily
@@ -34,7 +34,7 @@ fun FavoriteScreen(
     onNavigateToCart: () -> Unit,
     onNavigateToDetails: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: ProductViewModel = hiltViewModel()
 ) {
     val catalogContent by viewModel.catalogContent.collectAsState()
     val addToFavoriteResult by viewModel.favoriteResult.collectAsState()

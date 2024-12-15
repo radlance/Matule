@@ -2,6 +2,7 @@ package com.radlance.matule.presentation.history
 
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -41,7 +42,8 @@ fun HistoryList(
         modifier = modifier
             .fillMaxSize()
             .padding(start = 19.dp, end = 21.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(bottom = 140.dp)
     ) {
         history.groupByDate(context).forEach { (date, products) ->
             item {
@@ -67,8 +69,9 @@ fun HistoryList(
 
 private fun List<HistoryProduct>.groupByDate(context: Context): Map<String, List<HistoryProduct>> {
     val currentDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+    val sortedHistory = sortedByDescending { it.orderTime }
 
-    val groupedHistoryByDate: Map<String, List<HistoryProduct>> = groupBy { historyProduct ->
+    val groupedHistoryByDate: Map<String, List<HistoryProduct>> = sortedHistory.groupBy { historyProduct ->
         val localDate =
             historyProduct.orderTime.date
         when (localDate) {

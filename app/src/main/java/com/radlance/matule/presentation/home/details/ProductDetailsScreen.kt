@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.radlance.matule.R
-import com.radlance.matule.presentation.home.HomeViewModel
+import com.radlance.matule.presentation.common.ProductViewModel
 import com.radlance.matule.presentation.home.common.ChangeProductStatus
 import com.radlance.matule.ui.theme.MatuleTheme
 
@@ -34,7 +34,7 @@ fun ProductDetailsScreen(
     onBackPressed: () -> Unit,
     onNavigateToCart: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: ProductViewModel = hiltViewModel()
 ) {
     val scrollState = rememberScrollState()
     val catalogContent by viewModel.catalogContent.collectAsState()

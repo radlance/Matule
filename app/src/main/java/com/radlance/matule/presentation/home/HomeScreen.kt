@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.radlance.matule.R
+import com.radlance.matule.presentation.common.ProductViewModel
 import com.radlance.matule.presentation.home.catalog.CategoriesRow
 import com.radlance.matule.presentation.home.catalog.HomeHeader
 import com.radlance.matule.presentation.home.catalog.HomeSearchBar
@@ -43,7 +44,7 @@ fun HomeScreen(
     onNavigateToCart: () -> Unit,
     onNavigateToDetails: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: ProductViewModel = hiltViewModel()
 ) {
     var searchFieldValue by rememberSaveable { mutableStateOf("") }
     val scrollState = rememberScrollState()

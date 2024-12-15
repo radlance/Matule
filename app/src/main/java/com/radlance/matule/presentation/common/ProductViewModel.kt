@@ -1,10 +1,9 @@
-package com.radlance.matule.presentation.home
+package com.radlance.matule.presentation.common
 
+import com.radlance.matule.domain.history.HistoryProduct
 import com.radlance.matule.domain.home.CatalogFetchContent
-import com.radlance.matule.domain.home.HomeRepository
+import com.radlance.matule.domain.home.ProductRepository
 import com.radlance.matule.domain.home.Product
-import com.radlance.matule.presentation.common.BaseViewModel
-import com.radlance.matule.presentation.common.FetchResultUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,9 +12,16 @@ import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    private val homeRepository: HomeRepository
+class ProductViewModel @Inject constructor(
+    private val productRepository: ProductRepository
 ) : BaseViewModel() {
+
+    private val _historyResult =
+        MutableStateFlow<FetchResultUiState<List<HistoryProduct>>>(FetchResultUiState.Initial())
+    val historyResult: StateFlow<FetchResultUiState<List<HistoryProduct>>> =
+        _historyResult.onStart { fetchHistory() }.stateInViewModel(
+            FetchResultUiState.Loading()
+        )
 
     private val _catalogContent =
         MutableStateFlow<FetchResultUiState<CatalogFetchContent>>(FetchResultUiState.Loading())
@@ -55,37 +61,41 @@ class HomeViewModel @Inject constructor(
 
     private val removedProductQuantity = MutableStateFlow(0)
 
+    fun fetchHistory() {
+        updateState(_historyResult) { productRepository.loadHistory() }
+    }
+
     fun fetchContent() {
-        updateState(_catalogContent) { homeRepository.fetchCatalogContent() }
+        updateState(_catalogContent) { productRepository.fetchCatalogContent() }
     }
 
     fun changeFavoriteStatus(productId: Int) {
         updateState(stateFlow = _favoriteResult, loadingData = productId) {
-            homeRepository.changeFavoriteStatus(productId)
+            productRepository.changeFavoriteStatus(productId)
         }
     }
 
     fun addProductToCart(productId: Int) {
         updateState(stateFlow = _inCartResult, loadingData = productId) {
-            homeRepository.addProductToCart(productId)
+            productRepository.addProductToCart(productId)
         }
     }
 
     fun updateProductQuantity(productId: Int, currentQuantity: Int) {
         updateState(stateFlow = _quantityResult, loadingData = productId) {
-            homeRepository.updateQuantity(productId, currentQuantity)
+            productRepository.updateQuantity(productId, currentQuantity)
         }
     }
 
     fun removeProductFromCart(productId: Int) {
         updateState(stateFlow = _removeResult, loadingData = productId) {
-            homeRepository.removeProductFromCart(productId)
+            productRepository.removeProductFromCart(productId)
         }
     }
 
     fun placeOrder(products: List<Product>) {
         updateState(stateFlow = _placeOrderResult) {
-            homeRepository.placeOrder(products)
+            productRepository.placeOrder(products)
         }
     }
 
