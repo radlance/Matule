@@ -27,6 +27,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.radlance.matule.navigation.bottom.BottomNavGraph
 import com.radlance.matule.navigation.bottom.BottomNavigationBar
 import com.radlance.matule.navigation.bottom.rememberNavigationState
+import com.radlance.matule.navigation.drawer.DrawerMenu
 import com.radlance.matule.navigation.drawer.DrawerStateViewModel
 import com.radlance.matule.ui.theme.MatuleTheme
 
@@ -77,6 +78,7 @@ fun MainScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.primary)
     ) {
+        DrawerMenu()
         Scaffold(
             containerColor = MaterialTheme.colorScheme.surfaceTint,
             bottomBar = {

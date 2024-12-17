@@ -32,7 +32,7 @@ fun OrderHeader(
         },
         middleContent = {
             Text(
-                text = stringResource(R.string.favorites),
+                text = stringResource(R.string.favorite),
                 fontSize = 16.sp,
                 fontFamily = ralewayFamily,
                 fontWeight = FontWeight.SemiBold,

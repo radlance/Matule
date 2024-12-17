@@ -48,7 +48,7 @@
     <string name="hide">Скрыть</string>
     <string name="more">Подробнее</string>
     <string name="no_favorite_products">Нет избранных товаров</string>
-    <string name="favorites">Избранное</string>
+    <string name="favorite">Избранное</string>
     <string name="cart">Корзина</string>
     <string name="sum">Сумма</string>
     <string name="delivery">Доставка</string>
@@ -68,4 +68,8 @@
     <string name="recently">Недавно</string>
     <string name="yesterday">Вчера</string>
     <string name="no_orders">Заказов нет</string>
+    <string name="profile">Профиль</string>
+    <string name="notifications">Уведомления</string>
+    <string name="settings">Настройки</string>
+    <string name="log_out">Выйти</string>
 </resources>
