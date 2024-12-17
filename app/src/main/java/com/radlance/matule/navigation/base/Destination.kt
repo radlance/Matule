@@ -1,4 +1,4 @@
-package com.radlance.matule.navigation
+package com.radlance.matule.navigation.base
 
 import androidx.annotation.Keep
 import kotlinx.serialization.Serializable

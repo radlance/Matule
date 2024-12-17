@@ -1,4 +1,4 @@
-package com.radlance.matule.navigation
+package com.radlance.matule.navigation.bottom
 
 import android.app.Activity
 import androidx.compose.foundation.layout.Box
@@ -24,6 +24,7 @@ import com.radlance.matule.presentation.order.OrderScreen
 @Composable
 fun BottomNavGraph(
     navigationState: BottomNavigationState,
+    onDrawerClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val navController = navigationState.navHostController
@@ -48,6 +49,8 @@ fun BottomNavGraph(
                     onNavigateToDetails = {
                         navController.navigate(Details(it))
                     },
+
+                    onDrawerClick = onDrawerClick,
                     viewModel = sharedViewModel
                 )
             }

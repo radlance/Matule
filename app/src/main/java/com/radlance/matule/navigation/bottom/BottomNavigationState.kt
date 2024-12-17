@@ -1,4 +1,4 @@
-package com.radlance.matule.navigation
+package com.radlance.matule.navigation.bottom
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember

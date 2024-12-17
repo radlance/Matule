@@ -12,6 +12,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,6 +44,7 @@ fun HomeScreen(
     onBackPressed: () -> Unit,
     onNavigateToCart: () -> Unit,
     onNavigateToDetails: (Int) -> Unit,
+    onDrawerClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ProductViewModel = hiltViewModel()
 ) {
@@ -54,6 +56,7 @@ fun HomeScreen(
     val addToCartResult by viewModel.inCartResult.collectAsState()
 
     BackHandler { onBackPressed() }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -62,7 +65,10 @@ fun HomeScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(Modifier.height(dimensionResource(R.dimen.main_top_padding)))
-        HomeHeader()
+        HomeHeader(
+            onMenuClick = onDrawerClick
+
+        )
 
         Spacer(Modifier.height(19.dp))
 
@@ -138,7 +144,7 @@ fun HomeScreen(
 @Composable
 private fun HomeScreenPreview() {
     MatuleTheme(darkTheme = false) {
-        HomeScreen({}, {}, {})
+        HomeScreen({}, {}, {}, { DrawerValue.Closed })
     }
 }
 
@@ -146,6 +152,6 @@ private fun HomeScreenPreview() {
 @Composable
 private fun HomeScreenExpandedPreview() {
     MatuleTheme(darkTheme = false) {
-        HomeScreen({}, {}, {})
+        HomeScreen({}, {}, {}, { DrawerValue.Closed })
     }
 }

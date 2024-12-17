@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.radlance.matule.navigation.NavGraph
+import com.radlance.matule.navigation.base.NavGraph
 import com.radlance.matule.ui.theme.MatuleTheme
 import dagger.hilt.android.AndroidEntryPoint
 

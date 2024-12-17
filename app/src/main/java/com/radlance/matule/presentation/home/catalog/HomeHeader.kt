@@ -18,10 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.radlance.matule.R
 import com.radlance.matule.presentation.component.CommonHeader
+import com.radlance.matule.ui.theme.MatuleTheme
 import com.radlance.matule.ui.theme.fillRedColor
 import com.radlance.matule.ui.theme.ralewayFamily
 import com.radlance.matule.ui.vector.BagIcon
@@ -29,13 +31,16 @@ import com.radlance.matule.ui.vector.Highlight05
 import com.radlance.matule.ui.vector.MenuIcon
 
 @Composable
-fun HomeHeader(modifier: Modifier = Modifier) {
+fun HomeHeader(
+    onMenuClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     CommonHeader(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp),
         startContent = {
-            IconButton(onClick = {}) {
+            IconButton(onClick = onMenuClick) {
                 Image(
                     imageVector = MenuIcon(MaterialTheme.colorScheme.onSurface),
                     contentDescription = "home_highlight_1"
@@ -85,4 +90,12 @@ fun HomeHeader(modifier: Modifier = Modifier) {
             }
         }
     )
+}
+
+@Preview
+@Composable
+private fun HomeHeaderPreview() {
+    MatuleTheme {
+        HomeHeader({})
+    }
 }

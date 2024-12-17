@@ -1,4 +1,4 @@
-package com.radlance.matule.navigation
+package com.radlance.matule.navigation.base
 
 import android.app.Activity
 import androidx.compose.foundation.background

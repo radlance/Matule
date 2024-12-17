@@ -1,4 +1,4 @@
-package com.radlance.matule.navigation
+package com.radlance.matule.navigation.base
 
 import androidx.lifecycle.viewModelScope
 import com.radlance.matule.domain.onboarding.NavigationRepository
