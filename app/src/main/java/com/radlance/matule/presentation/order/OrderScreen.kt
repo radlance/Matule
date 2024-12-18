@@ -43,14 +43,16 @@ fun OrderScreen(
     onBackPressed: () -> Unit,
     navigateToCatalog: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: ProductViewModel = hiltViewModel()
+    productViewModel: ProductViewModel = hiltViewModel(),
+    orderViewModel: OrderViewModel = hiltViewModel()
 ) {
     BackHandler { onBackPressed() }
 
     var resultSum by rememberSaveable { mutableDoubleStateOf(0.0) }
 
-    val catalogContent by viewModel.catalogContent.collectAsState()
-    val placeOrderResult by viewModel.placeOrderResult.collectAsState()
+    val catalogContent by productViewModel.catalogContent.collectAsState()
+    val placeOrderResult by productViewModel.placeOrderResult.collectAsState()
+    val userEmail by orderViewModel.userEmail.collectAsState()
 
     val context = LocalContext.current
 
@@ -66,7 +68,7 @@ fun OrderScreen(
                 navigateToCatalog = {
                     navigateToCatalog()
                     showSuccessOrderPlaceDialog = false
-                    viewModel.resetPlaceOrderResult()
+                    productViewModel.resetPlaceOrderResult()
                 },
                 modifier = Modifier.padding(horizontal = 20.dp)
             )
@@ -90,6 +92,7 @@ fun OrderScreen(
                 }
 
                 OrderCard(
+                    email = userEmail,
                     modifier = Modifier
                         .padding(horizontal = 14.dp)
                         .weight(4f)
@@ -106,7 +109,7 @@ fun OrderScreen(
                         deliveryPrice = 60.20,
                         buttonStringResId = R.string.confirm,
                         buttonEnabled = placeOrderButtonEnabled,
-                        onButtonClick = { viewModel.placeOrder(productsInCart) }
+                        onButtonClick = { productViewModel.placeOrder(productsInCart) }
                     )
                 }
             },
@@ -114,7 +117,7 @@ fun OrderScreen(
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(text = stringResource(R.string.load_error))
-                        Button(onClick = viewModel::fetchContent) {
+                        Button(onClick = productViewModel::fetchContent) {
                             Text(stringResource(R.string.retry), color = Color.White)
                         }
                     }
@@ -131,7 +134,7 @@ fun OrderScreen(
             onSuccess = {
                 LaunchedEffect(Unit) {
                     showSuccessOrderPlaceDialog = true
-                    viewModel.updateStateAfterPlaceOrder(it)
+                    productViewModel.updateStateAfterPlaceOrder(it)
                 }
             },
             onLoading = { placeOrderButtonEnabled = false },

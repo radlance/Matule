@@ -12,8 +12,12 @@ class UserRepositoryImpl @Inject constructor(
     private val auth: Auth
 ) : UserRepository, Mapper() {
     override suspend fun getCurrentUserData(): User {
-        val userData = auth.currentUserOrNull()?.userMetadata.toString()
+        val currentUser = auth.currentUserOrNull()
         val json = Json { ignoreUnknownKeys = true }
-        return json.decodeFromString<UserEntity>(userData).toUser()
+        val userData = json.decodeFromString<UserEntity>(
+            currentUser?.userMetadata.toString()
+        ).toUser()
+
+        return userData.copy(email = currentUser?.email ?: "")
     }
 }

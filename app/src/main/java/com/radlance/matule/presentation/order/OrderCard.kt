@@ -19,7 +19,10 @@ import androidx.compose.ui.unit.dp
 import com.radlance.matule.ui.theme.MatuleTheme
 
 @Composable
-fun OrderCard(modifier: Modifier = Modifier) {
+fun OrderCard(
+    email: String,
+    modifier: Modifier = Modifier
+) {
     val scrollState = rememberScrollState()
     Box(
         modifier = modifier
@@ -29,7 +32,7 @@ fun OrderCard(modifier: Modifier = Modifier) {
         Column(modifier = Modifier.fillMaxWidth().verticalScroll(scrollState)) {
             Spacer(modifier = Modifier.height(16.dp))
             ContactIInformation(
-                email = "emmanueloyiboke@gmail.com",
+                email = email,
                 modifier = Modifier.padding(horizontal = 20.dp)
             )
 
@@ -57,6 +60,7 @@ fun OrderCard(modifier: Modifier = Modifier) {
 private fun OrderCardPreview() {
     MatuleTheme {
         OrderCard(
+            email = "emmanueloyiboke@gmail.com",
             modifier = Modifier
                 .height(425.dp)
                 .fillMaxWidth()
@@ -69,6 +73,7 @@ private fun OrderCardPreview() {
 private fun OrderCardExpandedPreview() {
     MatuleTheme {
         OrderCard(
+            email = "emmanueloyiboke@gmail.com",
             modifier = Modifier
                 .height(425.dp)
                 .fillMaxWidth()
