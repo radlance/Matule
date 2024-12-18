@@ -102,6 +102,7 @@ fun SignUpScreen(
     AuthScaffold(snackBarHostState = snackBarHostState, modifier = modifier) {
         signUpResultUiState.Show(
             onSuccessResult = onSuccessSignUp,
+            onChangeButtonState = viewModel::updateActionButtonState,
             snackBarHostState = snackBarHostState
         )
 

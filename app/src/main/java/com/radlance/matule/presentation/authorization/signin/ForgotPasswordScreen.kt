@@ -65,6 +65,7 @@ fun ForgotPasswordScreen(
 
     sendingOtpUiState.Show(
         onSuccessResult = { onSuccessSending(emailFieldValue) },
+        onChangeButtonState = viewModel::updateActionButtonState,
         snackBarHostState = snackBarHostState
     )
 

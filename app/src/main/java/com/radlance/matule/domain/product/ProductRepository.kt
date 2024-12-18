@@ -1,4 +1,4 @@
-package com.radlance.matule.domain.home
+package com.radlance.matule.domain.product
 
 import com.radlance.matule.domain.history.HistoryProduct
 import com.radlance.matule.domain.remote.FetchResult

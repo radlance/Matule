@@ -75,6 +75,7 @@ fun SignInScreen(
 
     signInResultUiState.Show(
         onSuccessResult = onSuccessSignIn,
+        onChangeButtonState = viewModel::updateActionButtonState,
         snackBarHostState = snackBarHostState
     )
 
@@ -165,6 +166,7 @@ fun SignInScreen(
                     viewModel.signIn(emailFieldValue, passwordFieldValue)
                     keyboardController?.hide()
                 },
+                enabled = uiState.isEnabledButton,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 24.dp)

@@ -13,7 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
-import com.radlance.matule.domain.home.Product
+import com.radlance.matule.domain.product.Product
 
 @Composable
 fun CartItemContainer(

@@ -1,4 +1,4 @@
-package com.radlance.matule.domain.home
+package com.radlance.matule.domain.product
 
 data class Category(
     val title: String,

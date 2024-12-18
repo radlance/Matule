@@ -7,9 +7,9 @@ import com.radlance.matule.data.database.remote.entity.FavoriteEntity
 import com.radlance.matule.data.database.remote.entity.HistoryEntity
 import com.radlance.matule.data.database.remote.entity.ProductEntity
 import com.radlance.matule.domain.history.HistoryProduct
-import com.radlance.matule.domain.home.CatalogFetchContent
-import com.radlance.matule.domain.home.Product
-import com.radlance.matule.domain.home.ProductRepository
+import com.radlance.matule.domain.product.CatalogFetchContent
+import com.radlance.matule.domain.product.Product
+import com.radlance.matule.domain.product.ProductRepository
 import com.radlance.matule.domain.remote.FetchResult
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth

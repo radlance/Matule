@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
-import com.radlance.matule.domain.home.Product
+import com.radlance.matule.domain.product.Product
 import com.radlance.matule.ui.theme.MatuleTheme
 import com.radlance.matule.ui.theme.poppinsFamily
 import com.radlance.matule.ui.theme.ralewayFamily

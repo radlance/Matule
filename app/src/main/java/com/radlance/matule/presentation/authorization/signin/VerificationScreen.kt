@@ -83,6 +83,7 @@ fun VerificationScreen(
 
     confirmOtpState.Show(
         onSuccessResult = viewModel::showRecoveryDialog,
+        onChangeButtonState = {},
         snackBarHostState = snackBarHostState
     )
 
@@ -103,6 +104,7 @@ fun VerificationScreen(
 
     savePasswordUiState.Show(
         onSuccessResult = onSuccessPasswordUpdating,
+        onChangeButtonState = {},
         snackBarHostState = snackBarHostState
     )
 
@@ -116,6 +118,7 @@ fun VerificationScreen(
                 )
             }
         },
+        onChangeButtonState = {},
         snackBarHostState = snackBarHostState
     )
 

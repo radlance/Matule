@@ -1,9 +1,9 @@
 package com.radlance.matule.presentation.common
 
 import com.radlance.matule.domain.history.HistoryProduct
-import com.radlance.matule.domain.home.CatalogFetchContent
-import com.radlance.matule.domain.home.Product
-import com.radlance.matule.domain.home.ProductRepository
+import com.radlance.matule.domain.product.CatalogFetchContent
+import com.radlance.matule.domain.product.Product
+import com.radlance.matule.domain.product.ProductRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

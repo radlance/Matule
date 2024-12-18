@@ -52,7 +52,6 @@ class AuthViewModel @Inject constructor(
             if (isValidEmail && (isValidPassword && (isSignUp && isValidName || !isSignUp) || sendOtp)) {
                 viewModelScope.launch {
                     _authResultUiState.value = AuthResultUiState.Loading("Загрузка…")
-                    updateActionButtonState(false)
 
                     val result = when {
                         isSignUp -> authRepository.signUp(User(email = email!!, password = password!!, name = name!!))
@@ -61,15 +60,13 @@ class AuthViewModel @Inject constructor(
                     }
 
                     _authResultUiState.value = result.map(mapper)
-                    updateActionButtonState(true)
                 }
             }
         }
     }
 
 
-
-    private fun updateActionButtonState(isEnabled: Boolean) {
+    fun updateActionButtonState(isEnabled: Boolean) {
         _authUiState.update { currentState ->
             currentState.copy(isEnabledButton = isEnabled)
         }

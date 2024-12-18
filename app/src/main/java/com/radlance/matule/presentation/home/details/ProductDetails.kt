@@ -21,7 +21,7 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.radlance.matule.R
-import com.radlance.matule.domain.home.Product
+import com.radlance.matule.domain.product.Product
 import com.radlance.matule.ui.theme.inputFieldTextColor
 import com.radlance.matule.ui.theme.poppinsFamily
 import com.radlance.matule.ui.theme.ralewayFamily

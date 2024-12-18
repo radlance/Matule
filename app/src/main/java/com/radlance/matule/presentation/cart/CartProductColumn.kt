@@ -12,7 +12,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.radlance.matule.domain.home.Product
+import com.radlance.matule.domain.product.Product
 import com.radlance.matule.ui.theme.MatuleTheme
 import com.radlance.matule.ui.theme.poppinsFamily
 

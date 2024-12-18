@@ -1,7 +1,7 @@
 package com.radlance.matule.di
 
 import com.radlance.matule.data.product.ProductRepositoryImpl
-import com.radlance.matule.domain.home.ProductRepository
+import com.radlance.matule.domain.product.ProductRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

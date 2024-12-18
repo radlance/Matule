@@ -9,18 +9,26 @@ interface AuthResultUiState {
     @Composable
     fun Show(
         onSuccessResult: () -> Unit,
+        onChangeButtonState: (enabled: Boolean) -> Unit,
         snackBarHostState: SnackbarHostState
     )
 
     object Initial : AuthResultUiState {
         @Composable
-        override fun Show(onSuccessResult: () -> Unit, snackBarHostState: SnackbarHostState) {
-        }
+        override fun Show(
+            onSuccessResult: () -> Unit,
+            onChangeButtonState: (Boolean) -> Unit,
+            snackBarHostState: SnackbarHostState
+        ) {}
     }
 
     object Success : AuthResultUiState {
         @Composable
-        override fun Show(onSuccessResult: () -> Unit, snackBarHostState: SnackbarHostState) {
+        override fun Show(
+            onSuccessResult: () -> Unit,
+            onChangeButtonState: (Boolean) -> Unit,
+            snackBarHostState: SnackbarHostState
+        ) {
             LaunchedEffect(Unit) {
                 onSuccessResult()
             }
@@ -29,7 +37,12 @@ interface AuthResultUiState {
 
     data class Error(private val message: String) : AuthResultUiState {
         @Composable
-        override fun Show(onSuccessResult: () -> Unit, snackBarHostState: SnackbarHostState) {
+        override fun Show(
+            onSuccessResult: () -> Unit,
+            onChangeButtonState: (Boolean) -> Unit,
+            snackBarHostState: SnackbarHostState
+        ) {
+            onChangeButtonState(true)
             LaunchedEffect(message) {
                 snackBarHostState.showSnackbar(
                     message = message,
@@ -42,7 +55,12 @@ interface AuthResultUiState {
 
     data class Loading(private val message: String) : AuthResultUiState {
         @Composable
-        override fun Show(onSuccessResult: () -> Unit, snackBarHostState: SnackbarHostState) {
+        override fun Show(
+            onSuccessResult: () -> Unit,
+            onChangeButtonState: (Boolean) -> Unit,
+            snackBarHostState: SnackbarHostState
+        ) {
+            onChangeButtonState(false)
             LaunchedEffect(message) {
                 snackBarHostState.showSnackbar(
                     message = message,

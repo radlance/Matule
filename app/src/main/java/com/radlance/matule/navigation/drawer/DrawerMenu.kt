@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.radlance.matule.R
+import com.radlance.matule.domain.authorization.User
 import com.radlance.matule.ui.theme.MatuleTheme
 import com.radlance.matule.ui.theme.componentGrayColor
 import com.radlance.matule.ui.theme.fillRedColor

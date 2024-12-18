@@ -4,8 +4,8 @@ import com.radlance.matule.data.database.remote.entity.CategoryEntity
 import com.radlance.matule.data.database.remote.entity.HistoryEntity
 import com.radlance.matule.data.database.remote.entity.ProductEntity
 import com.radlance.matule.domain.history.HistoryProduct
-import com.radlance.matule.domain.home.Category
-import com.radlance.matule.domain.home.Product
+import com.radlance.matule.domain.product.Category
+import com.radlance.matule.domain.product.Product
 import kotlinx.datetime.toKotlinLocalDateTime
 import java.time.LocalDateTime
 
