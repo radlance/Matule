@@ -49,7 +49,10 @@ import com.radlance.matule.ui.vector.ProfileNavigationIcon
 import com.radlance.matule.ui.vector.SettingsIcon
 
 @Composable
-fun DrawerMenu(modifier: Modifier = Modifier) {
+fun DrawerMenu(
+    user: User,
+    modifier: Modifier = Modifier
+) {
     val scrollState = rememberScrollState()
     Column(
         modifier = modifier
@@ -66,7 +69,7 @@ fun DrawerMenu(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(15.dp))
         Text(
-            text = "Name Lastname",
+            text = user.name,
             fontSize = 20.sp,
             fontFamily = ralewayFamily,
             fontWeight = FontWeight.Bold,
@@ -177,7 +180,7 @@ private fun MenuItem(
 @Composable
 private fun DrawerMenuPreview() {
     MatuleTheme {
-        DrawerMenu()
+        DrawerMenu(User(name = "stub"))
     }
 }
 

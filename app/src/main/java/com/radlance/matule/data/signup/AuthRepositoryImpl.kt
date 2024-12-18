@@ -8,6 +8,8 @@ import io.github.jan.supabase.auth.OtpType
 import io.github.jan.supabase.auth.exception.AuthRestException
 import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.exceptions.HttpRequestException
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
@@ -19,6 +21,9 @@ class AuthRepositoryImpl @Inject constructor(
             auth.signUpWith(Email) {
                 email = user.email
                 password = user.password
+                data = buildJsonObject {
+                    put("name", user.name)
+                }
             }
             signIn(user)
         }

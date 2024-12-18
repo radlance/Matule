@@ -23,7 +23,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.radlance.matule.navigation.bottom.BottomNavGraph
 import com.radlance.matule.navigation.bottom.BottomNavigationBar
 import com.radlance.matule.navigation.bottom.rememberNavigationState
@@ -35,11 +35,13 @@ import com.radlance.matule.ui.theme.MatuleTheme
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
-    viewModel: DrawerStateViewModel = viewModel()
+    viewModel: DrawerStateViewModel = hiltViewModel()
 ) {
     val navigationState = rememberNavigationState()
 
     val drawerState by viewModel.drawerState.collectAsState()
+    val user by viewModel.user.collectAsState()
+
     val updateAnim = updateTransition(drawerState, label = "MenuState")
 
     val scale by updateAnim.animateFloat(
@@ -78,7 +80,7 @@ fun MainScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.primary)
     ) {
-        DrawerMenu()
+       DrawerMenu(user)
         Scaffold(
             containerColor = MaterialTheme.colorScheme.surfaceTint,
             bottomBar = {

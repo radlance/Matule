@@ -3,6 +3,8 @@ package com.radlance.matule.data.common
 import com.radlance.matule.data.database.remote.entity.CategoryEntity
 import com.radlance.matule.data.database.remote.entity.HistoryEntity
 import com.radlance.matule.data.database.remote.entity.ProductEntity
+import com.radlance.matule.data.database.remote.entity.UserEntity
+import com.radlance.matule.domain.authorization.User
 import com.radlance.matule.domain.history.HistoryProduct
 import com.radlance.matule.domain.product.Category
 import com.radlance.matule.domain.product.Product
@@ -47,5 +49,9 @@ abstract class Mapper {
             imageUrl = productEntity.imageUrl,
             orderTime = orderDate
         )
+    }
+
+    protected fun UserEntity.toUser(): User {
+        return User(name = name)
     }
 }
