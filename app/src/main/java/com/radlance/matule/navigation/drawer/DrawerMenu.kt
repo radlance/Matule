@@ -1,34 +1,24 @@
 package com.radlance.matule.navigation.drawer
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Badge
-import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
@@ -36,9 +26,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.radlance.matule.R
 import com.radlance.matule.domain.authorization.User
+import com.radlance.matule.navigation.bottom.BottomNavigationState
+import com.radlance.matule.navigation.bottom.Cart
+import com.radlance.matule.navigation.bottom.Favorite
+import com.radlance.matule.navigation.bottom.Notification
+import com.radlance.matule.navigation.bottom.rememberNavigationState
 import com.radlance.matule.ui.theme.MatuleTheme
 import com.radlance.matule.ui.theme.componentGrayColor
-import com.radlance.matule.ui.theme.fillRedColor
 import com.radlance.matule.ui.theme.ralewayFamily
 import com.radlance.matule.ui.vector.CartIcon
 import com.radlance.matule.ui.vector.ExitIcon
@@ -51,6 +45,8 @@ import com.radlance.matule.ui.vector.SettingsIcon
 @Composable
 fun DrawerMenu(
     user: User,
+    navigationState: BottomNavigationState,
+    onMenuItemClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
@@ -83,38 +79,53 @@ fun DrawerMenu(
             MenuItem(
                 icon = ProfileNavigationIcon(Color.White),
                 contentDescription = "ProfileNavigationIcon",
-                sectionResId = R.string.profile
+                sectionResId = R.string.profile,
+                onItemClick = { }
             )
 
             MenuItem(
                 icon = CartIcon,
                 contentDescription = "CartIcon",
-                sectionResId = R.string.cart
+                sectionResId = R.string.cart,
+                onItemClick = {
+                    navigationState.navigateTo(Cart)
+                    onMenuItemClick()
+                }
             )
 
             MenuItem(
                 icon = FavoriteNavigationIcon(Color.White),
                 contentDescription = "CartIcon",
-                sectionResId = R.string.favorite
+                sectionResId = R.string.favorite,
+                onItemClick = {
+                    navigationState.navigateTo(Favorite)
+                    onMenuItemClick()
+                }
             )
 
             MenuItem(
                 icon = OrdersIcon,
                 contentDescription = "OrdersIcon",
                 sectionResId = R.string.orders,
-                iconOffset = IntOffset(x = 0, y = 15)
+                iconOffset = IntOffset(x = 0, y = 15),
+                onItemClick = {
+                    navigationState.navigateTo(Notification)
+                    onMenuItemClick()
+                }
             )
 
             MenuItem(
                 icon = NotificationNavigationIcon(Color.White),
                 contentDescription = "NotificationIcon",
-                sectionResId = R.string.notifications
+                sectionResId = R.string.notifications,
+                onItemClick = { }
             )
 
             MenuItem(
                 icon = SettingsIcon,
                 contentDescription = "SettingsIcon",
-                sectionResId = R.string.settings
+                sectionResId = R.string.settings,
+                onItemClick = { }
             )
         }
 
@@ -125,62 +136,22 @@ fun DrawerMenu(
         MenuItem(
             icon = ExitIcon,
             contentDescription = "ExitIcon",
-            sectionResId = R.string.log_out
+            sectionResId = R.string.log_out,
+            onItemClick = { }
         )
     }
 }
 
-@Composable
-private fun MenuItem(
-    icon: ImageVector,
-    contentDescription: String?,
-    @StringRes sectionResId: Int,
-    modifier: Modifier = Modifier,
-    iconOffset: IntOffset = IntOffset(x = 0, y = 0),
-    showBadge: Boolean = false
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-    ) {
-        Box(modifier = Modifier.width(25.dp), contentAlignment = Alignment.Center) {
-
-            BadgedBox(
-                badge = {
-                    if (showBadge) {
-                        Badge(
-                            modifier = Modifier.size(8.dp).offset(x = 1.dp, y = (-6).dp),
-                            containerColor = fillRedColor,
-                            contentColor = fillRedColor
-                        )
-                    }
-                }
-            ) {
-                Icon(
-                    imageVector = icon,
-                    tint = Color.White,
-                    contentDescription = contentDescription,
-                    modifier = Modifier.offset { iconOffset }
-                )
-            }
-        }
-        Spacer(Modifier.width(25.dp))
-        Text(
-            text = stringResource(sectionResId),
-            fontSize = 16.sp,
-            fontFamily = ralewayFamily,
-            fontWeight = FontWeight.Medium,
-            lineHeight = 20.sp,
-            color = Color.White
-        )
-    }
-}
 
 @Preview
 @Composable
 private fun DrawerMenuPreview() {
     MatuleTheme {
-        DrawerMenu(User(name = "stub"))
+        DrawerMenu(
+            user = User(name = "stub"),
+            navigationState = rememberNavigationState(),
+            onMenuItemClick = {}
+        )
     }
 }
 
@@ -192,7 +163,8 @@ private fun MenuItemPreview() {
             icon = NotificationNavigationIcon(Color.White),
             contentDescription = null,
             R.string.retry,
-            showBadge = true
+            showBadge = true,
+            onItemClick = {}
         )
     }
 }

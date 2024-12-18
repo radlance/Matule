@@ -80,7 +80,12 @@ fun MainScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.primary)
     ) {
-       DrawerMenu(user)
+       DrawerMenu(
+           user = user,
+           navigationState = navigationState,
+           onMenuItemClick = viewModel::changeDrawerState
+       )
+
         Scaffold(
             containerColor = MaterialTheme.colorScheme.surfaceTint,
             bottomBar = {

@@ -32,7 +32,7 @@ fun OrderHeader(
         },
         middleContent = {
             Text(
-                text = stringResource(R.string.favorite),
+                text = stringResource(R.string.my_cart),
                 fontSize = 16.sp,
                 fontFamily = ralewayFamily,
                 fontWeight = FontWeight.SemiBold,

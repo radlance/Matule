@@ -72,4 +72,5 @@
     <string name="notifications">Уведомления</string>
     <string name="settings">Настройки</string>
     <string name="log_out">Выйти</string>
+    <string name="my_cart">My cart</string>
 </resources>
