@@ -14,10 +14,12 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun getCurrentUserData(): User {
         val currentUser = auth.currentUserOrNull()
         val json = Json { ignoreUnknownKeys = true }
-        val userData = json.decodeFromString<UserEntity>(
-            currentUser?.userMetadata.toString()
-        ).toUser()
+        val userData = currentUser?.userMetadata?.let {
+            json.decodeFromString<UserEntity>(
+                it.toString()
+            ).toUser()
+        }
 
-        return userData.copy(email = currentUser?.email ?: "")
+        return userData?.copy(email = currentUser.email ?: "") ?: User()
     }
 }

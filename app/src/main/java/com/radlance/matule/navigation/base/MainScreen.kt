@@ -104,7 +104,10 @@ fun MainScreen(
         ) {
             BottomNavGraph(
                 navigationState = navigationState,
-                onDrawerClick = viewModel::changeDrawerState,
+                onDrawerClick = {
+                    viewModel.changeDrawerState()
+                    viewModel.getCurrentUserData()
+                },
                 modifier = Modifier
             )
         }
