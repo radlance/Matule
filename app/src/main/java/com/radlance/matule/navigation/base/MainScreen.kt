@@ -7,6 +7,7 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateOffset
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
@@ -20,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -78,7 +80,21 @@ fun MainScreen(
         label = ""
     ) { it.getRotation() }
 
-    Box(Modifier.fillMaxSize()) {
+    Box(
+        Modifier
+            .fillMaxSize()
+            .pointerInput(Unit) {
+                detectHorizontalDragGestures { change, dragAmount ->
+                    if (dragAmount > 10f) {
+                        viewModel.setExpandedState()
+                    } else if (dragAmount < -10f) {
+                        viewModel.setCollapsedState()
+                    }
+                    viewModel.getCurrentUserData()
+                    change.consume()
+                }
+            }
+    ) {
        DrawerMenu(
            user = user,
            navigationState = navigationState,

@@ -51,6 +51,14 @@ class DrawerStateViewModel @Inject constructor(
         }
     }
 
+    fun setExpandedState() {
+        _drawerState.value = DrawerState.Expanded
+    }
+
+    fun setCollapsedState() {
+        _drawerState.value = DrawerState.Collapsed
+    }
+
     fun signOut() {
         viewModelScope.launch {
             _signOutState.value = AuthResultUiState.Loading("Выход...")
