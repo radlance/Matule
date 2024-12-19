@@ -183,7 +183,13 @@ fun NavGraph(navController: NavHostController) {
         }
 
         composable<Home> {
-            MainScreen()
+            MainScreen(
+                onSignOut = {
+                    navController.navigate(SignIn) {
+                        popUpTo<Home> { inclusive = true }
+                    }
+                }
+            )
         }
     }
 }

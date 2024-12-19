@@ -16,8 +16,8 @@ class NavigationRepositoryImpl @Inject constructor(
         return dataStoreManager.getViewingStatus()
     }
 
-    override suspend fun setUserLoggedIn() {
-        return dataStoreManager.setUserLoggedIn()
+    override suspend fun setUserLoggedIn(loggedIn: Boolean) {
+        return dataStoreManager.setLoggedInStatus(loggedIn)
     }
 
     override fun getLoggedInStatus(): Flow<Boolean> {

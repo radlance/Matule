@@ -6,6 +6,6 @@ interface NavigationRepository {
     suspend fun setOnBoardingViewed()
     fun getOnBoardingViewingStatus(): Flow<Boolean>
 
-    suspend fun setUserLoggedIn()
+    suspend fun setUserLoggedIn(loggedIn: Boolean)
     fun getLoggedInStatus(): Flow<Boolean>
 }

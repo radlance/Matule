@@ -1,4 +1,4 @@
-package com.radlance.matule.data.signup
+package com.radlance.matule.data.auth
 
 import com.radlance.matule.domain.authorization.AuthRepository
 import com.radlance.matule.domain.authorization.AuthResult
@@ -80,6 +80,15 @@ class AuthRepositoryImpl @Inject constructor(
             auth.updateUser {
                 password = newPassword
             }
+            AuthResult.Success
+        } catch (e: Exception) {
+            AuthResult.Error(e is HttpRequestException)
+        }
+    }
+
+    override suspend fun signOut(): AuthResult {
+        return try {
+            auth.signOut()
             AuthResult.Success
         } catch (e: Exception) {
             AuthResult.Error(e is HttpRequestException)

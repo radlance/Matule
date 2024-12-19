@@ -35,7 +35,7 @@ class NavigationViewModel @Inject constructor(
 
     fun setUserLoggedIn() {
         viewModelScope.launch {
-            navigationRepository.setUserLoggedIn()
+            navigationRepository.setUserLoggedIn(true)
         }
     }
 }

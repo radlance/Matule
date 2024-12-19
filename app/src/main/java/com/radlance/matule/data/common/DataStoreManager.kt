@@ -25,9 +25,9 @@ class DataStoreManager @Inject constructor(private val context: Context) {
         }
     }
 
-    suspend fun setUserLoggedIn() {
+    suspend fun setLoggedInStatus(loggedIn: Boolean) {
         context.dataStore.edit { settings ->
-            settings[KEY_USER_LOGGED_IN] = true
+            settings[KEY_USER_LOGGED_IN] = loggedIn
         }
     }
 

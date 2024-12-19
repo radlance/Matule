@@ -1,21 +1,34 @@
 package com.radlance.matule.navigation.drawer
 
+import androidx.lifecycle.viewModelScope
+import com.radlance.matule.domain.authorization.AuthRepository
+import com.radlance.matule.domain.authorization.AuthResult
 import com.radlance.matule.domain.authorization.User
+import com.radlance.matule.domain.onboarding.NavigationRepository
 import com.radlance.matule.domain.user.UserRepository
+import com.radlance.matule.presentation.authorization.common.AuthResultUiState
 import com.radlance.matule.presentation.common.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class DrawerStateViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val authRepository: AuthRepository,
+    private val navigationRepository: NavigationRepository,
+    private val mapper: AuthResult.Mapper<AuthResultUiState>
 ) : BaseViewModel() {
     private val _drawerState = MutableStateFlow<DrawerState>(DrawerState.Collapsed)
     val drawerState: StateFlow<DrawerState>
         get() = _drawerState
+
+    private val _signOutState = MutableStateFlow<AuthResultUiState>(AuthResultUiState.Initial)
+    val signOutState: StateFlow<AuthResultUiState>
+        get() = _signOutState.asStateFlow()
 
     private val _user = MutableStateFlow(User())
     val user: StateFlow<User> get() = _user.stateInViewModel(User())
@@ -35,6 +48,20 @@ class DrawerStateViewModel @Inject constructor(
             DrawerState.Collapsed
         } else {
             DrawerState.Expanded
+        }
+    }
+
+    fun signOut() {
+        viewModelScope.launch {
+            _signOutState.value = AuthResultUiState.Loading("Выход...")
+            val result = authRepository.signOut().map(mapper)
+            _signOutState.value = result
+        }
+    }
+
+    fun leaveHomeScreen() {
+        viewModelScope.launch {
+            navigationRepository.setUserLoggedIn(false)
         }
     }
 }

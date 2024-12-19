@@ -1,6 +1,6 @@
 package com.radlance.matule.di
 
-import com.radlance.matule.data.signup.AuthRepositoryImpl
+import com.radlance.matule.data.auth.AuthRepositoryImpl
 import com.radlance.matule.domain.authorization.AuthRepository
 import dagger.Binds
 import dagger.Module

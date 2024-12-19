@@ -6,4 +6,5 @@ interface AuthRepository {
     suspend fun sendOtp(email: String): AuthResult
     suspend fun verifyEmailOtp(email: String, token: String): AuthResult
     suspend fun updatePassword(newPassword: String): AuthResult
+    suspend fun signOut(): AuthResult
 }

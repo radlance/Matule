@@ -7,7 +7,6 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateOffset
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
@@ -34,12 +33,16 @@ import com.radlance.matule.ui.theme.MatuleTheme
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
+    onSignOut: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DrawerStateViewModel = hiltViewModel()
 ) {
     val navigationState = rememberNavigationState()
 
+
     val drawerState by viewModel.drawerState.collectAsState()
+    val signOutState by viewModel.signOutState.collectAsState()
+
     val user by viewModel.user.collectAsState()
 
     val updateAnim = updateTransition(drawerState, label = "MenuState")
@@ -75,15 +78,17 @@ fun MainScreen(
         label = ""
     ) { it.getRotation() }
 
-    Box(
-        Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.primary)
-    ) {
+    Box(Modifier.fillMaxSize()) {
        DrawerMenu(
            user = user,
            navigationState = navigationState,
-           onMenuItemClick = viewModel::changeDrawerState
+           onMenuItemClick = viewModel::changeDrawerState,
+           onSignOutClick = viewModel::signOut,
+           signOutState = signOutState,
+           onSignOut = {
+               onSignOut()
+               viewModel.leaveHomeScreen()
+           }
        )
 
         Scaffold(
@@ -119,7 +124,7 @@ fun MainScreen(
 @Composable
 private fun CommonBottomNavigationPreview() {
     MatuleTheme {
-        MainScreen()
+        MainScreen({})
     }
 }
 
@@ -127,6 +132,6 @@ private fun CommonBottomNavigationPreview() {
 @Composable
 private fun CommonBottomNavigationExpandedPreview() {
     MatuleTheme {
-        MainScreen()
+        MainScreen({})
     }
 }
