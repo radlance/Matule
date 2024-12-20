@@ -45,4 +45,8 @@ data object Profile: BottomDestination
 
 @Serializable
 @Keep
-data object FullScreenBarcode: BottomDestination
+data object UserData: BottomDestination
+
+@Serializable
+@Keep
+data object Barcode: BottomDestination

@@ -104,14 +104,16 @@ fun BottomNavGraph(
             HistoryScreen(viewModel = sharedViewModel)
         }
 
-        composable<Profile> {
-            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                ProfileScreen(onBarcodeClick = { navigationState.navigateTo(FullScreenBarcode) })
+        navigation<Profile>(startDestination = UserData) {
+            composable<UserData> {
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    ProfileScreen(onBarcodeClick = { navigationState.navigateTo(Barcode) })
+                }
             }
-        }
 
-        composable<FullScreenBarcode> {
-            FullScreenBarcode(onBackPressed = { navigationState.navigateTo(Profile) })
+            composable<Barcode> {
+                FullScreenBarcode(onBackPressed = { navigationState.navigateTo(UserData) })
+            }
         }
     }
 }

@@ -1,7 +1,10 @@
 package com.radlance.matule.presentation.profile
 
 import android.app.Activity
+import android.content.Context
 import android.content.pm.ActivityInfo
+import android.view.WindowManager
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -35,20 +38,25 @@ fun FullScreenBarcode(
     val context = LocalContext.current
     val scrollState = rememberScrollState()
 
+
+    BackHandler {
+        onBackPressed()
+    }
+
     LaunchedEffect(Unit) {
         (context as? Activity)?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        changeBrightness(context, true)
     }
 
     DisposableEffect(Unit) {
         onDispose {
-            (context as? Activity)?.requestedOrientation =
-                ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+            resetSettings(context)
         }
     }
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
+            .background(MaterialTheme.colorScheme.surfaceVariant)
             .padding(horizontal = 20.dp)
             .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -57,9 +65,7 @@ fun FullScreenBarcode(
         FullScreenBarcodeHeader(
             onBackPressed = {
                 onBackPressed()
-                (context as? Activity)?.requestedOrientation =
-                    ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-
+                resetSettings(context)
             }
         )
         Spacer(Modifier.height(40.dp))
@@ -72,8 +78,24 @@ fun FullScreenBarcode(
         )
         Spacer(Modifier.height(140.dp))
     }
-
 }
+
+private fun changeBrightness(context: Context, bright: Boolean) {
+    (context as? Activity)?.window?.attributes?.let { layoutParams ->
+        layoutParams.screenBrightness = if (bright) {
+            0.8f
+        } else {
+            WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
+        }
+        context.window.attributes = layoutParams
+    }
+}
+
+private fun resetSettings(context: Context) {
+    (context as? Activity)?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+    changeBrightness(context, false)
+}
+
 
 @Preview(device = "spec:parent=pixel_5,orientation=landscape")
 @Composable
