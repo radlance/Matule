@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,10 +18,12 @@ import com.radlance.matule.ui.theme.MatuleTheme
 
 @Composable
 fun ProfileScreen(modifier: Modifier = Modifier) {
+    val scrollState = rememberScrollState()
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surfaceVariant),
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Spacer(Modifier.height(55.dp))
@@ -28,6 +32,14 @@ fun ProfileScreen(modifier: Modifier = Modifier) {
         ProfilePictureSection()
         Spacer(Modifier.height(19.dp))
         Barcode(modifier = Modifier.padding(start = 15.dp, end = 20.dp))
+        ProfileDataColumn(
+            name = "Emmanuel",
+            lastName = "Oyiboke",
+            address = "Nigeria",
+            phoneNumber = "+234-811-732-5298",
+            modifier = Modifier.padding(start = 22.dp, end = 18.dp)
+        )
+        Spacer(Modifier.height(140.dp))
     }
 }
 
