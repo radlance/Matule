@@ -17,7 +17,10 @@ import androidx.compose.ui.unit.dp
 import com.radlance.matule.ui.theme.MatuleTheme
 
 @Composable
-fun ProfileScreen(modifier: Modifier = Modifier) {
+fun ProfileScreen(
+    onBarcodeClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     val scrollState = rememberScrollState()
     Column(
         modifier = modifier
@@ -31,7 +34,10 @@ fun ProfileScreen(modifier: Modifier = Modifier) {
         Spacer(Modifier.height(48.dp))
         ProfilePictureSection()
         Spacer(Modifier.height(19.dp))
-        Barcode(modifier = Modifier.padding(start = 15.dp, end = 20.dp))
+        Barcode(
+            onBarcodeClick = onBarcodeClick,
+            modifier = Modifier.padding(start = 15.dp, end = 20.dp)
+        )
         ProfileDataColumn(
             name = "Emmanuel",
             lastName = "Oyiboke",
@@ -39,6 +45,7 @@ fun ProfileScreen(modifier: Modifier = Modifier) {
             phoneNumber = "+234-811-732-5298",
             modifier = Modifier.padding(start = 22.dp, end = 18.dp)
         )
+
         Spacer(Modifier.height(140.dp))
     }
 }
@@ -47,7 +54,7 @@ fun ProfileScreen(modifier: Modifier = Modifier) {
 @Composable
 private fun ProfileScreenPreview() {
     MatuleTheme {
-        ProfileScreen()
+        ProfileScreen({})
     }
 }
 
@@ -55,6 +62,6 @@ private fun ProfileScreenPreview() {
 @Composable
 private fun ProfileScreenPreviewExpanded() {
     MatuleTheme {
-        ProfileScreen()
+        ProfileScreen({})
     }
 }

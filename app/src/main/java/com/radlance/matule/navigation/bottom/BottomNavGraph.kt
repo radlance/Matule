@@ -19,6 +19,7 @@ import com.radlance.matule.presentation.history.HistoryScreen
 import com.radlance.matule.presentation.home.HomeScreen
 import com.radlance.matule.presentation.home.details.ProductDetailsScreen
 import com.radlance.matule.presentation.order.OrderScreen
+import com.radlance.matule.presentation.profile.FullScreenBarcode
 import com.radlance.matule.presentation.profile.ProfileScreen
 
 @Composable
@@ -105,8 +106,12 @@ fun BottomNavGraph(
 
         composable<Profile> {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                ProfileScreen()
+                ProfileScreen(onBarcodeClick = { navigationState.navigateTo(FullScreenBarcode) })
             }
+        }
+
+        composable<FullScreenBarcode> {
+            FullScreenBarcode(onBackPressed = { navigationState.navigateTo(Profile) })
         }
     }
 }

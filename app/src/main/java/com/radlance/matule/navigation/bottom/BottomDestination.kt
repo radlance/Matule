@@ -42,3 +42,7 @@ data object Notification: BottomDestination
 @Serializable
 @Keep
 data object Profile: BottomDestination
+
+@Serializable
+@Keep
+data object FullScreenBarcode: BottomDestination
