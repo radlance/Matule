@@ -38,6 +38,7 @@ import com.radlance.matule.navigation.bottom.BottomNavigationState
 import com.radlance.matule.navigation.bottom.Cart
 import com.radlance.matule.navigation.bottom.Favorite
 import com.radlance.matule.navigation.bottom.Notification
+import com.radlance.matule.navigation.bottom.Profile
 import com.radlance.matule.navigation.bottom.rememberNavigationState
 import com.radlance.matule.presentation.authorization.common.AuthResultUiState
 import com.radlance.matule.ui.theme.MatuleTheme
@@ -116,7 +117,10 @@ fun DrawerMenu(
                     icon = ProfileNavigationIcon(Color.White),
                     contentDescription = "ProfileNavigationIcon",
                     sectionResId = R.string.profile,
-                    onItemClick = { }
+                    onItemClick = {
+                        navigationState.navigateTo(Profile)
+                        onMenuItemClick()
+                    }
                 )
 
                 MenuItem(

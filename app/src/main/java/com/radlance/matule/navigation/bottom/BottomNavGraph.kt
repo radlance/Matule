@@ -3,7 +3,6 @@ package com.radlance.matule.navigation.bottom
 import android.app.Activity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,12 +13,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.toRoute
 import com.radlance.matule.presentation.cart.CartScreen
+import com.radlance.matule.presentation.common.ProductViewModel
 import com.radlance.matule.presentation.favorite.FavoriteScreen
 import com.radlance.matule.presentation.history.HistoryScreen
 import com.radlance.matule.presentation.home.HomeScreen
-import com.radlance.matule.presentation.common.ProductViewModel
 import com.radlance.matule.presentation.home.details.ProductDetailsScreen
 import com.radlance.matule.presentation.order.OrderScreen
+import com.radlance.matule.presentation.profile.ProfileScreen
 
 @Composable
 fun BottomNavGraph(
@@ -105,7 +105,7 @@ fun BottomNavGraph(
 
         composable<Profile> {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(Profile.toString())
+                ProfileScreen()
             }
         }
     }
