@@ -10,18 +10,23 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.radlance.matule.ui.theme.MatuleTheme
 
 @Composable
 fun ProfileScreen(
     onBarcodeClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
     val scrollState = rememberScrollState()
+    val userData by profileViewModel.userData.collectAsState()
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -32,15 +37,15 @@ fun ProfileScreen(
         Spacer(Modifier.height(55.dp))
         ProfileHeader()
         Spacer(Modifier.height(48.dp))
-        ProfilePictureSection()
+        ProfilePictureSection(name = userData.name)
         Spacer(Modifier.height(19.dp))
         Barcode(
             onBarcodeClick = onBarcodeClick,
             modifier = Modifier.padding(start = 15.dp, end = 20.dp)
         )
         ProfileDataColumn(
-            name = "Emmanuel",
-            lastName = "Oyiboke",
+            name = userData.name,
+            lastName = "",
             address = "Nigeria",
             phoneNumber = "+234-811-732-5298",
             modifier = Modifier.padding(start = 22.dp, end = 18.dp)

@@ -24,7 +24,10 @@ import com.radlance.matule.ui.theme.MatuleTheme
 import com.radlance.matule.ui.theme.ralewayFamily
 
 @Composable
-fun ProfilePictureSection(modifier: Modifier = Modifier) {
+fun ProfilePictureSection(
+    name: String,
+    modifier: Modifier = Modifier
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.fillMaxWidth()
@@ -37,7 +40,7 @@ fun ProfilePictureSection(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "name",
+            text = name,
             fontSize = 20.sp,
             fontFamily = ralewayFamily,
             fontWeight = FontWeight.SemiBold,
@@ -61,6 +64,6 @@ fun ProfilePictureSection(modifier: Modifier = Modifier) {
 @Composable
 private fun ProfilePictureSectionPreview() {
     MatuleTheme {
-        ProfilePictureSection()
+        ProfilePictureSection("name")
     }
 }
