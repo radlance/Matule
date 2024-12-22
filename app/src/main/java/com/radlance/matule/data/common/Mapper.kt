@@ -2,10 +2,12 @@ package com.radlance.matule.data.common
 
 import com.radlance.matule.data.database.remote.entity.CategoryEntity
 import com.radlance.matule.data.database.remote.entity.HistoryEntity
+import com.radlance.matule.data.database.remote.entity.NotificationEntity
 import com.radlance.matule.data.database.remote.entity.ProductEntity
 import com.radlance.matule.data.database.remote.entity.UserEntity
 import com.radlance.matule.domain.authorization.User
 import com.radlance.matule.domain.history.HistoryProduct
+import com.radlance.matule.domain.notification.Notification
 import com.radlance.matule.domain.product.Category
 import com.radlance.matule.domain.product.Product
 import kotlinx.datetime.toKotlinLocalDateTime
@@ -53,5 +55,9 @@ abstract class Mapper {
 
     protected fun UserEntity.toUser(): User {
         return User(name = name)
+    }
+
+    protected fun NotificationEntity.toNotification(): Notification {
+        return Notification(title = title, content = content, sendDate = sendDate, id = id)
     }
 }

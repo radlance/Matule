@@ -64,39 +64,39 @@ class ProductViewModel @Inject constructor(
     private val removedProductQuantity = MutableStateFlow(0)
 
     fun fetchHistory() {
-        updateState(_historyResult) { productRepository.loadHistory() }
+        updateFetchUiState(_historyResult) { productRepository.loadHistory() }
     }
 
     fun fetchContent() {
-        updateState(_catalogContent) { productRepository.fetchCatalogContent() }
+        updateFetchUiState(_catalogContent) { productRepository.fetchCatalogContent() }
     }
 
     fun changeFavoriteStatus(productId: Int) {
-        updateState(stateFlow = _favoriteResult, loadingData = productId) {
+        updateFetchUiState(stateFlow = _favoriteResult, loadingData = productId) {
             productRepository.changeFavoriteStatus(productId)
         }
     }
 
     fun addProductToCart(productId: Int) {
-        updateState(stateFlow = _inCartResult, loadingData = productId) {
+        updateFetchUiState(stateFlow = _inCartResult, loadingData = productId) {
             productRepository.addProductToCart(productId)
         }
     }
 
     fun updateProductQuantity(productId: Int, currentQuantity: Int) {
-        updateState(stateFlow = _quantityResult, loadingData = productId) {
+        updateFetchUiState(stateFlow = _quantityResult, loadingData = productId) {
             productRepository.updateQuantity(productId, currentQuantity)
         }
     }
 
     fun removeProductFromCart(productId: Int) {
-        updateState(stateFlow = _removeResult, loadingData = productId) {
+        updateFetchUiState(stateFlow = _removeResult, loadingData = productId) {
             productRepository.removeProductFromCart(productId)
         }
     }
 
     fun placeOrder(products: List<Product>) {
-        updateState(stateFlow = _placeOrderResult) {
+        updateFetchUiState(stateFlow = _placeOrderResult) {
             productRepository.placeOrder(products)
         }
     }

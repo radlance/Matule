@@ -19,7 +19,7 @@ abstract class BaseViewModel : ViewModel() {
         )
     }
 
-    protected inline fun <T> updateState(
+    protected inline fun <T> updateFetchUiState(
         stateFlow: MutableStateFlow<FetchResultUiState<T>>,
         loadingData: T? = null,
         crossinline fetch: suspend () -> FetchResult<T>
