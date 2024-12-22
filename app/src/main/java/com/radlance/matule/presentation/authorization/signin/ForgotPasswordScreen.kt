@@ -81,7 +81,7 @@ fun ForgotPasswordScreen(
         ) {
             val interactionSource = remember { MutableInteractionSource() }
 
-            BackButton(onClicked = onBackPressed, modifier = Modifier.align(Alignment.Start))
+            BackButton(onClick = onBackPressed, modifier = Modifier.align(Alignment.Start))
 
             Text(
                 text = stringResource(R.string.forgot_password),

@@ -148,7 +148,7 @@ fun VerificationScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            BackButton(onClicked = onBackPressed, modifier = Modifier.align(Alignment.Start))
+            BackButton(onClick = onBackPressed, modifier = Modifier.align(Alignment.Start))
 
             Text(
                 text = stringResource(R.string.otp_check),

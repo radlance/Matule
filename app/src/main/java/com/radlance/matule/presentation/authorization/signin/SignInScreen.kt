@@ -91,7 +91,7 @@ fun SignInScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            BackButton(onClicked = onIconBackPressed, modifier = Modifier.align(Alignment.Start))
+            BackButton(onClick = onIconBackPressed, modifier = Modifier.align(Alignment.Start))
 
             Text(
                 text = stringResource(R.string.hello),

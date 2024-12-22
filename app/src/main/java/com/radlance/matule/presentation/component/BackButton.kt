@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun BackButton(
-    onClicked: () -> Unit,
+    onClick: () -> Unit,
     backgroundColor: Color = MaterialTheme.colorScheme.surfaceTint,
     modifier: Modifier = Modifier
 ) {
@@ -25,7 +25,7 @@ fun BackButton(
 
     IconButton(
         onClick = {
-            onClicked()
+            onClick()
             keyboardController?.hide()
         },
         modifier = modifier

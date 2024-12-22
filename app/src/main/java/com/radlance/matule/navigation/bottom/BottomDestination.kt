@@ -37,6 +37,10 @@ data object Order: BottomDestination
 
 @Serializable
 @Keep
+data object History: BottomDestination
+
+@Serializable
+@Keep
 data object Notification: BottomDestination
 
 @Serializable

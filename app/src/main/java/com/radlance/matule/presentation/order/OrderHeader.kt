@@ -26,7 +26,7 @@ fun OrderHeader(
     CommonHeader(
         startContent = {
             BackButton(
-                onClicked = onBackPressed,
+                onClick = onBackPressed,
                 backgroundColor = MaterialTheme.colorScheme.surfaceVariant
             )
         },

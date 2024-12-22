@@ -37,6 +37,7 @@ import com.radlance.matule.domain.authorization.User
 import com.radlance.matule.navigation.bottom.BottomNavigationState
 import com.radlance.matule.navigation.bottom.Cart
 import com.radlance.matule.navigation.bottom.Favorite
+import com.radlance.matule.navigation.bottom.History
 import com.radlance.matule.navigation.bottom.Notification
 import com.radlance.matule.navigation.bottom.rememberNavigationState
 import com.radlance.matule.presentation.authorization.common.AuthResultUiState
@@ -148,7 +149,7 @@ fun DrawerMenu(
                     sectionResId = R.string.orders,
                     iconOffset = IntOffset(x = 0, y = 15),
                     onItemClick = {
-                        navigationState.navigateTo(Notification)
+                        navigationState.navigateTo(History)
                         onMenuItemClick()
                     }
                 )
@@ -157,7 +158,10 @@ fun DrawerMenu(
                     icon = NotificationNavigationIcon(Color.White),
                     contentDescription = "NotificationIcon",
                     sectionResId = R.string.notifications,
-                    onItemClick = { }
+                    onItemClick = {
+                        navigationState.navigateTo(Notification)
+                        onMenuItemClick()
+                    }
                 )
 
                 MenuItem(

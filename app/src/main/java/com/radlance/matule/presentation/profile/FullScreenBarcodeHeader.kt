@@ -29,7 +29,7 @@ fun FullScreenBarcodeHeader(
 
         startContent = {
             BackButton(
-                onClicked = onBackPressed,
+                onClick = onBackPressed,
                 backgroundColor = MaterialTheme.colorScheme.surfaceVariant
             )
         },

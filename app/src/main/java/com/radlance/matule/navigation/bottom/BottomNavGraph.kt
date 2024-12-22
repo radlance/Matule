@@ -18,6 +18,7 @@ import com.radlance.matule.presentation.favorite.FavoriteScreen
 import com.radlance.matule.presentation.history.HistoryScreen
 import com.radlance.matule.presentation.home.HomeScreen
 import com.radlance.matule.presentation.home.details.ProductDetailsScreen
+import com.radlance.matule.presentation.notification.NotificationScreen
 import com.radlance.matule.presentation.order.OrderScreen
 import com.radlance.matule.presentation.profile.FullScreenBarcode
 import com.radlance.matule.presentation.profile.ProfileScreen
@@ -100,8 +101,12 @@ fun BottomNavGraph(
             }
         }
 
-        composable<Notification> {
+        composable<History> {
             HistoryScreen(viewModel = sharedViewModel)
+        }
+
+        composable<Notification> {
+            NotificationScreen()
         }
 
         navigation<Profile>(startDestination = UserData) {
