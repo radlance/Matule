@@ -58,6 +58,12 @@ abstract class Mapper {
     }
 
     protected fun NotificationEntity.toNotification(): Notification {
-        return Notification(title = title, content = content, sendDate = sendDate, id = id)
+        return Notification(
+            title = title,
+            content = message,
+            sendDate = sendDate,
+            isRead = isRead,
+            id = id
+        )
     }
 }

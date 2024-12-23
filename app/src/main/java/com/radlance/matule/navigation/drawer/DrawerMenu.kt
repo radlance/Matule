@@ -61,6 +61,7 @@ fun DrawerMenu(
     onMenuItemClick: () -> Unit,
     onSignOutClick: () -> Unit,
     onSignOut: () -> Unit,
+    notificationExist: Boolean,
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
@@ -161,7 +162,8 @@ fun DrawerMenu(
                     onItemClick = {
                         navigationState.navigateTo(Notification)
                         onMenuItemClick()
-                    }
+                    },
+                    showBadge = notificationExist
                 )
 
                 MenuItem(
@@ -198,7 +200,8 @@ private fun DrawerMenuPreview() {
             onMenuItemClick = {},
             onSignOutClick = {},
             onSignOut = {},
-            signOutState = AuthResultUiState.Initial
+            signOutState = AuthResultUiState.Initial,
+            notificationExist = false
         )
     }
 }

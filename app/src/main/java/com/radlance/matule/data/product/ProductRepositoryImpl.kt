@@ -22,18 +22,17 @@ class ProductRepositoryImpl @Inject constructor(private val supabaseClient: Supa
         return try {
             val categories = supabaseClient.from("category").select().decodeList<CategoryEntity>()
             val products = supabaseClient.from("product").select().decodeList<ProductEntity>()
-
-                FetchResult.Success(
-                    CatalogFetchContent(
-                        categories = categories.map { it.toCategory() },
-                        products = products.map {
-                            it.toProduct(
-                                isFavorite = isFavoriteProduct(productId = it.id),
-                                quantityInCart = getProductQuantityInCart(productId = it.id)
-                            )
-                        }
-                    )
+            FetchResult.Success(
+                CatalogFetchContent(
+                    categories = categories.map { it.toCategory() },
+                    products = products.map {
+                        it.toProduct(
+                            isFavorite = isFavoriteProduct(productId = it.id),
+                            quantityInCart = getProductQuantityInCart(productId = it.id)
+                        )
+                    }
                 )
+            )
 
         } catch (e: Exception) {
             FetchResult.Error(null)

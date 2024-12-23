@@ -41,6 +41,7 @@ private fun NotificationListPreview() {
                     id = it,
                     title = "Заголовок$it",
                     content = LoremIpsum(25).values.single(),
+                    isRead = false,
                     sendDate = LocalDateTime.now().toKotlinLocalDateTime()
                 )
             }

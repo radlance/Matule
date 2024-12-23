@@ -59,6 +59,7 @@ private fun NotificationItemPreview() {
             notification = Notification(
                 title = "Заголовок",
                 content = LoremIpsum(25).values.single(),
+                isRead = true,
                 sendDate = LocalDateTime.now().toKotlinLocalDateTime()
             )
         )

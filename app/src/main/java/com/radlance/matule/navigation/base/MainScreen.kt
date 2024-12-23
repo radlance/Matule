@@ -45,6 +45,7 @@ fun MainScreen(
     val drawerState by viewModel.drawerState.collectAsState()
     val signOutState by viewModel.signOutState.collectAsState()
 
+    val notificationsCount by viewModel.hasNotifications.collectAsState()
     val user by viewModel.user.collectAsState()
 
     val updateAnim = updateTransition(drawerState, label = "MenuState")
@@ -104,7 +105,8 @@ fun MainScreen(
            onSignOut = {
                onSignOut()
                viewModel.leaveHomeScreen()
-           }
+           },
+           notificationExist = notificationsCount != 0
        )
 
         Scaffold(

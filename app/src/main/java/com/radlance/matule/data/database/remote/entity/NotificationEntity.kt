@@ -8,7 +8,8 @@ import kotlinx.serialization.Serializable
 data class NotificationEntity(
     @SerialName("user_id") val userId: String,
     val title: String,
-    val content: String,
+    val message: String,
+    @SerialName("is_read") val isRead: Boolean,
     @SerialName("send_date") val sendDate: LocalDateTime,
     val id: Int = 0
 )
