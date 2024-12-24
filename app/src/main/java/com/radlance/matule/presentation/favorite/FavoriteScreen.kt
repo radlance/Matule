@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.radlance.matule.R
 import com.radlance.matule.presentation.common.ProductViewModel
+import com.radlance.matule.presentation.component.ProductGrid
 import com.radlance.matule.presentation.home.common.ChangeProductStatus
 import com.radlance.matule.ui.theme.MatuleTheme
 import com.radlance.matule.ui.theme.ralewayFamily
@@ -89,8 +90,8 @@ fun FavoriteScreen(
                         )
                     }
                 } else {
-                    FavoritesGrid(
-                        favoriteProducts = favorites,
+                    ProductGrid(
+                        products = favorites,
                         onLikeClicked = viewModel::changeFavoriteStatus,
                         onAddToCartClick = viewModel::addProductToCart,
                         onCardClick = onNavigateToDetails,

@@ -1,4 +1,4 @@
-package com.radlance.matule.presentation.favorite
+package com.radlance.matule.presentation.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,8 +15,8 @@ import com.radlance.matule.presentation.home.catalog.ShoesCard
 import com.radlance.matule.ui.theme.MatuleTheme
 
 @Composable
-fun FavoritesGrid(
-    favoriteProducts: List<Product>,
+fun ProductGrid(
+    products: List<Product>,
     onLikeClicked: (productId: Int) -> Unit,
     onAddToCartClick: (productId: Int) -> Unit,
     onCardClick: (productId: Int) -> Unit,
@@ -30,7 +30,7 @@ fun FavoritesGrid(
         horizontalArrangement = Arrangement.spacedBy(13.dp),
         verticalArrangement = Arrangement.spacedBy(13.dp)
     ) {
-        items(items = favoriteProducts, key = { product -> product.id }) { product ->
+        items(items = products, key = { product -> product.id }) { product ->
             ShoesCard(
                 product = product,
                 onLikeClick = { onLikeClicked(product.id) },
@@ -49,10 +49,10 @@ fun FavoritesGrid(
 
 @Preview
 @Composable
-private fun FavoritesGridPreview() {
+private fun ProductGridPreview() {
     MatuleTheme {
-        FavoritesGrid(
-            favoriteProducts = List(20) {
+        ProductGrid(
+            products = List(20) {
                 Product(
                     id = it,
                     title = "mock$it",

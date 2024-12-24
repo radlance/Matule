@@ -1,31 +1,54 @@
 package com.radlance.matule.presentation.home.search
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.radlance.matule.R
+import com.radlance.matule.presentation.common.ProductViewModel
+import com.radlance.matule.presentation.component.ProductGrid
+import com.radlance.matule.presentation.home.common.ChangeProductStatus
 import com.radlance.matule.ui.theme.MatuleTheme
+import com.radlance.matule.ui.theme.ralewayFamily
 
 @Composable
 fun SearchScreen(
     onBackPressed: () -> Unit,
-    modifier: Modifier = Modifier
+    onNavigateToDetails: (Int) -> Unit,
+    onNavigateToCart: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: ProductViewModel = hiltViewModel()
 ) {
+    val catalogContent by viewModel.catalogContent.collectAsState()
+    val addToFavoriteResult by viewModel.favoriteResult.collectAsState()
+    val addToCartResult by viewModel.inCartResult.collectAsState()
+
     var searchFieldValue by rememberSaveable { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -44,9 +67,86 @@ fun SearchScreen(
         Spacer(Modifier.height(26.dp))
         SearchField(
             value = searchFieldValue,
-            onValueChange = { searchFieldValue = it },
+            onValueChange = {
+                if (searchFieldValue.length < 64) {
+                    searchFieldValue = it
+                }
+            },
             hint = stringResource(R.string.search),
             modifier = Modifier.padding(horizontal = 21.dp)
+        )
+        Spacer(Modifier.height(14.dp))
+
+        addToFavoriteResult.Show(
+            onSuccess = {},
+            onLoading = { productId ->
+                ChangeProductStatus(productId, viewModel::changeStateFavoriteStatus)
+            },
+            onError = { productId ->
+                ChangeProductStatus(productId, viewModel::changeStateFavoriteStatus)
+            }
+        )
+
+        addToCartResult.Show(
+            onSuccess = {},
+            onLoading = { productId ->
+                ChangeProductStatus(productId, viewModel::changeStateInCartStatus)
+            },
+            onError = { productId ->
+                ChangeProductStatus(
+                    productId = productId,
+                    onStatusChanged = { viewModel.changeStateInCartStatus(it, recover = true) }
+                )
+            }
+        )
+
+        catalogContent.Show(
+            onSuccess = { fetchContent ->
+                val favorites = fetchContent.products.filter {
+                    it.title.contains(searchFieldValue, ignoreCase = true)
+                }
+                if (favorites.isEmpty()) {
+
+                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text(
+                            text = "Товаров по запросу \"$searchFieldValue\" не найдено",
+                            fontSize = 16.sp,
+                            fontFamily = ralewayFamily,
+                            fontWeight = FontWeight.SemiBold,
+                            lineHeight = 20.sp,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .offset(y = (-55).dp)
+                                .padding(horizontal = 21.dp)
+                        )
+                    }
+                } else {
+                    ProductGrid(
+                        products = favorites,
+                        onLikeClicked = viewModel::changeFavoriteStatus,
+                        onAddToCartClick = viewModel::addProductToCart,
+                        onCardClick = onNavigateToDetails,
+                        onNavigateToCart = onNavigateToCart
+                    )
+                }
+            },
+
+            onError = {
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(text = stringResource(R.string.load_error))
+                        Button(onClick = viewModel::fetchContent) {
+                            Text(stringResource(R.string.retry), color = Color.White)
+                        }
+                    }
+                }
+            },
+
+            onLoading = {
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator(modifier = Modifier.offset(y = (-55).dp))
+                }
+            }
         )
     }
 }
@@ -55,6 +155,6 @@ fun SearchScreen(
 @Composable
 private fun SearchScreenPreview() {
     MatuleTheme {
-        SearchScreen({})
+        SearchScreen({}, {}, {})
     }
 }

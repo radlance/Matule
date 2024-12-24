@@ -63,7 +63,17 @@ fun BottomNavGraph(
             }
 
             composable<Search> {
-                SearchScreen(onBackPressed = navController::navigateUp)
+                SearchScreen(
+                    onBackPressed = navController::navigateUp,
+                    onNavigateToCart = {
+                        navigationState.navigateTo(Payment)
+                    },
+
+                    onNavigateToDetails = {
+                        navController.navigate(Details(it))
+                    },
+                    viewModel = sharedViewModel
+                )
             }
 
             composable<Details> {
