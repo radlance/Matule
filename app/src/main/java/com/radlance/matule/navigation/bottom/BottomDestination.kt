@@ -21,6 +21,10 @@ data class Details(
 
 @Serializable
 @Keep
+data object Search : BottomDestination
+
+@Serializable
+@Keep
 data object Favorite: BottomDestination
 
 @Serializable

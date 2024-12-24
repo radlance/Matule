@@ -18,9 +18,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,10 +42,10 @@ fun HomeScreen(
     onNavigateToCart: () -> Unit,
     onNavigateToDetails: (Int) -> Unit,
     onDrawerClick: () -> Unit,
+    onSearchFieldClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ProductViewModel = hiltViewModel()
 ) {
-    var searchFieldValue by rememberSaveable { mutableStateOf("") }
     val scrollState = rememberScrollState()
 
     val loadContentResult by viewModel.catalogContent.collectAsState()
@@ -65,18 +62,14 @@ fun HomeScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(Modifier.height(dimensionResource(R.dimen.main_top_padding)))
-        HomeHeader(
-            onMenuClick = onDrawerClick
-
-        )
+        HomeHeader(onMenuClick = onDrawerClick)
 
         Spacer(Modifier.height(19.dp))
 
         HomeSearchBar(
-            value = searchFieldValue,
-            onValueChange = { searchFieldValue = it },
             onSettingsClick = {},
             hint = stringResource(R.string.search),
+            onSearchFieldClick = onSearchFieldClick,
             modifier = Modifier.padding(horizontal = 20.dp)
         )
 
@@ -144,7 +137,7 @@ fun HomeScreen(
 @Composable
 private fun HomeScreenPreview() {
     MatuleTheme(darkTheme = false) {
-        HomeScreen({}, {}, {}, { DrawerValue.Closed })
+        HomeScreen({}, {}, {}, {}, { DrawerValue.Closed })
     }
 }
 
@@ -152,6 +145,6 @@ private fun HomeScreenPreview() {
 @Composable
 private fun HomeScreenExpandedPreview() {
     MatuleTheme(darkTheme = false) {
-        HomeScreen({}, {}, {}, { DrawerValue.Closed })
+        HomeScreen({}, {}, {}, {}, { DrawerValue.Closed })
     }
 }

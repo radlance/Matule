@@ -18,6 +18,7 @@ import com.radlance.matule.presentation.favorite.FavoriteScreen
 import com.radlance.matule.presentation.history.HistoryScreen
 import com.radlance.matule.presentation.home.HomeScreen
 import com.radlance.matule.presentation.home.details.ProductDetailsScreen
+import com.radlance.matule.presentation.home.search.SearchScreen
 import com.radlance.matule.presentation.notification.NotificationScreen
 import com.radlance.matule.presentation.order.OrderScreen
 import com.radlance.matule.presentation.profile.FullScreenBarcode
@@ -52,9 +53,17 @@ fun BottomNavGraph(
                         navController.navigate(Details(it))
                     },
 
+                    onSearchFieldClick = {
+                        navController.navigate(Search)
+                    },
+
                     onDrawerClick = onDrawerClick,
                     viewModel = sharedViewModel
                 )
+            }
+
+            composable<Search> {
+                SearchScreen(onBackPressed = navController::navigateUp)
             }
 
             composable<Details> {

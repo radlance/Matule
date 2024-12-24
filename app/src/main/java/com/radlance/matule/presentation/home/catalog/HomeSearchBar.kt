@@ -17,14 +17,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.radlance.matule.ui.vector.SearchSettingsIcon
 import com.radlance.matule.ui.theme.MatuleTheme
+import com.radlance.matule.ui.vector.SearchSettingsIcon
 
 @Composable
 fun HomeSearchBar(
-    value: String,
-    onValueChange: (String) -> Unit,
     onSettingsClick: () -> Unit,
+    onSearchFieldClick: () -> Unit,
     modifier: Modifier = Modifier,
     hint: String = String()
 ) {
@@ -34,10 +33,9 @@ fun HomeSearchBar(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         HomeSearchField(
-            value = value,
-            onValueChange = onValueChange,
             hint = hint,
-            modifier = Modifier.weight(1f)
+            onClick = onSearchFieldClick,
+            modifier = Modifier.weight(1f),
         )
         Spacer(Modifier.width(14.dp))
         IconButton(
@@ -59,6 +57,6 @@ fun HomeSearchBar(
 @Composable
 private fun HomeSearchBarPreview() {
     MatuleTheme {
-        HomeSearchBar(value = "", onValueChange = {}, onSettingsClick = {}, hint = "Поиск")
+        HomeSearchBar(onSettingsClick = {}, onSearchFieldClick = {}, hint = "Поиск")
     }
 }
