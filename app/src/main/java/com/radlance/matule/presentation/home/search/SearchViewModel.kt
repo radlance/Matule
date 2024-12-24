@@ -23,9 +23,6 @@ class SearchViewModel @Inject constructor(
                 queryTime = LocalDateTime.now().toKotlinLocalDateTime()
             )
 
-            if (localSearchHistory.value.size >= 6) {
-                repository.removeOldestHistoryQuery()
-            }
             repository.addQueryToHistory(searchHistoryQuery)
         }
     }
