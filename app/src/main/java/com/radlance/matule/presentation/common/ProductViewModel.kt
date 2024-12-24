@@ -248,15 +248,4 @@ class ProductViewModel @Inject constructor(
     fun selectProduct(product: Product) {
         _selectedProduct.value = product
     }
-
-    private inline fun <T> updateLocalState(
-        state: StateFlow<FetchResultUiState<T>>,
-        action: (FetchResultUiState.Success<T>) -> Unit
-    ) {
-        val value = state.value
-
-        if (value is FetchResultUiState.Success) {
-            action(value)
-        }
-    }
 }

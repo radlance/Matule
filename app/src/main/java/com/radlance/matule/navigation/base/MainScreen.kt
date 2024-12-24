@@ -106,7 +106,7 @@ fun MainScreen(
                onSignOut()
                viewModel.leaveHomeScreen()
            },
-           notificationExist = notificationsCount != 0
+           notificationExist = notificationsCount > 0
        )
 
         Scaffold(

@@ -6,18 +6,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
 import com.radlance.matule.domain.notification.Notification
 import com.radlance.matule.ui.theme.MatuleTheme
+import kotlinx.coroutines.delay
 import kotlinx.datetime.toKotlinLocalDateTime
 import java.time.LocalDateTime
 
 @Composable
 fun NotificationList(
     notifications: List<Notification>,
+    onNotificationRead: (Notification) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -26,6 +29,10 @@ fun NotificationList(
         contentPadding = PaddingValues(bottom = 140.dp, top = 20.dp)
     ) {
         items(items = notifications, key = { notification -> notification.id }) { notification ->
+            LaunchedEffect(notification.id) {
+                delay(1000)
+                onNotificationRead(notification)
+            }
             NotificationItem(notification = notification)
         }
     }
@@ -36,6 +43,7 @@ fun NotificationList(
 private fun NotificationListPreview() {
     MatuleTheme {
         NotificationList(
+            onNotificationRead = {},
             notifications = List(20) {
                 Notification(
                     id = it,

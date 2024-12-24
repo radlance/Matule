@@ -43,4 +43,25 @@ class NotificationRepositoryImpl @Inject constructor(
     override suspend fun updateNotificationsCount(notificationsCount: Int) {
         dataStoreManager.setNotificationExistStatus(notificationsCount)
     }
+
+    override suspend fun setNotificationRead(notificationId: Int): FetchResult<Unit> {
+        return try {
+            val user = supabaseClient.auth.currentSessionOrNull()?.user
+            user?.let {
+                supabaseClient.from("notification").update(
+                    {
+                        NotificationEntity::isRead setTo true
+                    }
+                ) {
+                    filter {
+                        NotificationEntity::id eq notificationId
+                        NotificationEntity::userId eq user.id
+                    }
+                }
+            }
+            FetchResult.Success(Unit)
+        } catch (e: Exception) {
+            FetchResult.Error(Unit)
+        }
+    }
 }

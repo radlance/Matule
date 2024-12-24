@@ -29,4 +29,15 @@ abstract class BaseViewModel : ViewModel() {
             stateFlow.value = fetch().map(FetchResultMapper())
         }
     }
+
+    protected inline fun <T> updateLocalState(
+        state: StateFlow<FetchResultUiState<T>>,
+        action: (FetchResultUiState.Success<T>) -> Unit
+    ) {
+        val value = state.value
+
+        if (value is FetchResultUiState.Success) {
+            action(value)
+        }
+    }
 }

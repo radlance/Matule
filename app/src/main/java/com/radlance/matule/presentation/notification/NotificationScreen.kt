@@ -52,6 +52,7 @@ fun NotificationScreen(
                 } else {
                     NotificationList(
                         notifications = notifications,
+                        onNotificationRead = viewModel::markNotification,
                         modifier = Modifier.padding(horizontal = 24.dp)
                     )
                 }
@@ -64,6 +65,7 @@ fun NotificationScreen(
                     }
                 }
             },
+
             onError = {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Column(

@@ -7,4 +7,5 @@ interface NotificationRepository {
     suspend fun loadNotifications(): FetchResult<List<Notification>>
     fun getNotificationsCount(): Flow<Int>
     suspend fun updateNotificationsCount(notificationsCount: Int)
+    suspend fun setNotificationRead(notificationId: Int): FetchResult<Unit>
 }
