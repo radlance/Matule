@@ -1,6 +1,7 @@
 package com.radlance.matule.presentation.home.search
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,9 +22,13 @@ import com.radlance.matule.ui.theme.ralewayFamily
 @Composable
 fun SearchHistoryItem(
     queryMessage: String,
+    onHistoryQueryClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Row(verticalAlignment = Alignment.CenterVertically, modifier = modifier.fillMaxWidth()) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier.fillMaxWidth().clickable { onHistoryQueryClick(queryMessage) }
+    ) {
         Image(painter = painterResource(R.drawable.ic_time), contentDescription = "ic_time")
         Spacer(Modifier.width(12.dp))
         Text(
@@ -40,6 +45,6 @@ fun SearchHistoryItem(
 @Composable
 private fun SearchHistoryItemPreview() {
     MatuleTheme {
-        SearchHistoryItem("New Shoes")
+        SearchHistoryItem(queryMessage = "New Shoes", onHistoryQueryClick = {})
     }
 }

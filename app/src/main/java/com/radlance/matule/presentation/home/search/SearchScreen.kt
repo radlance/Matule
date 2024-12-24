@@ -78,9 +78,11 @@ fun SearchScreen(
             },
 
             onSearchClick = {
-                searchSubmitQuery = it
+                if (it.isNotBlank()) {
+                    searchSubmitQuery = it
+                    searchViewModel.addQueryToHistory(searchSubmitQuery)
+                }
                 keyboardController?.hide()
-                searchViewModel.addQueryToHistory(searchSubmitQuery)
             },
             hint = stringResource(R.string.search),
             modifier = Modifier.padding(horizontal = 21.dp)
@@ -167,6 +169,12 @@ fun SearchScreen(
         } else {
             SearchHistoryList(
                 history = searchHistory,
+                onHistoryQueryClick = {
+                    searchSubmitQuery = it
+                    searchFieldValue = it
+                    keyboardController?.hide()
+                    searchViewModel.addQueryToHistory(searchSubmitQuery)
+                },
                 modifier = Modifier.padding(horizontal = 21.dp)
             )
         }

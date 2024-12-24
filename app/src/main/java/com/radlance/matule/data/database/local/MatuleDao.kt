@@ -13,4 +13,12 @@ interface MatuleDao {
 
     @Insert
     suspend fun insertSearchHistoryQuery(searchHistoryQuery: SearchHistoryQueryEntity)
+
+    @Query(
+        """
+        DELETE FROM search_history_query 
+        WHERE id = (SELECT id FROM search_history_query ORDER BY query_time LIMIT 1)
+    """
+    )
+    suspend fun removeOldestHistory()
 }

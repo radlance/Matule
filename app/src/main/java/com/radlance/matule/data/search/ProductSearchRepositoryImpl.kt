@@ -20,4 +20,8 @@ class ProductSearchRepositoryImpl @Inject constructor(
     override suspend fun addQueryToHistory(searchHistoryQuery: SearchHistoryQuery) {
         dao.insertSearchHistoryQuery(searchHistoryQuery.toSearchHistoryQueryEntity())
     }
+
+    override suspend fun removeOldestHistoryQuery() {
+        dao.removeOldestHistory()
+    }
 }

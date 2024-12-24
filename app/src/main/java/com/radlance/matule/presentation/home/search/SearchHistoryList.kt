@@ -17,6 +17,7 @@ import java.time.LocalDateTime
 @Composable
 fun SearchHistoryList(
     history: List<SearchHistoryQuery>,
+    onHistoryQueryClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -25,7 +26,10 @@ fun SearchHistoryList(
         modifier = modifier.fillMaxSize()
     ) {
         items(items = history, key = { historyQuery -> historyQuery.id }) { historyQuery ->
-            SearchHistoryItem(queryMessage = historyQuery.query)
+            SearchHistoryItem(
+                queryMessage = historyQuery.query,
+                onHistoryQueryClick = onHistoryQueryClick
+            )
         }
     }
 }
@@ -41,7 +45,8 @@ private fun SearchHistoryListPreview() {
                     queryTime = LocalDateTime.now().toKotlinLocalDateTime(),
                     id = it
                 )
-            }
+            },
+            onHistoryQueryClick = {}
         )
     }
 }
