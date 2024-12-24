@@ -1,4 +1,4 @@
-package com.radlance.matule.data.common
+package com.radlance.matule.data.database.remote
 
 import com.radlance.matule.data.database.remote.entity.CategoryEntity
 import com.radlance.matule.data.database.remote.entity.HistoryEntity
@@ -13,7 +13,7 @@ import com.radlance.matule.domain.product.Product
 import kotlinx.datetime.toKotlinLocalDateTime
 import java.time.LocalDateTime
 
-abstract class Mapper {
+abstract class RemoteMapper {
     protected fun CategoryEntity.toCategory(): Category {
         return Category(id = id, title = title)
     }

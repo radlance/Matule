@@ -2,6 +2,7 @@ package com.radlance.matule.presentation.home.search
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
@@ -23,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,6 +41,7 @@ fun SearchField(
     value: String,
     hint: String,
     onValueChange: (String) -> Unit,
+    onSearchClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -54,7 +59,11 @@ fun SearchField(
             Image(
                 painter = painterResource(R.drawable.ic_search),
                 contentDescription = "ic_search",
-                modifier = Modifier.padding(5.dp)
+                modifier = Modifier
+                    .padding(5.dp)
+                    .clickable {
+                        onSearchClick(value)
+                    }
             )
 
             Spacer(Modifier.width(12.dp))
@@ -70,6 +79,12 @@ fun SearchField(
                         fontWeight = FontWeight.Medium,
                         lineHeight = 20.sp,
                         color = inputFieldTextColor
+                    ),
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = ImeAction.Search
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onSearch = { onSearchClick(value) }
                     ),
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -107,6 +122,6 @@ fun SearchField(
 @Composable
 private fun SearchFieldPreview() {
     MatuleTheme {
-        SearchField(value = "", onValueChange = {}, hint = "Поиск")
+        SearchField(value = "", onValueChange = {}, onSearchClick = {}, hint = "Поиск")
     }
 }

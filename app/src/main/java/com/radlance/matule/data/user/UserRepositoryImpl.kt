@@ -1,6 +1,6 @@
 package com.radlance.matule.data.user
 
-import com.radlance.matule.data.common.Mapper
+import com.radlance.matule.data.database.remote.RemoteMapper
 import com.radlance.matule.data.database.remote.entity.UserEntity
 import com.radlance.matule.domain.authorization.User
 import com.radlance.matule.domain.user.UserRepository
@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val auth: Auth
-) : UserRepository, Mapper() {
+) : UserRepository, RemoteMapper() {
     override suspend fun getCurrentUserData(): User {
         val currentUser = auth.currentUserOrNull()
         val json = Json { ignoreUnknownKeys = true }

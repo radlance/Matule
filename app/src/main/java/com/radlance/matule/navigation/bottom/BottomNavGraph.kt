@@ -72,7 +72,7 @@ fun BottomNavGraph(
                     onNavigateToDetails = {
                         navController.navigate(Details(it))
                     },
-                    viewModel = sharedViewModel
+                    productViewModel = sharedViewModel
                 )
             }
 

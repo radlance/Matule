@@ -1,6 +1,6 @@
 package com.radlance.matule.data.product
 
-import com.radlance.matule.data.common.Mapper
+import com.radlance.matule.data.database.remote.RemoteMapper
 import com.radlance.matule.data.database.remote.entity.CartEntity
 import com.radlance.matule.data.database.remote.entity.CategoryEntity
 import com.radlance.matule.data.database.remote.entity.FavoriteEntity
@@ -17,7 +17,7 @@ import io.github.jan.supabase.postgrest.from
 import javax.inject.Inject
 
 class ProductRepositoryImpl @Inject constructor(private val supabaseClient: SupabaseClient) :
-    ProductRepository, Mapper() {
+    ProductRepository, RemoteMapper() {
     override suspend fun fetchCatalogContent(): FetchResult<CatalogFetchContent> {
         return try {
             val categories = supabaseClient.from("category").select().decodeList<CategoryEntity>()

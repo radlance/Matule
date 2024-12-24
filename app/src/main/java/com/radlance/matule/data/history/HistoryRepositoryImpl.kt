@@ -1,6 +1,6 @@
 package com.radlance.matule.data.history
 
-import com.radlance.matule.data.common.Mapper
+import com.radlance.matule.data.database.remote.RemoteMapper
 import com.radlance.matule.data.database.remote.entity.HistoryEntity
 import com.radlance.matule.data.database.remote.entity.ProductEntity
 import com.radlance.matule.domain.history.HistoryProduct
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class HistoryRepositoryImpl @Inject constructor(
     private val supabaseClient: SupabaseClient
-) : HistoryRepository, Mapper() {
+) : HistoryRepository, RemoteMapper() {
     override suspend fun loadHistory(): FetchResult<List<HistoryProduct>> {
         val user = supabaseClient.auth.currentSessionOrNull()?.user
         return try {

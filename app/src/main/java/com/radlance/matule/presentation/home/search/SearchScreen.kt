@@ -43,13 +43,17 @@ fun SearchScreen(
     onNavigateToDetails: (Int) -> Unit,
     onNavigateToCart: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: ProductViewModel = hiltViewModel()
+    productViewModel: ProductViewModel = hiltViewModel(),
+    searchViewModel: SearchViewModel = hiltViewModel()
 ) {
-    val catalogContent by viewModel.catalogContent.collectAsState()
-    val addToFavoriteResult by viewModel.favoriteResult.collectAsState()
-    val addToCartResult by viewModel.inCartResult.collectAsState()
+    val catalogContent by productViewModel.catalogContent.collectAsState()
+    val addToFavoriteResult by productViewModel.favoriteResult.collectAsState()
+    val addToCartResult by productViewModel.inCartResult.collectAsState()
+
+    val searchHistory by searchViewModel.localSearchHistory.collectAsState()
 
     var searchFieldValue by rememberSaveable { mutableStateOf("") }
+    var searchSubmitQuery by rememberSaveable { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(
@@ -72,6 +76,12 @@ fun SearchScreen(
                     searchFieldValue = it
                 }
             },
+
+            onSearchClick = {
+                searchSubmitQuery = it
+                keyboardController?.hide()
+                searchViewModel.addQueryToHistory(searchSubmitQuery)
+            },
             hint = stringResource(R.string.search),
             modifier = Modifier.padding(horizontal = 21.dp)
         )
@@ -80,74 +90,86 @@ fun SearchScreen(
         addToFavoriteResult.Show(
             onSuccess = {},
             onLoading = { productId ->
-                ChangeProductStatus(productId, viewModel::changeStateFavoriteStatus)
+                ChangeProductStatus(productId, productViewModel::changeStateFavoriteStatus)
             },
             onError = { productId ->
-                ChangeProductStatus(productId, viewModel::changeStateFavoriteStatus)
+                ChangeProductStatus(productId, productViewModel::changeStateFavoriteStatus)
             }
         )
 
         addToCartResult.Show(
             onSuccess = {},
             onLoading = { productId ->
-                ChangeProductStatus(productId, viewModel::changeStateInCartStatus)
+                ChangeProductStatus(productId, productViewModel::changeStateInCartStatus)
             },
             onError = { productId ->
                 ChangeProductStatus(
                     productId = productId,
-                    onStatusChanged = { viewModel.changeStateInCartStatus(it, recover = true) }
+                    onStatusChanged = {
+                        productViewModel.changeStateInCartStatus(
+                            it,
+                            recover = true
+                        )
+                    }
                 )
             }
         )
 
-        catalogContent.Show(
-            onSuccess = { fetchContent ->
-                val favorites = fetchContent.products.filter {
-                    it.title.contains(searchFieldValue, ignoreCase = true)
-                }
-                if (favorites.isEmpty()) {
+        if (searchSubmitQuery.isNotBlank()) {
+            catalogContent.Show(
+                onSuccess = { fetchContent ->
+                    val foundedProducts = fetchContent.products.filter {
+                        it.title.contains(searchSubmitQuery, ignoreCase = true)
+                    }
+                    if (foundedProducts.isEmpty()) {
 
-                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text(
-                            text = "Товаров по запросу \"$searchFieldValue\" не найдено",
-                            fontSize = 16.sp,
-                            fontFamily = ralewayFamily,
-                            fontWeight = FontWeight.SemiBold,
-                            lineHeight = 20.sp,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier
-                                .offset(y = (-55).dp)
-                                .padding(horizontal = 21.dp)
+                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Text(
+                                text = "Товаров по запросу \"$searchSubmitQuery\" не найдено",
+                                fontSize = 16.sp,
+                                fontFamily = ralewayFamily,
+                                fontWeight = FontWeight.SemiBold,
+                                lineHeight = 20.sp,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier
+                                    .offset(y = (-55).dp)
+                                    .padding(horizontal = 21.dp)
+                            )
+                        }
+                    } else {
+                        ProductGrid(
+                            products = foundedProducts,
+                            onLikeClicked = productViewModel::changeFavoriteStatus,
+                            onAddToCartClick = productViewModel::addProductToCart,
+                            onCardClick = onNavigateToDetails,
+                            onNavigateToCart = onNavigateToCart
                         )
                     }
-                } else {
-                    ProductGrid(
-                        products = favorites,
-                        onLikeClicked = viewModel::changeFavoriteStatus,
-                        onAddToCartClick = viewModel::addProductToCart,
-                        onCardClick = onNavigateToDetails,
-                        onNavigateToCart = onNavigateToCart
-                    )
-                }
-            },
+                },
 
-            onError = {
-                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(text = stringResource(R.string.load_error))
-                        Button(onClick = viewModel::fetchContent) {
-                            Text(stringResource(R.string.retry), color = Color.White)
+                onError = {
+                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(text = stringResource(R.string.load_error))
+                            Button(onClick = productViewModel::fetchContent) {
+                                Text(stringResource(R.string.retry), color = Color.White)
+                            }
                         }
                     }
-                }
-            },
+                },
 
-            onLoading = {
-                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(modifier = Modifier.offset(y = (-55).dp))
+                onLoading = {
+                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator(modifier = Modifier.offset(y = (-55).dp))
+                    }
                 }
-            }
-        )
+            )
+        } else {
+            SearchHistoryList(
+                history = searchHistory,
+                modifier = Modifier.padding(horizontal = 21.dp)
+            )
+        }
     }
 }
 
