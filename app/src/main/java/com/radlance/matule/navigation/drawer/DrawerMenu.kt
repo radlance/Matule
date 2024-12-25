@@ -1,9 +1,7 @@
 package com.radlance.matule.navigation.drawer
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,13 +25,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.radlance.matule.R
-import com.radlance.matule.domain.authorization.User
+import com.radlance.matule.domain.user.User
 import com.radlance.matule.navigation.bottom.BottomNavigationState
 import com.radlance.matule.navigation.bottom.Cart
 import com.radlance.matule.navigation.bottom.Favorite
@@ -95,12 +99,21 @@ fun DrawerMenu(
                 .verticalScroll(scrollState)
         ) {
             Spacer(modifier = Modifier.height(78.dp))
-            Box(
+
+            AsyncImage(
+                model = ImageRequest.Builder(context = LocalContext.current)
+                    .data(user.imageUrl)
+                    .crossfade(true)
+                    .build(),
+
+                contentDescription = stringResource(R.string.profile_image),
                 modifier = Modifier
                     .size(96.dp)
-                    .clip(CircleShape)
-                    .background(Color.White)
+                    .clip(CircleShape),
+                contentScale = ContentScale.Crop
+
             )
+
             Spacer(modifier = Modifier.height(15.dp))
             Text(
                 text = user.name,

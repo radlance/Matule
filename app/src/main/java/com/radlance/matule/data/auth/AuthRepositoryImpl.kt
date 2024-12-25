@@ -2,7 +2,7 @@ package com.radlance.matule.data.auth
 
 import com.radlance.matule.domain.authorization.AuthRepository
 import com.radlance.matule.domain.authorization.AuthResult
-import com.radlance.matule.domain.authorization.User
+import com.radlance.matule.domain.user.User
 import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.auth.OtpType
 import io.github.jan.supabase.auth.exception.AuthRestException
@@ -23,6 +23,10 @@ class AuthRepositoryImpl @Inject constructor(
                 password = user.password
                 data = buildJsonObject {
                     put("name", user.name)
+                    put(
+                        "image_url",
+                        "https://osoknxtwcppulkimwpjo.supabase.co/storage/v1/object/public/Matule/default_profile_image.jpg"
+                    )
                 }
             }
             signIn(user)

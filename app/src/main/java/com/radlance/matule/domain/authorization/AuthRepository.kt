@@ -1,5 +1,7 @@
 package com.radlance.matule.domain.authorization
 
+import com.radlance.matule.domain.user.User
+
 interface AuthRepository {
     suspend fun signUp(user: User): AuthResult
     suspend fun signIn(user: User): AuthResult

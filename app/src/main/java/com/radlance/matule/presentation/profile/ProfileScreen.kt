@@ -27,6 +27,8 @@ fun ProfileScreen(
 ) {
     val scrollState = rememberScrollState()
     val userData by profileViewModel.userData.collectAsState()
+    val uploadImageResult by profileViewModel.uploadImageResult.collectAsState()
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -37,7 +39,16 @@ fun ProfileScreen(
         Spacer(Modifier.height(55.dp))
         ProfileHeader()
         Spacer(Modifier.height(48.dp))
-        ProfilePictureSection(name = userData.name)
+
+        ProfilePictureSection(
+            name = userData.name,
+            imageUrl = run {
+                userData.imageUrl
+            },
+            onLoadImageResult = profileViewModel::uploadUserImageUri,
+            uploadImageResult = uploadImageResult
+        )
+
         Spacer(Modifier.height(19.dp))
         Barcode(
             onBarcodeClick = onBarcodeClick,

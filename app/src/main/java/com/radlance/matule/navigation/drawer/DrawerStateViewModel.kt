@@ -3,7 +3,7 @@ package com.radlance.matule.navigation.drawer
 import androidx.lifecycle.viewModelScope
 import com.radlance.matule.domain.authorization.AuthRepository
 import com.radlance.matule.domain.authorization.AuthResult
-import com.radlance.matule.domain.authorization.User
+import com.radlance.matule.domain.user.User
 import com.radlance.matule.domain.notification.NotificationRepository
 import com.radlance.matule.domain.onboarding.NavigationRepository
 import com.radlance.matule.domain.remote.FetchResult

@@ -5,7 +5,7 @@ import com.radlance.matule.data.database.remote.entity.HistoryEntity
 import com.radlance.matule.data.database.remote.entity.NotificationEntity
 import com.radlance.matule.data.database.remote.entity.ProductEntity
 import com.radlance.matule.data.database.remote.entity.UserEntity
-import com.radlance.matule.domain.authorization.User
+import com.radlance.matule.domain.user.User
 import com.radlance.matule.domain.history.HistoryProduct
 import com.radlance.matule.domain.notification.Notification
 import com.radlance.matule.domain.product.Category
@@ -54,7 +54,7 @@ abstract class RemoteMapper {
     }
 
     protected fun UserEntity.toUser(): User {
-        return User(name = name)
+        return User(name = name, imageUrl = imageUri)
     }
 
     protected fun NotificationEntity.toNotification(): Notification {

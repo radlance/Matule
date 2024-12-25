@@ -73,9 +73,11 @@
     <string name="settings">Настройки</string>
     <string name="log_out">Выйти</string>
     <string name="my_cart">My cart</string>
-    <string name="edit_profile">Изменить профиль</string>
+    <string name="edit_profile">Изменить фото профиля</string>
     <string name="open">Открыть</string>
     <string name="name">Имя</string>
     <string name="last_name">Фамилия</string>
     <string name="no_notifications">Нет уведомлений</string>
+    <string name="profile_image">profile image</string>
+    <string name="error_save_image">Ошибка сохранения изображения</string>
 </resources>

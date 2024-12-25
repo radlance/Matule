@@ -23,6 +23,10 @@ android {
 
         val properties = Properties()
         properties.load(project.rootProject.file("local.properties").inputStream())
+
+        val supabaseUrl = properties.getProperty("supabase.url")
+        buildConfigField("String", "SUPABASE_URL", supabaseUrl)
+
         val supabaseKey = properties.getProperty("supabase.key")
         buildConfigField("String", "SUPABASE_KEY", supabaseKey)
 
@@ -67,8 +71,8 @@ dependencies {
     implementation(platform(libs.supabase.bom))
     implementation(libs.supabase.postgres)
     implementation(libs.supabase.auth)
-    implementation(libs.supabase.realtime)
     implementation(libs.ktor.client.core)
+    implementation(libs.supabase.storage)
     implementation(libs.ktor.client.cio)
 
     kapt(libs.hilt.android.compiler)
