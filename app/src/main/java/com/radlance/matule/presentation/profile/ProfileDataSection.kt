@@ -50,7 +50,7 @@ fun ProfileDataSection(
                 .fillMaxWidth()
                 .height(48.dp)
                 .clip(RoundedCornerShape(14.dp))
-                .background(MaterialTheme.colorScheme.surface)
+                .background(MaterialTheme.colorScheme.surfaceTint)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,

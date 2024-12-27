@@ -34,7 +34,7 @@ fun Barcode(
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surface)
+            .background(MaterialTheme.colorScheme.surfaceTint)
             .clickable { onBarcodeClick() },
         contentAlignment = Alignment.Center
     ) {

@@ -1,5 +1,6 @@
 package com.radlance.matule.data.user
 
+import android.util.Log
 import com.radlance.matule.data.database.remote.RemoteMapper
 import com.radlance.matule.data.database.remote.entity.UserEntity
 import com.radlance.matule.domain.remote.FetchResult
@@ -28,26 +29,39 @@ class UserRepositoryImpl @Inject constructor(
         return userData?.copy(email = currentUser.email ?: "") ?: User()
     }
 
-    override suspend fun uploadImage(imageByteArray: ByteArray): FetchResult<String> {
+    override suspend fun updateUserData(
+        user: User,
+        imageByteArray: ByteArray?
+    ): FetchResult<Unit> {
         val currentUser = supabaseClient.auth.currentSessionOrNull()?.user
         return try {
             if (currentUser != null) {
-                val fileName = "profile_image_${UUID.randomUUID().toString().replace("-", "")}.jpg"
-                val bucket = supabaseClient.storage["Matule"]
-                bucket.upload(fileName, imageByteArray, options = { upsert = true })
-                val savedImageUrl = bucket.publicUrl(fileName)
-                supabaseClient.auth.updateUser {
-                    data {
-                        put("image_url", savedImageUrl)
+                imageByteArray?.let {
+                    val fileName =
+                        "profile_image_${UUID.randomUUID().toString().replace("-", "")}.jpg"
+                    val bucket = supabaseClient.storage["Matule"]
+                    bucket.upload(fileName, imageByteArray, options = { upsert = true })
+                    val savedImageUrl = bucket.publicUrl(fileName)
+                    supabaseClient.auth.updateUser {
+                        data {
+                            put("image_url", savedImageUrl)
+                        }
                     }
                 }
 
-                FetchResult.Success(savedImageUrl)
+                supabaseClient.auth.updateUser {
+                    data {
+                        put("name", user.name)
+                    }
+                }
+                FetchResult.Success(Unit)
             } else {
-                FetchResult.Error("user is null")
+                Log.e("UserRepositoryImpl", "user was null")
+                FetchResult.Error(Unit)
             }
         } catch (e: Exception) {
-            FetchResult.Error(e.message)
+            Log.e("UserRepositoryImpl", e.message!!)
+            FetchResult.Error(Unit)
         }
     }
 }

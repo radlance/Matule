@@ -22,17 +22,17 @@ import com.radlance.matule.ui.theme.MatuleTheme
 @Composable
 fun ProfileScreen(
     onBarcodeClick: () -> Unit,
+    onEditProfileClick: () -> Unit,
     modifier: Modifier = Modifier,
     profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
     val scrollState = rememberScrollState()
     val userData by profileViewModel.userData.collectAsState()
-    val uploadImageResult by profileViewModel.uploadImageResult.collectAsState()
 
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .background(MaterialTheme.colorScheme.background)
             .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -42,11 +42,8 @@ fun ProfileScreen(
 
         ProfilePictureSection(
             name = userData.name,
-            imageUrl = run {
-                userData.imageUrl
-            },
-            onLoadImageResult = profileViewModel::uploadUserImageUri,
-            uploadImageResult = uploadImageResult
+            imageUrl = userData.imageUrl,
+            onEditProfileClick = onEditProfileClick
         )
 
         Spacer(Modifier.height(19.dp))
@@ -70,7 +67,7 @@ fun ProfileScreen(
 @Composable
 private fun ProfileScreenPreview() {
     MatuleTheme {
-        ProfileScreen({})
+        ProfileScreen({}, {})
     }
 }
 
@@ -78,6 +75,6 @@ private fun ProfileScreenPreview() {
 @Composable
 private fun ProfileScreenPreviewExpanded() {
     MatuleTheme {
-        ProfileScreen({})
+        ProfileScreen({}, {})
     }
 }

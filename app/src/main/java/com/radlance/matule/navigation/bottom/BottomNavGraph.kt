@@ -23,6 +23,7 @@ import com.radlance.matule.presentation.notification.NotificationScreen
 import com.radlance.matule.presentation.order.OrderScreen
 import com.radlance.matule.presentation.profile.FullScreenBarcode
 import com.radlance.matule.presentation.profile.ProfileScreen
+import com.radlance.matule.presentation.profile.edit.EditProfileScreen
 
 @Composable
 fun BottomNavGraph(
@@ -131,12 +132,22 @@ fun BottomNavGraph(
         navigation<Profile>(startDestination = UserData) {
             composable<UserData> {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    ProfileScreen(onBarcodeClick = { navigationState.navigateTo(Barcode) })
+                    ProfileScreen(
+                        onBarcodeClick = { navigationState.navigateTo(Barcode) },
+                        onEditProfileClick = { navigationState.navigateTo(EditProfile) }
+                    )
                 }
             }
 
             composable<Barcode> {
                 FullScreenBarcode(onBackPressed = { navigationState.navigateTo(UserData) })
+            }
+
+            composable<EditProfile> {
+                EditProfileScreen(
+                    onBackPressed = { navigationState.navigateTo(UserData) },
+                    onNavigateToProfile = { navigationState.navigateTo(UserData) }
+                )
             }
         }
     }

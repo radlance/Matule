@@ -52,6 +52,7 @@ fun EnterInputField(
     modifier: Modifier = Modifier,
     isPassword: Boolean = false,
     isError: Boolean = false,
+    enabled: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
     var showPassword by rememberSaveable {
@@ -108,6 +109,7 @@ fun EnterInputField(
                         } else {
                             VisualTransformation.None
                         },
+                        enabled = enabled,
                         singleLine = true,
                         textStyle = TextStyle(
                             color = inputFieldTextColor,
@@ -148,6 +150,7 @@ private fun EnterInputFieldPreview() {
             label = "",
             value = "",
             onValueChange = {},
+            enabled = false,
             interactionSource = MutableInteractionSource()
         )
     }
