@@ -33,7 +33,9 @@ import com.radlance.matule.ui.vector.MenuIcon
 @Composable
 fun HomeHeader(
     onMenuClick: () -> Unit,
-    modifier: Modifier = Modifier
+    onCartClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    showBadge: Boolean = false
 ) {
     CommonHeader(
         modifier = modifier
@@ -68,15 +70,18 @@ fun HomeHeader(
         endContent = {
             BadgedBox(
                 badge = {
-                    Badge(
-                        modifier = Modifier.offset(x = (-2).dp, y = 5.dp),
-                        contentColor = fillRedColor,
-                        containerColor = fillRedColor
-                    )
+                    if (showBadge) {
+                        Badge(
+                            modifier = Modifier.offset(x = (-2).dp, y = 5.dp),
+                            contentColor = fillRedColor,
+                            containerColor = fillRedColor
+                        )
+                    }
                 }
             ) {
                 IconButton(
-                    onClick = {}, modifier = Modifier
+                    onClick = onCartClick,
+                    modifier = Modifier
                         .clip(CircleShape)
                         .size(44.dp)
                         .background(MaterialTheme.colorScheme.surfaceVariant)
@@ -96,6 +101,6 @@ fun HomeHeader(
 @Composable
 private fun HomeHeaderPreview() {
     MatuleTheme {
-        HomeHeader({})
+        HomeHeader({}, {})
     }
 }

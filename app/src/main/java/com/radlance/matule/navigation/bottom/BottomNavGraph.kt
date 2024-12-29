@@ -58,7 +58,11 @@ fun BottomNavGraph(
                         navController.navigate(Search)
                     },
 
-                    onDrawerClick = onDrawerClick,
+                    onCartClick = {
+                        navigationState.navigateTo(Payment)
+                    },
+
+                    onMenuIconClick = onDrawerClick,
                     viewModel = sharedViewModel
                 )
             }

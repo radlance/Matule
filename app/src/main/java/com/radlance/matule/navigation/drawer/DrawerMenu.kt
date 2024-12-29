@@ -1,6 +1,7 @@
 package com.radlance.matule.navigation.drawer
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -109,7 +110,11 @@ fun DrawerMenu(
                 contentDescription = stringResource(R.string.profile_image),
                 modifier = Modifier
                     .size(96.dp)
-                    .clip(CircleShape),
+                    .clip(CircleShape)
+                    .clickable {
+                        navigationState.navigateTo(com.radlance.matule.navigation.bottom.UserData)
+                        onMenuItemClick()
+                    },
                 contentScale = ContentScale.Crop
 
             )

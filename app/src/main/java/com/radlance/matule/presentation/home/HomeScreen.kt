@@ -41,8 +41,9 @@ fun HomeScreen(
     onBackPressed: () -> Unit,
     onNavigateToCart: () -> Unit,
     onNavigateToDetails: (Int) -> Unit,
-    onDrawerClick: () -> Unit,
+    onMenuIconClick: () -> Unit,
     onSearchFieldClick: () -> Unit,
+    onCartClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ProductViewModel = hiltViewModel()
 ) {
@@ -62,7 +63,7 @@ fun HomeScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(Modifier.height(dimensionResource(R.dimen.main_top_padding)))
-        HomeHeader(onMenuClick = onDrawerClick)
+        HomeHeader(onMenuClick = onMenuIconClick, onCartClick = onCartClick)
 
         Spacer(Modifier.height(19.dp))
 
@@ -137,7 +138,7 @@ fun HomeScreen(
 @Composable
 private fun HomeScreenPreview() {
     MatuleTheme(darkTheme = false) {
-        HomeScreen({}, {}, {}, {}, { DrawerValue.Closed })
+        HomeScreen({}, {}, {}, {}, {}, { DrawerValue.Closed })
     }
 }
 
@@ -145,6 +146,6 @@ private fun HomeScreenPreview() {
 @Composable
 private fun HomeScreenExpandedPreview() {
     MatuleTheme(darkTheme = false) {
-        HomeScreen({}, {}, {}, {}, { DrawerValue.Closed })
+        HomeScreen({}, {}, {}, {}, {}, { DrawerValue.Closed })
     }
 }
