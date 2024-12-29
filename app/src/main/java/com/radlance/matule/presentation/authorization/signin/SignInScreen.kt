@@ -1,5 +1,6 @@
 package com.radlance.matule.presentation.authorization.signin
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -178,7 +179,7 @@ fun SignInScreen(
             Spacer(Modifier.height(24.dp))
 
             GoogleSignInButton(
-                context = context,
+                activity = (context as ComponentActivity),
                 coroutineScope = coroutineScope,
                 onSignIn = viewModel::signInWithGoogle,
                 onSuccessSignIn = onSuccessSignIn,
