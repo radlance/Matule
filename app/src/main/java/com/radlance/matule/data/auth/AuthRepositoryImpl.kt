@@ -1,12 +1,15 @@
 package com.radlance.matule.data.auth
 
+import android.util.Log
 import com.radlance.matule.domain.authorization.AuthRepository
 import com.radlance.matule.domain.authorization.AuthResult
 import com.radlance.matule.domain.user.User
 import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.auth.OtpType
 import io.github.jan.supabase.auth.exception.AuthRestException
+import io.github.jan.supabase.auth.providers.Google
 import io.github.jan.supabase.auth.providers.builtin.Email
+import io.github.jan.supabase.auth.providers.builtin.IDToken
 import io.github.jan.supabase.exceptions.HttpRequestException
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
@@ -24,7 +27,7 @@ class AuthRepositoryImpl @Inject constructor(
                 data = buildJsonObject {
                     put("name", user.name)
                     put(
-                        "image_url",
+                        "avatar_url",
                         "https://osoknxtwcppulkimwpjo.supabase.co/storage/v1/object/public/Matule/default_profile_image.jpg"
                     )
                 }
@@ -36,6 +39,20 @@ class AuthRepositoryImpl @Inject constructor(
         }
         catch (e: Exception) {
             AuthResult.Error(noConnection = e is HttpRequestException)
+        }
+    }
+
+    override suspend fun signInWithGoogle(googleIdToken: String, rawNonce: String): AuthResult {
+        return try {
+            auth.signInWith(IDToken) {
+                idToken = googleIdToken
+                provider = Google
+                nonce = rawNonce
+            }
+            AuthResult.Success
+        } catch (e: Exception) {
+            Log.d("AuthRepositoryImpl", e.message!!)
+            AuthResult.Error()
         }
     }
 

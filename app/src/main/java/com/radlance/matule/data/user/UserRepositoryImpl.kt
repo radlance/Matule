@@ -44,7 +44,7 @@ class UserRepositoryImpl @Inject constructor(
                     val savedImageUrl = bucket.publicUrl(fileName)
                     supabaseClient.auth.updateUser {
                         data {
-                            put("image_url", savedImageUrl)
+                            put("avatar_url", savedImageUrl)
                         }
                     }
                 }

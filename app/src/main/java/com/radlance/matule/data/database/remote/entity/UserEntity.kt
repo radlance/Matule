@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UserEntity(
     val name: String,
-    @SerialName("image_url") val imageUri: String
+    @SerialName("avatar_url") val imageUrl: String
 )

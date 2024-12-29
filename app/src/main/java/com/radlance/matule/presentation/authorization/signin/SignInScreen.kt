@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.rememberScrollState
@@ -21,10 +22,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -62,15 +65,15 @@ fun SignInScreen(
         mutableStateOf("")
     }
 
-    val scrollState = rememberScrollState()
-
+    val googleSignInResultUiState by viewModel.googleSignInResult.collectAsState()
     val signInResultUiState by viewModel.authResultUiState.collectAsState()
-
     val uiState by viewModel.authUiState.collectAsState()
 
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    val scrollState = rememberScrollState()
     val interactionSource = remember { MutableInteractionSource() }
     val snackBarHostState = remember { SnackbarHostState() }
-
     val keyboardController = LocalSoftwareKeyboardController.current
 
     signInResultUiState.Show(
@@ -170,6 +173,17 @@ fun SignInScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 24.dp)
+            )
+
+            Spacer(Modifier.height(24.dp))
+
+            GoogleSignInButton(
+                context = context,
+                coroutineScope = coroutineScope,
+                onSignIn = viewModel::signInWithGoogle,
+                onSuccessSignIn = onSuccessSignIn,
+                authResultUiState = googleSignInResultUiState,
+                snackBarHostState = snackBarHostState
             )
 
             Spacer(modifier = Modifier.weight(1f))

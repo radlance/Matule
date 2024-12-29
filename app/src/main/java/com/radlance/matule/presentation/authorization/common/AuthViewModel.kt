@@ -27,12 +27,24 @@ class AuthViewModel @Inject constructor(
     val authResultUiState: StateFlow<AuthResultUiState>
         get() = _authResultUiState.asStateFlow()
 
+    private val _googleSignInResult = MutableStateFlow<AuthResultUiState>(AuthResultUiState.Initial)
+    val googleSignInResult: StateFlow<AuthResultUiState>
+        get() = _googleSignInResult.asStateFlow()
+
+
     fun signUp(name: String, email: String, password: String) {
         performAuthAction(email, password, name, isSignUp = true)
     }
 
     fun signIn(email: String, password: String) {
         performAuthAction(email, password, isSignUp = false)
+    }
+
+    fun signInWithGoogle(googleIdToken: String, rawNonce: String) {
+        viewModelScope.launch {
+            val result = authRepository.signInWithGoogle(googleIdToken, rawNonce)
+            _googleSignInResult.value = result.map(mapper)
+        }
     }
 
     fun sendOtp(email: String) {

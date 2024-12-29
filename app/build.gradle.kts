@@ -30,6 +30,9 @@ android {
         val supabaseKey = properties.getProperty("supabase.key")
         buildConfigField("String", "SUPABASE_KEY", supabaseKey)
 
+        val serverClientId = properties.getProperty("server.client.id")
+        buildConfigField("String", "SERVER_CLIENT_ID", serverClientId)
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -68,6 +71,10 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
+    implementation(libs.credentials)
+    implementation(libs.googleid)
+    implementation(libs.credentials.play.services.auth)
+
     implementation(platform(libs.supabase.bom))
     implementation(libs.supabase.postgres)
     implementation(libs.supabase.auth)
@@ -77,7 +84,7 @@ dependencies {
 
     kapt(libs.hilt.android.compiler)
     implementation(libs.hilt.android)
-    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.hilt.navigation.compose)
 
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.lifecycle.viewmodel.compose)

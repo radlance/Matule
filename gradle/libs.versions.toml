@@ -15,13 +15,12 @@ navigationComposeVersion = "2.8.5"
 
 dagger = "2.52"
 hiltNavigationCompose = "1.2.0"
-
+credentialManager = "1.3.0"
+googleId = "1.1.1"
 supabase = "3.0.2"
 ktor = "3.0.1"
-
 ksp = "2.0.0-1.0.23"
 room = "2.6.1"
-
 coil = "3.0.4"
 
 
@@ -38,7 +37,7 @@ ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref =
 
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "dagger" }
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "dagger" }
-androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastorePreferences" }
@@ -50,6 +49,10 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+
+credentials = { group =  "androidx.credentials", name = "credentials", version.ref = "credentialManager" }
+googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleId" }
+credentials-play-services-auth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "credentialManager" }
 
 supabase-bom = { group = "io.github.jan-tennert.supabase", name = "bom", version.ref = "supabase" }
 supabase-postgres = { group = "io.github.jan-tennert.supabase", name = "postgrest-kt", version.ref = "supabase" }

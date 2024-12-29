@@ -54,7 +54,7 @@ abstract class RemoteMapper {
     }
 
     protected fun UserEntity.toUser(): User {
-        return User(name = name, imageUrl = imageUri)
+        return User(name = name, imageUrl = imageUrl)
     }
 
     protected fun NotificationEntity.toNotification(): Notification {
