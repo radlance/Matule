@@ -11,7 +11,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -35,11 +34,11 @@ fun GoogleSignInButton(
     onSignIn: (googleIdToken: String, rawNonce: String) -> Unit,
     onSuccessSignIn: () -> Unit,
     authResultUiState: AuthResultUiState,
+    accountManager: AccountManager,
     modifier: Modifier = Modifier,
     snackBarHostState: SnackbarHostState = SnackbarHostState()
 ) {
     var continueSignIn by rememberSaveable { mutableStateOf(false) }
-    val accountManager = remember { AccountManager(activity) }
 
     if (continueSignIn) {
         authResultUiState.Show(
@@ -53,7 +52,7 @@ fun GoogleSignInButton(
         coroutineScope.launch {
             val result = accountManager.signInWithGoogle()
             result.show(
-                onSuccess = { token, rawNonce ->
+                onSuccess = { token, rawNonce, _ ->
                     onSignIn(token, rawNonce)
                 continueSignIn = true
                 },
@@ -91,6 +90,7 @@ private fun GoogleSignInButtonPreview() {
             onSignIn = { _, _ -> },
             authResultUiState = AuthResultUiState.Initial,
             coroutineScope = CoroutineScope(Dispatchers.Main),
+            accountManager = AccountManager(LocalContext.current as ComponentActivity),
             onSuccessSignIn = {}
         )
     }

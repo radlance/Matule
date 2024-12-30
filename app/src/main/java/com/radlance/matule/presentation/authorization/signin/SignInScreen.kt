@@ -19,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.radlance.matule.R
+import com.radlance.matule.presentation.authorization.common.AccountManager
 import com.radlance.matule.presentation.authorization.common.AuthScaffold
 import com.radlance.matule.presentation.authorization.common.AuthViewModel
 import com.radlance.matule.presentation.component.BackButton
@@ -76,6 +78,23 @@ fun SignInScreen(
     val interactionSource = remember { MutableInteractionSource() }
     val snackBarHostState = remember { SnackbarHostState() }
     val keyboardController = LocalSoftwareKeyboardController.current
+
+    val accountManager = remember { AccountManager(context as ComponentActivity) }
+
+
+    LaunchedEffect(Unit) {
+        val savedPasswordUiState = accountManager.signIn()
+        savedPasswordUiState.show(
+            onSuccess = { _, _, user ->
+                user?.let {
+                    emailFieldValue = it.email
+                    passwordFieldValue = it.password
+                    viewModel.signIn(email = it.email, password = it.password)
+                }
+            },
+            onError = {}
+        )
+    }
 
     signInResultUiState.Show(
         onSuccessResult = onSuccessSignIn,
@@ -184,6 +203,7 @@ fun SignInScreen(
                 onSignIn = viewModel::signInWithGoogle,
                 onSuccessSignIn = onSuccessSignIn,
                 authResultUiState = googleSignInResultUiState,
+                accountManager = accountManager,
                 snackBarHostState = snackBarHostState
             )
 

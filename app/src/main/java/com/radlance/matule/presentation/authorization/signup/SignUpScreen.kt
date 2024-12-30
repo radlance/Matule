@@ -2,6 +2,7 @@ package com.radlance.matule.presentation.authorization.signup
 
 import android.content.Intent
 import android.net.Uri
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,6 +25,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -37,12 +39,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.radlance.matule.R
+import com.radlance.matule.presentation.authorization.common.AccountManager
 import com.radlance.matule.presentation.authorization.common.AuthScaffold
 import com.radlance.matule.presentation.authorization.common.AuthViewModel
 import com.radlance.matule.presentation.component.NavigationButton
 import com.radlance.matule.ui.theme.MatuleTheme
 import com.radlance.matule.ui.theme.ralewayFamily
 import com.radlance.matule.ui.theme.secondaryTextColor
+import kotlinx.coroutines.launch
 
 @Composable
 fun SignUpScreen(
@@ -62,15 +66,24 @@ fun SignUpScreen(
 
     val signUpResultUiState by viewModel.authResultUiState.collectAsState()
     val uiState by viewModel.authUiState.collectAsState()
+
     val interactionSource = remember { MutableInteractionSource() }
     val scrollState = rememberScrollState()
     val context = LocalContext.current
     val snackBarHostState = remember { SnackbarHostState() }
     val keyboardController = LocalSoftwareKeyboardController.current
 
+    val accountManager = AccountManager(context as ComponentActivity)
+    val coroutineScope = rememberCoroutineScope()
+
     AuthScaffold(snackBarHostState = snackBarHostState, modifier = modifier) {
         signUpResultUiState.Show(
-            onSuccessResult = onSuccessSignUp,
+            onSuccessResult = {
+                onSuccessSignUp()
+                coroutineScope.launch {
+                    accountManager.signUp(emailFieldValue, passwordFieldValue)
+                }
+            },
             onChangeButtonState = viewModel::updateActionButtonState,
             snackBarHostState = snackBarHostState
         )
