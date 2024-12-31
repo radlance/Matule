@@ -209,29 +209,39 @@ fun SignInScreen(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Row(Modifier.padding(top = 24.dp)) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Row(Modifier.padding(top = 24.dp)) {
+                    Text(
+                        text = stringResource(R.string.is_first_time),
+                        color = secondaryTextColor,
+                        fontSize = 16.sp,
+                        fontFamily = ralewayFamily,
+                        fontWeight = FontWeight.Medium,
+                        lineHeight = 1.sp
+                    )
+                    Text(
+                        text = stringResource(R.string.create_user),
+                        fontSize = 16.sp,
+                        fontFamily = ralewayFamily,
+                        fontWeight = FontWeight.Medium,
+                        lineHeight = 1.sp,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.clickable(
+                            indication = null,
+                            interactionSource = interactionSource
+                        ) {
+                            onSignUpTextClicked()
+                            keyboardController?.hide()
+                        }
+                    )
+                }
+
+                Spacer(Modifier.height(24.dp))
                 Text(
-                    text = stringResource(R.string.is_first_time),
+                    text = stringResource(R.string.skip_authorization),
+                    fontSize = 16.sp,
                     color = secondaryTextColor,
-                    fontSize = 16.sp,
-                    fontFamily = ralewayFamily,
-                    fontWeight = FontWeight.Medium,
-                    lineHeight = 1.sp
-                )
-                Text(
-                    text = stringResource(R.string.create_user),
-                    fontSize = 16.sp,
-                    fontFamily = ralewayFamily,
-                    fontWeight = FontWeight.Medium,
-                    lineHeight = 1.sp,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.clickable(
-                        indication = null,
-                        interactionSource = interactionSource
-                    ) {
-                        onSignUpTextClicked()
-                        keyboardController?.hide()
-                    }
+                    modifier = Modifier.clickable { onSuccessSignIn() }
                 )
             }
         }

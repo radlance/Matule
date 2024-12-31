@@ -83,4 +83,5 @@
     <string name="save_data">Сохранение данных…</string>
     <string name="fail_data_save">Ошибка сохранения данных</string>
     <string name="sign_in_error">Произошла ошибка при входе</string>
+    <string name="skip_authorization">Пропустить авторизацию</string>
 </resources>

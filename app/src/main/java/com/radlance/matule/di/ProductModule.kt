@@ -1,15 +1,39 @@
 package com.radlance.matule.di
 
+import com.radlance.matule.data.database.local.MatuleDao
+import com.radlance.matule.data.product.LocalProductRepository
 import com.radlance.matule.data.product.ProductRepositoryImpl
+import com.radlance.matule.data.product.RemoteProductRepository
 import com.radlance.matule.domain.product.ProductRepository
-import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.github.jan.supabase.SupabaseClient
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface ProductModule {
-    @Binds
-    fun provideRepository(productRepositoryImpl: ProductRepositoryImpl): ProductRepository
+class ProductModule {
+    @Provides
+    @Singleton
+    fun provideLocalProductRepository(dao: MatuleDao): LocalProductRepository {
+        return LocalProductRepository(dao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRemoteProductRepository(supabaseClient: SupabaseClient): RemoteProductRepository {
+        return RemoteProductRepository(supabaseClient)
+    }
+
+    @Provides
+    @Singleton
+    fun provideProductRepository(
+        localRepository: LocalProductRepository,
+        remoteRepository: RemoteProductRepository,
+        supabaseClient: SupabaseClient
+    ): ProductRepository {
+        return ProductRepositoryImpl(supabaseClient, localRepository, remoteRepository)
+    }
 }

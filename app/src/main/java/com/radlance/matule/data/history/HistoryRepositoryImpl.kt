@@ -2,7 +2,7 @@ package com.radlance.matule.data.history
 
 import com.radlance.matule.data.database.remote.RemoteMapper
 import com.radlance.matule.data.database.remote.entity.HistoryEntity
-import com.radlance.matule.data.database.remote.entity.ProductEntity
+import com.radlance.matule.data.database.remote.entity.RemoteProductEntity
 import com.radlance.matule.domain.history.HistoryProduct
 import com.radlance.matule.domain.history.HistoryRepository
 import com.radlance.matule.domain.remote.FetchResult
@@ -24,7 +24,7 @@ class HistoryRepositoryImpl @Inject constructor(
                             HistoryEntity::userId eq user.id
                         }
                     }.decodeList<HistoryEntity>()
-                val products = supabaseClient.from("product").select().decodeList<ProductEntity>()
+                val products = supabaseClient.from("product").select().decodeList<RemoteProductEntity>()
 
                 FetchResult.Success(
                     historyEntities.map { historyEntity ->

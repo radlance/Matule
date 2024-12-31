@@ -1,6 +1,10 @@
 package com.radlance.matule.data.database.local
 
+import com.radlance.matule.data.database.local.entity.LocalCategoryEntity
+import com.radlance.matule.data.database.local.entity.LocalProductEntity
 import com.radlance.matule.data.database.local.entity.SearchHistoryQueryEntity
+import com.radlance.matule.domain.product.Category
+import com.radlance.matule.domain.product.Product
 import com.radlance.matule.domain.search.SearchHistoryQuery
 
 abstract class LocalMapper {
@@ -10,5 +14,22 @@ abstract class LocalMapper {
 
     protected fun SearchHistoryQuery.toSearchHistoryQueryEntity(): SearchHistoryQueryEntity {
         return SearchHistoryQueryEntity(query = query, queryTime = queryTime)
+    }
+
+    protected fun LocalCategoryEntity.toCategory(): Category {
+        return Category(title = title, id = id)
+    }
+
+    protected fun LocalProductEntity.toProduct(): Product {
+        return Product(
+            id = id,
+            title = title,
+            price = price,
+            description = description,
+            imageUrl = imageUrl,
+            categoryId = categoryId,
+            isFavorite = isFavorite,
+            quantityInCart = quantityInCart
+        )
     }
 }

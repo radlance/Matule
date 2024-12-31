@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ProductEntity(
+data class RemoteProductEntity(
     val id: Int,
     val title: String,
     val description: String,

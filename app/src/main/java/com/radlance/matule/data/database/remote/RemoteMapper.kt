@@ -1,9 +1,9 @@
 package com.radlance.matule.data.database.remote
 
-import com.radlance.matule.data.database.remote.entity.CategoryEntity
+import com.radlance.matule.data.database.remote.entity.RemoteCategoryEntity
 import com.radlance.matule.data.database.remote.entity.HistoryEntity
 import com.radlance.matule.data.database.remote.entity.NotificationEntity
-import com.radlance.matule.data.database.remote.entity.ProductEntity
+import com.radlance.matule.data.database.remote.entity.RemoteProductEntity
 import com.radlance.matule.data.database.remote.entity.UserEntity
 import com.radlance.matule.domain.user.User
 import com.radlance.matule.domain.history.HistoryProduct
@@ -14,11 +14,11 @@ import kotlinx.datetime.toKotlinLocalDateTime
 import java.time.LocalDateTime
 
 abstract class RemoteMapper {
-    protected fun CategoryEntity.toCategory(): Category {
+    protected fun RemoteCategoryEntity.toCategory(): Category {
         return Category(id = id, title = title)
     }
 
-    protected fun ProductEntity.toProduct(
+    protected fun RemoteProductEntity.toProduct(
         isFavorite: Boolean,
         quantityInCart: Int
     ): Product {
@@ -43,12 +43,12 @@ abstract class RemoteMapper {
         )
     }
 
-    protected fun HistoryEntity.toHistoryProduct(productEntity: ProductEntity): HistoryProduct {
+    protected fun HistoryEntity.toHistoryProduct(remoteProductEntity: RemoteProductEntity): HistoryProduct {
         return HistoryProduct(
             id = id,
-            title = productEntity.title,
-            price = productEntity.price,
-            imageUrl = productEntity.imageUrl,
+            title = remoteProductEntity.title,
+            price = remoteProductEntity.price,
+            imageUrl = remoteProductEntity.imageUrl,
             orderTime = orderDate
         )
     }

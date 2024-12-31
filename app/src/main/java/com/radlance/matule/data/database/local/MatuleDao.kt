@@ -4,6 +4,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import com.radlance.matule.data.database.local.entity.LocalCategoryEntity
+import com.radlance.matule.data.database.local.entity.LocalProductEntity
 import com.radlance.matule.data.database.local.entity.SearchHistoryQueryEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -28,4 +30,22 @@ interface MatuleDao {
     """
     )
     suspend fun removeOldestHistory()
+
+    @Query("SELECT * FROM category")
+    suspend fun getCategories(): List<LocalCategoryEntity>
+
+    @Query("SELECT * FROM product")
+    suspend fun getProducts(): List<LocalProductEntity>
+
+    @Query("UPDATE product SET is_favorite = NOT is_favorite WHERE id = :productId")
+    suspend fun changeFavoriteStatus(productId: Int)
+
+    @Query("UPDATE product SET quantity_in_cart = 1 WHERE id = :productId")
+    suspend fun addProductToCart(productId: Int)
+
+    @Query("UPDATE product SET quantity_in_cart = :quantity WHERE id = :productId")
+    suspend fun updateProductQuantity(productId: Int, quantity: Int)
+
+    @Query("DELETE FROM product WHERE id = :productId")
+    suspend fun removeProductFromCart(productId: Int)
 }

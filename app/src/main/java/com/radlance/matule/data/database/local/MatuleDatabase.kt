@@ -5,9 +5,19 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.radlance.matule.data.database.local.entity.LocalCategoryEntity
+import com.radlance.matule.data.database.local.entity.LocalProductEntity
 import com.radlance.matule.data.database.local.entity.SearchHistoryQueryEntity
 
-@Database(entities = [SearchHistoryQueryEntity::class], version = 1)
+@Database(
+    entities = [
+        SearchHistoryQueryEntity::class,
+        LocalCategoryEntity::class,
+        LocalProductEntity::class
+    ],
+    version = 1,
+    exportSchema = false
+)
 @TypeConverters(LocalDateTimeConverter::class)
 abstract class MatuleDatabase : RoomDatabase() {
     abstract fun getMatuleDao(): MatuleDao
@@ -20,7 +30,7 @@ abstract class MatuleDatabase : RoomDatabase() {
             return INSTANCE ?: synchronized(this) {
                 Room.databaseBuilder(
                     applicationContext, MatuleDatabase::class.java, "matule_db"
-                ).build()
+                ).createFromAsset("matule.db").build()
             }.also {
                 INSTANCE = it
             }

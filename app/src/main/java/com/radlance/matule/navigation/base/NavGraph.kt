@@ -144,7 +144,8 @@ fun NavGraph(navController: NavHostController) {
                 onSuccessSignUp = {
                     navController.navigate(Home) {
                         popUpTo<SignUp> { inclusive = true }
-                        navigationViewModel.setUserLoggedIn()
+                        navigationViewModel.
+                        setUserLoggedIn()
                     }
                 }
             )
