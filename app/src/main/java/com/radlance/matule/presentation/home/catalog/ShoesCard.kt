@@ -1,5 +1,6 @@
 package com.radlance.matule.presentation.home.catalog
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,13 +27,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
+import coil3.compose.SubcomposeAsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.radlance.matule.R
 import com.radlance.matule.domain.product.Product
 import com.radlance.matule.presentation.component.PriceRow
 import com.radlance.matule.ui.theme.MatuleTheme
@@ -80,16 +84,28 @@ fun ShoesCard(
                 )
             }
 
-            AsyncImage(
+            SubcomposeAsyncImage(
                 ImageRequest.Builder(context = LocalContext.current)
                     .data(product.imageUrl)
                     .crossfade(true)
                     .build(),
                 contentDescription = "shoe_example",
                 contentScale = ContentScale.FillWidth,
+                loading = {
+                    Box(modifier = Modifier.size(40.dp), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
+                    }
+                },
+                error = {
+                    Image(
+                        painter = painterResource(R.drawable.shoe_placeholder),
+                        contentDescription
+                    )
+                },
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .fillMaxWidth()
+                    .animateContentSize()
                     .padding(horizontal = 21.dp)
             )
 
