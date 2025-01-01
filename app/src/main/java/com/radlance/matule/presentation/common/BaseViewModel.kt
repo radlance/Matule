@@ -3,6 +3,7 @@ package com.radlance.matule.presentation.common
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.radlance.matule.domain.remote.FetchResult
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -26,6 +27,7 @@ abstract class BaseViewModel : ViewModel() {
     ) {
         viewModelScope.launch {
             stateFlow.value = FetchResultUiState.Loading(loadingData)
+            delay(100)
             stateFlow.value = fetch().map(FetchResultMapper())
         }
     }
