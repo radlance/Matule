@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.radlance.matule.data.database.local.entity.LocalCategoryEntity
+import com.radlance.matule.data.database.local.entity.LocalNotificationEntity
 import com.radlance.matule.data.database.local.entity.LocalProductEntity
 import com.radlance.matule.data.database.local.entity.SearchHistoryQueryEntity
 
@@ -13,7 +14,8 @@ import com.radlance.matule.data.database.local.entity.SearchHistoryQueryEntity
     entities = [
         SearchHistoryQueryEntity::class,
         LocalCategoryEntity::class,
-        LocalProductEntity::class
+        LocalProductEntity::class,
+        LocalNotificationEntity::class
     ],
     version = 1,
     exportSchema = false

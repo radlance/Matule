@@ -1,5 +1,6 @@
 package com.radlance.matule.data.product
 
+import com.radlance.matule.data.common.BaseRepository
 import com.radlance.matule.domain.history.HistoryProduct
 import com.radlance.matule.domain.product.CatalogFetchContent
 import com.radlance.matule.domain.product.Product
@@ -12,7 +13,11 @@ class ProductRepositoryImpl @Inject constructor(
     supabaseClient: SupabaseClient,
     localProductRepository: ProductRepository,
     remoteProductRepository: ProductRepository
-) : BaseProductRepository(supabaseClient, localProductRepository, remoteProductRepository) {
+) : ProductRepository, BaseRepository<ProductRepository>(
+    supabaseClient,
+    localProductRepository,
+    remoteProductRepository
+) {
     override suspend fun fetchCatalogContent(): FetchResult<CatalogFetchContent> {
         return getRepository().fetchCatalogContent()
     }

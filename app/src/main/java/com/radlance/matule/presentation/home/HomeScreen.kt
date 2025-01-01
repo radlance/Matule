@@ -83,7 +83,8 @@ fun HomeScreen(
             },
             onError = { productId ->
                 ChangeProductStatus(productId, viewModel::changeStateFavoriteStatus)
-            }
+            },
+            onUnAuthorized = {}
         )
 
         addToCartResult.Show(
@@ -96,7 +97,8 @@ fun HomeScreen(
                     productId = productId,
                     onStatusChanged = { viewModel.changeStateInCartStatus(it, recover = true) }
                 )
-            }
+            },
+            onUnAuthorized = {}
         )
 
         loadContentResult.Show(
@@ -125,7 +127,8 @@ fun HomeScreen(
                         }
                     }
                 }
-            }
+            },
+            onUnAuthorized = {}
         )
 
         Spacer(Modifier.height(40.dp))

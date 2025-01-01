@@ -96,7 +96,8 @@ fun EditProfileScreen(
                 )
             }
             viewModel.updateActionButtonState(false)
-        }
+        },
+        onUnAuthorized = {}
     )
 
     AuthScaffold(

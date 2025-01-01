@@ -1,12 +1,17 @@
 package com.radlance.matule.presentation.home.details
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,7 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
+import coil3.compose.SubcomposeAsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.radlance.matule.R
@@ -62,17 +67,29 @@ fun ProductDetails(
             modifier = Modifier.align(Alignment.Start)
         )
 
-        AsyncImage(
+        SubcomposeAsyncImage(
             ImageRequest.Builder(context = LocalContext.current)
                 .data(selectedProduct.imageUrl)
                 .crossfade(true)
                 .build(),
             contentDescription = "shoe_example",
             contentScale = ContentScale.FillWidth,
+            loading = {
+                Box(modifier = Modifier.size(40.dp), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
+                }
+            },
+            error = {
+                Icon(
+                    painter = painterResource(R.drawable.shoe_placeholder),
+                    contentDescription
+                )
+            },
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .fillMaxWidth()
                 .padding(horizontal = 21.dp)
+                .animateContentSize()
         )
 
         Image(

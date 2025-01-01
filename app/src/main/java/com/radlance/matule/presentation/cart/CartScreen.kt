@@ -72,7 +72,8 @@ fun CartScreen(
                     productId = productId,
                     onStatusChanged = viewModel::deleteCartItemFromCurrentState
                 )
-            }
+            },
+            onUnAuthorized = {}
         )
 
         quantityResult.Show(
@@ -86,7 +87,8 @@ fun CartScreen(
                 ChangeProductStatus(productId) {
                     viewModel.updateCurrentQuantity(it, incrementCurrent)
                 }
-            }
+            },
+            onUnAuthorized = {}
         )
 
         catalogContent.Show(
@@ -145,7 +147,8 @@ fun CartScreen(
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(modifier = Modifier.offset(y = (-55).dp))
                 }
-            }
+            },
+            onUnAuthorized = {}
         )
 
 

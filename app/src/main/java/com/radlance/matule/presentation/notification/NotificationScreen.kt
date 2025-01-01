@@ -78,7 +78,8 @@ fun NotificationScreen(
                         }
                     }
                 }
-            }
+            },
+            onUnAuthorized = {}
         )
     }
 }

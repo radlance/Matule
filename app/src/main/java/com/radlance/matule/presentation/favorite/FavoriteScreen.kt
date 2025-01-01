@@ -58,7 +58,8 @@ fun FavoriteScreen(
             },
             onError = { productId ->
                 ChangeProductStatus(productId, viewModel::changeStateFavoriteStatus)
-            }
+            },
+            onUnAuthorized = {}
         )
 
         addToCartResult.Show(
@@ -71,7 +72,8 @@ fun FavoriteScreen(
                     productId = productId,
                     onStatusChanged = { viewModel.changeStateInCartStatus(it, recover = true) }
                 )
-            }
+            },
+            onUnAuthorized = {}
         )
 
         catalogContent.Show(
@@ -115,7 +117,8 @@ fun FavoriteScreen(
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(modifier = Modifier.offset(y = (-55).dp))
                 }
-            }
+            },
+            onUnAuthorized = {}
         )
     }
 }

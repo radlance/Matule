@@ -69,7 +69,8 @@ fun HistoryScreen(
                         Text(text = stringResource(R.string.retry))
                     }
                 }
-            }
+            },
+            onUnAuthorized = {}
         )
     }
 }

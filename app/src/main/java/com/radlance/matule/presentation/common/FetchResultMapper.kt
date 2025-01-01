@@ -10,4 +10,8 @@ class FetchResultMapper<T> : FetchResult.Mapper<FetchResultUiState<T>, T> {
     override fun mapSuccess(data: T): FetchResultUiState<T> {
         return FetchResultUiState.Success(data)
     }
+
+    override fun mapUnauthorized(): FetchResultUiState<T> {
+        return FetchResultUiState.Unauthorized()
+    }
 }

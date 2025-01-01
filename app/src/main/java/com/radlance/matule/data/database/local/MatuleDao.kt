@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.radlance.matule.data.database.local.entity.LocalCategoryEntity
+import com.radlance.matule.data.database.local.entity.LocalNotificationEntity
 import com.radlance.matule.data.database.local.entity.LocalProductEntity
 import com.radlance.matule.data.database.local.entity.SearchHistoryQueryEntity
 import kotlinx.coroutines.flow.Flow
@@ -48,4 +49,10 @@ interface MatuleDao {
 
     @Query("DELETE FROM product WHERE id = :productId")
     suspend fun removeProductFromCart(productId: Int)
+
+    @Query("SELECT * FROM notification")
+    suspend fun getNotifications(): List<LocalNotificationEntity>
+
+    @Query("UPDATE notification SET is_read = true WHERE id = :notificationId")
+    suspend fun setNotificationRead(notificationId: Int)
 }

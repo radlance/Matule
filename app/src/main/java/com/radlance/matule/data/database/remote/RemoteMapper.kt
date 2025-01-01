@@ -60,7 +60,7 @@ abstract class RemoteMapper {
     protected fun NotificationEntity.toNotification(): Notification {
         return Notification(
             title = title,
-            content = message,
+            message = message,
             sendDate = sendDate,
             isRead = isRead,
             id = id

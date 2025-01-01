@@ -40,7 +40,7 @@ fun NotificationItem(
         Column(modifier = Modifier.padding(16.dp)) {
             Text(text = notification.title, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
             Spacer(Modifier.height(8.dp))
-            Text(text = notification.content, fontSize = 16.sp, fontWeight = FontWeight.Normal)
+            Text(text = notification.message, fontSize = 16.sp, fontWeight = FontWeight.Normal)
             Spacer(Modifier.height(16.dp))
             val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm")
             Text(
@@ -58,7 +58,7 @@ private fun NotificationItemPreview() {
         NotificationItem(
             notification = Notification(
                 title = "Заголовок",
-                content = LoremIpsum(25).values.single(),
+                message = LoremIpsum(25).values.single(),
                 isRead = true,
                 sendDate = LocalDateTime.now().toKotlinLocalDateTime()
             )

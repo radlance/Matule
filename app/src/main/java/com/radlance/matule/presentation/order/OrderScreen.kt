@@ -127,7 +127,8 @@ fun OrderScreen(
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(modifier = Modifier.offset(y = (-55).dp))
                 }
-            }
+            },
+            onUnAuthorized = {}
         )
 
         placeOrderResult.Show(
@@ -145,7 +146,8 @@ fun OrderScreen(
                     stringResource(R.string.place_order_error),
                     Toast.LENGTH_SHORT
                 ).show()
-            }
+            },
+            onUnAuthorized = {}
         )
     }
 }

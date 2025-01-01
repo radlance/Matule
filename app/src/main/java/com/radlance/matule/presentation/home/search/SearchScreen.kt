@@ -96,7 +96,8 @@ fun SearchScreen(
             },
             onError = { productId ->
                 ChangeProductStatus(productId, productViewModel::changeStateFavoriteStatus)
-            }
+            },
+            onUnAuthorized = {}
         )
 
         addToCartResult.Show(
@@ -114,7 +115,8 @@ fun SearchScreen(
                         )
                     }
                 )
-            }
+            },
+            onUnAuthorized = {}
         )
 
         if (searchSubmitQuery.isNotBlank()) {
@@ -164,7 +166,8 @@ fun SearchScreen(
                     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         CircularProgressIndicator(modifier = Modifier.offset(y = (-55).dp))
                     }
-                }
+                },
+                onUnAuthorized = {}
             )
         } else {
             SearchHistoryList(
