@@ -20,6 +20,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -34,6 +35,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.radlance.matule.R
+import com.radlance.matule.domain.user.User
 import com.radlance.matule.presentation.cart.CartResult
 import com.radlance.matule.presentation.common.ProductViewModel
 import com.radlance.matule.ui.theme.MatuleTheme
@@ -49,15 +51,25 @@ fun OrderScreen(
     BackHandler { onBackPressed() }
 
     var resultSum by rememberSaveable { mutableDoubleStateOf(0.0) }
+    var currentUser by remember { mutableStateOf(User()) }
 
     val catalogContent by productViewModel.catalogContent.collectAsState()
     val placeOrderResult by productViewModel.placeOrderResult.collectAsState()
-    val userEmail by orderViewModel.userEmail.collectAsState()
+    val userUiState by orderViewModel.userUiState.collectAsState()
 
     val context = LocalContext.current
 
     var placeOrderButtonEnabled by rememberSaveable { mutableStateOf(true) }
     var showSuccessOrderPlaceDialog by rememberSaveable { mutableStateOf(false) }
+
+    userUiState.Show(
+        onSuccess = { userData ->
+            currentUser = userData
+        },
+        onError = {},
+        onLoading = {},
+        onUnauthorized = {}
+    )
 
     if (showSuccessOrderPlaceDialog) {
         Dialog(
@@ -92,7 +104,7 @@ fun OrderScreen(
                 }
 
                 OrderCard(
-                    email = userEmail,
+                    email = currentUser.email,
                     modifier = Modifier
                         .padding(horizontal = 14.dp)
                         .weight(4f)
@@ -128,7 +140,7 @@ fun OrderScreen(
                     CircularProgressIndicator(modifier = Modifier.offset(y = (-55).dp))
                 }
             },
-            onUnAuthorized = {}
+            onUnauthorized = {}
         )
 
         placeOrderResult.Show(
@@ -147,7 +159,7 @@ fun OrderScreen(
                     Toast.LENGTH_SHORT
                 ).show()
             },
-            onUnAuthorized = {}
+            onUnauthorized = {}
         )
     }
 }

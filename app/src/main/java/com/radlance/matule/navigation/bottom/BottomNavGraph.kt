@@ -29,6 +29,7 @@ import com.radlance.matule.presentation.profile.edit.EditProfileScreen
 fun BottomNavGraph(
     navigationState: BottomNavigationState,
     onDrawerClick: () -> Unit,
+    onSigInClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val navController = navigationState.navHostController
@@ -138,7 +139,8 @@ fun BottomNavGraph(
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     ProfileScreen(
                         onBarcodeClick = { navigationState.navigateTo(Barcode) },
-                        onEditProfileClick = { navigationState.navigateTo(EditProfile) }
+                        onEditProfileClick = { navigationState.navigateTo(EditProfile) },
+                        onSignInClick = onSigInClick
                     )
                 }
             }

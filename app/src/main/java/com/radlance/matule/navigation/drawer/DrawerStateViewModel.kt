@@ -3,13 +3,15 @@ package com.radlance.matule.navigation.drawer
 import androidx.lifecycle.viewModelScope
 import com.radlance.matule.domain.authorization.AuthRepository
 import com.radlance.matule.domain.authorization.AuthResult
-import com.radlance.matule.domain.user.User
 import com.radlance.matule.domain.notification.NotificationRepository
 import com.radlance.matule.domain.onboarding.NavigationRepository
 import com.radlance.matule.domain.remote.FetchResult
+import com.radlance.matule.domain.user.User
 import com.radlance.matule.domain.user.UserRepository
 import com.radlance.matule.presentation.authorization.common.AuthResultUiState
 import com.radlance.matule.presentation.common.BaseViewModel
+import com.radlance.matule.presentation.common.FetchResultMapper
+import com.radlance.matule.presentation.common.FetchResultUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -34,8 +36,9 @@ class DrawerStateViewModel @Inject constructor(
     val signOutState: StateFlow<AuthResultUiState>
         get() = _signOutState.asStateFlow()
 
-    private val _user = MutableStateFlow(User())
-    val user: StateFlow<User> get() = _user.stateInViewModel(User())
+    private val _user = MutableStateFlow<FetchResultUiState<User>>(FetchResultUiState.Initial())
+    val user: StateFlow<FetchResultUiState<User>>
+        get() = _user.stateInViewModel(FetchResultUiState.Initial())
 
     val hasNotifications = notificationRepository.getNotificationsCount().onStart {
         fetchNotificationCount()
@@ -53,8 +56,7 @@ class DrawerStateViewModel @Inject constructor(
 
     fun getCurrentUserData() {
         viewModelScope.launch {
-
-            val currentUserData = userRepository.getCurrentUserData()
+            val currentUserData = userRepository.getCurrentUserData().map(FetchResultMapper())
             if (_user.value != currentUserData) {
                 _user.value = currentUserData
             }

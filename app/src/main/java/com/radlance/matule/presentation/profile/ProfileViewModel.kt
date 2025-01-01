@@ -19,10 +19,12 @@ class ProfileViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : BaseViewModel() {
 
-    private val _userData = MutableStateFlow(User())
-    val userData: StateFlow<User> = _userData.onStart {
-        _userData.value = userRepository.getCurrentUserData()
-    }.stateInViewModel(User())
+    private val _userData = MutableStateFlow<FetchResultUiState<User>>(FetchResultUiState.Initial())
+    val userData: StateFlow<FetchResultUiState<User>> = _userData.onStart {
+        updateFetchUiState(_userData) {
+            userRepository.getCurrentUserData()
+        }
+    }.stateInViewModel(FetchResultUiState.Initial())
 
     private val _updateUserResult =
         MutableStateFlow<FetchResultUiState<Unit>>(FetchResultUiState.Initial())

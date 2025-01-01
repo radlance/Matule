@@ -79,7 +79,7 @@ fun NotificationScreen(
                     }
                 }
             },
-            onUnAuthorized = {}
+            onUnauthorized = {}
         )
     }
 }

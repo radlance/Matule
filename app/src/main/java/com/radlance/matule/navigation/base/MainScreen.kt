@@ -17,6 +17,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
@@ -25,6 +28,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.radlance.matule.domain.user.User
 import com.radlance.matule.navigation.bottom.BottomNavGraph
 import com.radlance.matule.navigation.bottom.BottomNavigationBar
 import com.radlance.matule.navigation.bottom.rememberNavigationState
@@ -40,13 +44,13 @@ fun MainScreen(
     viewModel: DrawerStateViewModel = hiltViewModel()
 ) {
     val navigationState = rememberNavigationState()
-
+    var userData by remember { mutableStateOf(User()) }
 
     val drawerState by viewModel.drawerState.collectAsState()
     val signOutState by viewModel.signOutState.collectAsState()
 
     val notificationsCount by viewModel.hasNotifications.collectAsState()
-    val user by viewModel.user.collectAsState()
+    val userUiState by viewModel.user.collectAsState()
 
     val updateAnim = updateTransition(drawerState, label = "MenuState")
 
@@ -81,6 +85,12 @@ fun MainScreen(
         label = ""
     ) { it.getRotation() }
 
+    userUiState.Show(
+        onSuccess = { userData = it },
+        onError = {},
+        onLoading = {},
+        onUnauthorized = {}
+    )
     Box(
         Modifier
             .fillMaxSize()
@@ -97,7 +107,7 @@ fun MainScreen(
             }
     ) {
        DrawerMenu(
-           user = user,
+           user = userData,
            navigationState = navigationState,
            onMenuItemClick = viewModel::changeDrawerState,
            onSignOutClick = viewModel::signOut,
@@ -131,6 +141,7 @@ fun MainScreen(
                     viewModel.changeDrawerState()
                     viewModel.getCurrentUserData()
                 },
+                onSigInClick = onSignOut,
                 modifier = Modifier
             )
         }

@@ -47,7 +47,7 @@ fun EditProfileScreen(
     val scrollState = rememberScrollState()
     val snackBarHostState = remember { SnackbarHostState() }
 
-    val userData by viewModel.userData.collectAsState()
+    val userState by viewModel.userData.collectAsState()
     val profileUiState by viewModel.profileUiState.collectAsState()
 
     var nameFieldValue by rememberSaveable { mutableStateOf("") }
@@ -55,20 +55,6 @@ fun EditProfileScreen(
     var imageState by rememberSaveable { mutableStateOf<Uri>(Uri.EMPTY) }
 
     val updateUserResult by viewModel.updateUserResult.collectAsState()
-
-    LaunchedEffect(userData.imageUrl) {
-        if (userData.imageUrl.isNotEmpty()) {
-            imageState = Uri.parse(userData.imageUrl)
-        }
-    }
-
-    LaunchedEffect(userData.name) {
-        nameFieldValue = userData.name
-    }
-
-    LaunchedEffect(userData.email) {
-        emailFieldValue = userData.email
-    }
 
     updateUserResult.Show(
         onSuccess = {
@@ -97,7 +83,7 @@ fun EditProfileScreen(
             }
             viewModel.updateActionButtonState(false)
         },
-        onUnAuthorized = {}
+        onUnauthorized = {}
     )
 
     AuthScaffold(
@@ -119,35 +105,58 @@ fun EditProfileScreen(
                 onImageChanged = { imageState = it }
             )
             Spacer(Modifier.height(22.dp))
-            EditProfileFields(
-                name = nameFieldValue,
-                email = emailFieldValue,
-                onNameChanged = {
-                    nameFieldValue = it
-                    viewModel.resetNameError()
-                },
 
-                onEmailChanged = {
-                    emailFieldValue = it
-                    viewModel.resetEmailError()
-                },
-
-                profileUiState = profileUiState,
-                onSaveClick = {
-                    val byteArray = if (imageState != Uri.parse(userData.imageUrl)) {
-                        imageState.toByteArray(context)
-                    } else {
-                        null
+            userState.Show(
+                onSuccess = { userData ->
+                    LaunchedEffect(userData.imageUrl) {
+                        if (userData.imageUrl.isNotEmpty()) {
+                            imageState = Uri.parse(userData.imageUrl)
+                        }
                     }
 
-                    viewModel.saveProfileChanges(
+                    LaunchedEffect(userData.name) {
+                        nameFieldValue = userData.name
+                    }
+
+                    LaunchedEffect(userData.email) {
+                        emailFieldValue = userData.email
+                    }
+
+                    EditProfileFields(
                         name = nameFieldValue,
                         email = emailFieldValue,
-                        imageByteArray = byteArray
+                        onNameChanged = {
+                            nameFieldValue = it
+                            viewModel.resetNameError()
+                        },
+
+                        onEmailChanged = {
+                            emailFieldValue = it
+                            viewModel.resetEmailError()
+                        },
+
+                        profileUiState = profileUiState,
+                        onSaveClick = {
+                            val byteArray = if (imageState != Uri.parse(userData.imageUrl)) {
+                                imageState.toByteArray(context)
+                            } else {
+                                null
+                            }
+
+                            viewModel.saveProfileChanges(
+                                name = nameFieldValue,
+                                email = emailFieldValue,
+                                imageByteArray = byteArray
+                            )
+                        },
+                        modifier = Modifier.padding(horizontal = 20.dp)
                     )
                 },
-                modifier = Modifier.padding(horizontal = 20.dp)
+                onError = {},
+                onLoading = {},
+                onUnauthorized = {}
             )
+
             Spacer(Modifier.height(140.dp))
         }
     }

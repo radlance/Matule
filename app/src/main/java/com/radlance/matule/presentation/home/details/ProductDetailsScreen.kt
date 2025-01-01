@@ -50,7 +50,7 @@ fun ProductDetailsScreen(
         onError = { productId ->
             ChangeProductStatus(productId, viewModel::changeStateFavoriteStatus)
         },
-        onUnAuthorized = {},
+        onUnauthorized = {},
     )
 
     addToCartResult.Show(
@@ -64,7 +64,7 @@ fun ProductDetailsScreen(
                 onStatusChanged = { viewModel.changeStateInCartStatus(it, recover = true) }
             )
         },
-        onUnAuthorized = {}
+        onUnauthorized = {}
     )
 
     Column(
@@ -123,7 +123,7 @@ fun ProductDetailsScreen(
                     CircularProgressIndicator()
                 }
             },
-            onUnAuthorized = {}
+            onUnauthorized = {}
         )
     }
 }

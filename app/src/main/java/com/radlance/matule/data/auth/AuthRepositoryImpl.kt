@@ -1,6 +1,5 @@
 package com.radlance.matule.data.auth
 
-import android.util.Log
 import com.radlance.matule.domain.authorization.AuthRepository
 import com.radlance.matule.domain.authorization.AuthResult
 import com.radlance.matule.domain.user.User
@@ -51,7 +50,6 @@ class AuthRepositoryImpl @Inject constructor(
             }
             AuthResult.Success
         } catch (e: Exception) {
-            Log.d("AuthRepositoryImpl", e.message!!)
             AuthResult.Error()
         }
     }

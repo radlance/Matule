@@ -8,7 +8,7 @@ interface FetchResultUiState<T> {
         onSuccess: @Composable (T) -> Unit,
         onError: @Composable (T?) -> Unit,
         onLoading: @Composable (T?) -> Unit,
-        onUnAuthorized: (@Composable () -> Unit)
+        onUnauthorized: (@Composable () -> Unit)
     )
     data class Success<T>(val data: T) : FetchResultUiState<T> {
         @Composable
@@ -16,7 +16,7 @@ interface FetchResultUiState<T> {
             onSuccess: @Composable (T) -> Unit,
             onError: @Composable (T?) -> Unit,
             onLoading: @Composable (T?) -> Unit,
-            onUnAuthorized: @Composable () -> Unit
+            onUnauthorized: @Composable () -> Unit
         ) {
             onSuccess(data)
         }
@@ -28,7 +28,7 @@ interface FetchResultUiState<T> {
             onSuccess: @Composable (T) -> Unit,
             onError: @Composable (T?) -> Unit,
             onLoading: @Composable (T?) -> Unit,
-            onUnAuthorized: @Composable () -> Unit
+            onUnauthorized: @Composable () -> Unit
         ) {
             onError(data)
         }
@@ -40,9 +40,9 @@ interface FetchResultUiState<T> {
             onSuccess: @Composable (T) -> Unit,
             onError: @Composable (T?) -> Unit,
             onLoading: @Composable (T?) -> Unit,
-            onUnAuthorized: @Composable () -> Unit
+            onUnauthorized: @Composable () -> Unit
         ) {
-            onUnAuthorized()
+            onUnauthorized()
         }
     }
 
@@ -52,7 +52,7 @@ interface FetchResultUiState<T> {
             onSuccess: @Composable (T) -> Unit,
             onError: @Composable (T?) -> Unit,
             onLoading: @Composable (T?) -> Unit,
-            onUnAuthorized: @Composable () -> Unit
+            onUnauthorized: @Composable () -> Unit
         ) {
             onLoading(data)
         }
@@ -64,9 +64,9 @@ interface FetchResultUiState<T> {
             onSuccess: @Composable (T) -> Unit,
             onError: @Composable (T?) -> Unit,
             onLoading: @Composable (T?) -> Unit,
-            onUnAuthorized: @Composable () -> Unit
+            onUnauthorized: @Composable () -> Unit
         ) {
-            onUnAuthorized()
+            onUnauthorized()
         }
     }
 }

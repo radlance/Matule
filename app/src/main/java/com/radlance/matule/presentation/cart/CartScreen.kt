@@ -73,7 +73,7 @@ fun CartScreen(
                     onStatusChanged = viewModel::deleteCartItemFromCurrentState
                 )
             },
-            onUnAuthorized = {}
+            onUnauthorized = {}
         )
 
         quantityResult.Show(
@@ -88,7 +88,7 @@ fun CartScreen(
                     viewModel.updateCurrentQuantity(it, incrementCurrent)
                 }
             },
-            onUnAuthorized = {}
+            onUnauthorized = {}
         )
 
         catalogContent.Show(
@@ -148,7 +148,7 @@ fun CartScreen(
                     CircularProgressIndicator(modifier = Modifier.offset(y = (-55).dp))
                 }
             },
-            onUnAuthorized = {}
+            onUnauthorized = {}
         )
 
 

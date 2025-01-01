@@ -70,7 +70,7 @@ fun HistoryScreen(
                     }
                 }
             },
-            onUnAuthorized = {}
+            onUnauthorized = {}
         )
     }
 }

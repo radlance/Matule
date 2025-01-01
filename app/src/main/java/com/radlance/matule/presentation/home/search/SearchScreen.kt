@@ -97,7 +97,7 @@ fun SearchScreen(
             onError = { productId ->
                 ChangeProductStatus(productId, productViewModel::changeStateFavoriteStatus)
             },
-            onUnAuthorized = {}
+            onUnauthorized = {}
         )
 
         addToCartResult.Show(
@@ -116,7 +116,7 @@ fun SearchScreen(
                     }
                 )
             },
-            onUnAuthorized = {}
+            onUnauthorized = {}
         )
 
         if (searchSubmitQuery.isNotBlank()) {
@@ -167,7 +167,7 @@ fun SearchScreen(
                         CircularProgressIndicator(modifier = Modifier.offset(y = (-55).dp))
                     }
                 },
-                onUnAuthorized = {}
+                onUnauthorized = {}
             )
         } else {
             SearchHistoryList(

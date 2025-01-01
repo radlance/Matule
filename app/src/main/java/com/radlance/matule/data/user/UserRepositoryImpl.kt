@@ -1,6 +1,5 @@
 package com.radlance.matule.data.user
 
-import android.util.Log
 import com.radlance.matule.data.database.remote.RemoteMapper
 import com.radlance.matule.data.database.remote.entity.UserEntity
 import com.radlance.matule.domain.remote.FetchResult
@@ -17,16 +16,19 @@ import javax.inject.Inject
 class UserRepositoryImpl @Inject constructor(
     private val supabaseClient: SupabaseClient
 ) : UserRepository, RemoteMapper() {
-    override suspend fun getCurrentUserData(): User {
+    override suspend fun getCurrentUserData(): FetchResult<User> {
         val currentUser = supabaseClient.auth.currentSessionOrNull()?.user
-        val json = Json { ignoreUnknownKeys = true }
-        val userData = currentUser?.userMetadata?.let {
-            json.decodeFromString<UserEntity>(
-                it.toString()
-            ).toUser()
+        return if (currentUser != null) {
+            val json = Json { ignoreUnknownKeys = true }
+            val userData = currentUser.userMetadata?.let {
+                json.decodeFromString<UserEntity>(
+                    it.toString()
+                ).toUser()
+            }
+            FetchResult.Success(userData?.copy(email = currentUser.email ?: "") ?: User())
+        } else {
+            FetchResult.Unauthorized()
         }
-
-        return userData?.copy(email = currentUser.email ?: "") ?: User()
     }
 
     override suspend fun updateUserData(
@@ -56,11 +58,9 @@ class UserRepositoryImpl @Inject constructor(
                 }
                 FetchResult.Success(Unit)
             } else {
-                Log.e("UserRepositoryImpl", "user was null")
                 FetchResult.Error(Unit)
             }
         } catch (e: Exception) {
-            Log.e("UserRepositoryImpl", e.message!!)
             FetchResult.Error(Unit)
         }
     }
