@@ -1,6 +1,5 @@
 package com.radlance.matule.presentation.profile
 
-import android.util.Log
 import com.radlance.matule.domain.user.User
 import com.radlance.matule.domain.user.UserRepository
 import com.radlance.matule.presentation.common.BaseViewModel
@@ -41,7 +40,6 @@ class ProfileViewModel @Inject constructor(
         with(profileUiState.value) {
             if (isValidName && isValidEmail) {
                 val user = User(name = name, email = email)
-                Log.d("ProfileViewModel", "updated user: $user")
                 updateFetchUiState(_updateUserResult) {
                     userRepository.updateUserData(user, imageByteArray)
                 }

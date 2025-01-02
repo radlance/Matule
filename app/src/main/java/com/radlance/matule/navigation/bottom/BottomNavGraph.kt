@@ -113,7 +113,8 @@ fun BottomNavGraph(
             composable<Cart> {
                 CartScreen(
                     onPlaceOrderClick = { navigationState.navigateTo(Order) },
-                    viewModel = sharedViewModel
+                    productViewModel = sharedViewModel,
+                    onSignInClick = onSigInClick
                 )
             }
 

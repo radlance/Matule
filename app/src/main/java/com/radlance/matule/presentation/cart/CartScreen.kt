@@ -7,11 +7,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,24 +27,62 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.radlance.matule.R
 import com.radlance.matule.presentation.common.ProductViewModel
 import com.radlance.matule.presentation.home.common.ChangeProductStatus
+import com.radlance.matule.presentation.profile.ProfileViewModel
 import com.radlance.matule.ui.theme.MatuleTheme
 import com.radlance.matule.ui.theme.ralewayFamily
 
 @Composable
 fun CartScreen(
     onPlaceOrderClick: () -> Unit,
+    onSignInClick: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: ProductViewModel = hiltViewModel()
+    productViewModel: ProductViewModel = hiltViewModel(),
+    profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
-    val catalogContent by viewModel.catalogContent.collectAsState()
-    val quantityResult by viewModel.quantityResult.collectAsState()
-    val removeResult by viewModel.removeResult.collectAsState()
+    val userData by profileViewModel.userData.collectAsState()
+
+    val catalogContent by productViewModel.catalogContent.collectAsState()
+    val quantityResult by productViewModel.quantityResult.collectAsState()
+    val removeResult by productViewModel.removeResult.collectAsState()
 
     var incrementCurrent by rememberSaveable { mutableStateOf(false) }
+    var observeUserData by rememberSaveable { mutableStateOf(false) }
+
+
+    if (observeUserData) {
+        userData.Show(
+            onSuccess = {
+                LaunchedEffect(Unit) {
+                    onPlaceOrderClick()
+                }
+            },
+            onError = {},
+            onLoading = {},
+            onUnauthorized = {
+                Dialog(
+                    onDismissRequest = {
+                        observeUserData = false
+                    },
+                    properties = DialogProperties(usePlatformDefaultWidth = false)
+                ) {
+                    UnauthorizedDialog(
+                        onSignInClick = {
+                            onSignInClick()
+                            observeUserData = false
+                        },
+                        modifier = Modifier.padding(horizontal = 20.dp)
+                    )
+                }
+            }
+        )
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -59,18 +99,17 @@ fun CartScreen(
                 ChangeProductStatus(
                     productId = productId,
                     onStatusChanged = {
-                        viewModel.deleteCartItemFromCurrentState(
+                        productViewModel.deleteCartItemFromCurrentState(
                             productId = it,
                             recover = true
                         )
                     }
                 )
-
             },
             onLoading = { productId ->
                 ChangeProductStatus(
                     productId = productId,
-                    onStatusChanged = viewModel::deleteCartItemFromCurrentState
+                    onStatusChanged = productViewModel::deleteCartItemFromCurrentState
                 )
             },
             onUnauthorized = {}
@@ -80,12 +119,12 @@ fun CartScreen(
             onSuccess = {},
             onError = { productId ->
                 ChangeProductStatus(productId) {
-                    viewModel.updateCurrentQuantity(it, !incrementCurrent)
+                    productViewModel.updateCurrentQuantity(it, !incrementCurrent)
                 }
             },
             onLoading = { productId ->
                 ChangeProductStatus(productId) {
-                    viewModel.updateCurrentQuantity(it, incrementCurrent)
+                    productViewModel.updateCurrentQuantity(it, incrementCurrent)
                 }
             },
             onUnauthorized = {}
@@ -111,11 +150,11 @@ fun CartScreen(
                     CartProductColumn(
                         products = productsInCart,
                         onChangeQuantityClick = { productId, quantity, increment ->
-                            viewModel.updateProductQuantity(productId, quantity)
+                            productViewModel.updateProductQuantity(productId, quantity)
                             incrementCurrent = increment
                         },
 
-                        onRemoveProduct = viewModel::removeProductFromCart,
+                        onRemoveProduct = productViewModel::removeProductFromCart,
 
                         modifier = Modifier.weight(4f)
                     )
@@ -126,7 +165,9 @@ fun CartScreen(
                             productsPrice = productsInCart.sumOf { it.price * it.quantityInCart },
                             deliveryPrice = 60.20,
                             buttonStringResId = R.string.place_order,
-                            onButtonClick = onPlaceOrderClick
+                            onButtonClick = {
+                                observeUserData = true
+                            }
                         )
                     }
                 }
@@ -143,7 +184,7 @@ fun CartScreen(
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(text = stringResource(R.string.load_error))
                         Spacer(Modifier.height(12.dp))
-                        Button(onClick = viewModel::fetchContent) {
+                        Button(onClick = productViewModel::fetchContent) {
                             Text(stringResource(R.string.retry), color = Color.White)
                         }
                     }
@@ -156,8 +197,6 @@ fun CartScreen(
             },
             onUnauthorized = {}
         )
-
-
     }
 }
 
@@ -165,6 +204,6 @@ fun CartScreen(
 @Composable
 private fun CartScreenPreview() {
     MatuleTheme {
-        CartScreen({})
+        CartScreen({}, {})
     }
 }
