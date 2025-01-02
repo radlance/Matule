@@ -103,9 +103,15 @@ fun FavoriteScreen(
             },
 
             onError = {
-                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Box(
+                    Modifier
+                        .fillMaxSize()
+                        .offset(y = (-55).dp),
+                    contentAlignment = Alignment.Center
+                ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(text = stringResource(R.string.load_error))
+                        Spacer(Modifier.height(12.dp))
                         Button(onClick = viewModel::fetchContent) {
                             Text(stringResource(R.string.retry), color = Color.White)
                         }
