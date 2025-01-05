@@ -12,8 +12,6 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class DataStoreManager @Inject constructor(private val context: Context) {
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
-
     suspend fun setOnBoardingViewed() {
         context.dataStore.edit { settings ->
             settings[KEY_ONBOARDING_VIEWED] = true
@@ -51,6 +49,8 @@ class DataStoreManager @Inject constructor(private val context: Context) {
     }
 
     private companion object {
+        private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+
         val KEY_ONBOARDING_VIEWED = booleanPreferencesKey("viewed")
         val KEY_USER_LOGGED_IN = booleanPreferencesKey("logged_in")
         val KEY_NOTIFICATION_COUNT = intPreferencesKey("notification count")

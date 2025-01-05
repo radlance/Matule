@@ -85,4 +85,7 @@
     <string name="sign_in_error">Произошла ошибка при входе</string>
     <string name="skip_authorization">Пропустить авторизацию</string>
     <string name="sign_in_to_place_order">Войдите для оформления заказа</string>
+    <string name="onboarding_image_1">onboaring image 1</string>
+    <string name="onboarding_image_2">onboarding image 2</string>
+    <string name="onboarding_image_3">onboarding image 3</string>
 </resources>

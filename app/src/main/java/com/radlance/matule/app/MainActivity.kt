@@ -1,14 +1,9 @@
-package com.radlance.matule
+package com.radlance.matule.app
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
-import androidx.navigation.compose.rememberNavController
-import com.radlance.matule.navigation.base.NavGraph
 import com.radlance.matule.ui.theme.MatuleTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,10 +14,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MatuleTheme {
-                Surface(modifier = Modifier.fillMaxSize()) {
-                    val navHostController = rememberNavController()
-                    NavGraph(navController = navHostController)
-                }
+                MatuleApp()
             }
         }
     }

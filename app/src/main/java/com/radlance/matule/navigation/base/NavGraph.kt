@@ -26,11 +26,12 @@ import com.radlance.matule.presentation.onboarding.SplashScreen
 import com.radlance.matule.ui.theme.backGroundGradient
 
 @Composable
-fun NavGraph(navController: NavHostController) {
+fun NavGraph(
+    navController: NavHostController,
+    navigationViewModel: NavigationViewModel = viewModel()
+) {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route?.split(".")?.last()
-
-    val navigationViewModel = viewModel<NavigationViewModel>()
     val navigationState by navigationViewModel.navigationState.collectAsState()
 
     val context = LocalContext.current

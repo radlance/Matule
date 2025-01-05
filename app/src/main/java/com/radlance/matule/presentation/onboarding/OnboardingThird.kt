@@ -50,9 +50,9 @@ fun OnboardingThird(
             .background(brush = backGroundGradient)
             .pointerInput(Unit) {
                 detectHorizontalDragGestures { change, dragAmount ->
-                    if(dragAmount > 10f) {
+                    if (dragAmount > 10f) {
                         onBackPressed()
-                    } else if(dragAmount < -10f) {
+                    } else if (dragAmount < -10f) {
                         onNextClicked()
                     }
                     change.consume()
@@ -68,7 +68,7 @@ fun OnboardingThird(
             Box {
                 Image(
                     painter = painterResource(R.drawable.onboarding_image_3),
-                    contentDescription = "onboarding_image_2",
+                    contentDescription = stringResource(R.string.onboarding_image_3),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(end = 26.dp)

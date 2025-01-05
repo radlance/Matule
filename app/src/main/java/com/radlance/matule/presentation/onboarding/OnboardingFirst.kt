@@ -52,7 +52,7 @@ fun OnboardingFirst(
             .background(brush = backGroundGradient)
             .pointerInput(Unit) {
                 detectHorizontalDragGestures { change, dragAmount ->
-                    if(dragAmount < -10f) {
+                    if (dragAmount < -10f) {
                         onStartClicked()
                     }
                     change.consume()
@@ -111,7 +111,7 @@ fun OnboardingFirst(
                         .fillMaxWidth()
                         .scale(1.7f),
                     painter = painterResource(R.drawable.onboarding_image_1),
-                    contentDescription = "onboaring_image_1",
+                    contentDescription = stringResource(R.string.onboarding_image_1),
                     contentScale = ContentScale.FillWidth
                 )
             }
