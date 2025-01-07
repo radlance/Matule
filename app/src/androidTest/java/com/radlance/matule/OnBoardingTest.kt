@@ -123,6 +123,6 @@ class OnBoardingTest {
     }
 
     private companion object {
-        const val TEST_ONBOARDING_DATASTORE: String = "test_datastore"
+        const val TEST_ONBOARDING_DATASTORE: String = "test_onboarding_datastore"
     }
 }
