@@ -1,7 +1,11 @@
 package com.radlance.matule.di
 
 import android.content.Context
-import com.radlance.matule.data.common.DataStoreManager
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import com.radlance.matule.data.common.DataStoreRepository
+import com.radlance.matule.data.common.DataStoreRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,13 +22,17 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun provideDataStore(@ApplicationContext applicationContext: Context): DataStoreManager {
-        return DataStoreManager(applicationContext)
+    fun provideDataStore(@ApplicationContext applicationContext: Context): DataStoreRepository {
+        return DataStoreRepositoryImpl(applicationContext.dataStore)
     }
 
     @Provides
     @Singleton
     fun provideAuth(supabaseClient: SupabaseClient): Auth {
         return supabaseClient.auth
+    }
+
+    companion object {
+        val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
     }
 }

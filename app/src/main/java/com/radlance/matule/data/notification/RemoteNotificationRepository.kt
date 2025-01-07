@@ -1,6 +1,6 @@
 package com.radlance.matule.data.notification
 
-import com.radlance.matule.data.common.DataStoreManager
+import com.radlance.matule.data.common.DataStoreRepository
 import com.radlance.matule.data.database.remote.RemoteMapper
 import com.radlance.matule.data.database.remote.entity.NotificationEntity
 import com.radlance.matule.domain.notification.Notification
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 class RemoteNotificationRepository @Inject constructor(
     private val supabaseClient: SupabaseClient,
-    private val dataStoreManager: DataStoreManager
+    private val dataStoreRepository: DataStoreRepository
 )  : NotificationRepository, RemoteMapper() {
     override suspend fun loadNotifications(): FetchResult<List<Notification>> {
         val user = supabaseClient.auth.currentSessionOrNull()?.user
@@ -37,11 +37,11 @@ class RemoteNotificationRepository @Inject constructor(
     }
 
     override fun getNotificationsCount(): Flow<Int> {
-        return dataStoreManager.getNotificationsExistStatus()
+        return dataStoreRepository.getNotificationsExistStatus()
     }
 
     override suspend fun updateNotificationsCount(notificationsCount: Int) {
-        dataStoreManager.setNotificationExistStatus(notificationsCount)
+        dataStoreRepository.setNotificationExistStatus(notificationsCount)
     }
 
     override suspend fun setNotificationRead(notificationId: Int): FetchResult<Unit> {

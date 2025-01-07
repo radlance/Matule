@@ -7,9 +7,12 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeLeft
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
-import com.radlance.matule.data.common.DataStoreManager
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.radlance.matule.data.common.DataStoreRepositoryImpl
 import com.radlance.matule.data.onboarding.NavigationRepositoryImpl
 import com.radlance.matule.navigation.base.NavGraph
 import com.radlance.matule.navigation.base.NavigationViewModel
@@ -17,11 +20,14 @@ import com.radlance.matule.navigation.base.OnboardingFirst
 import com.radlance.matule.navigation.base.OnboardingSecond
 import com.radlance.matule.navigation.base.OnboardingThird
 import com.radlance.matule.navigation.base.Splash
+import kotlinx.coroutines.test.TestScope
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import java.util.Stack
 
+@RunWith(AndroidJUnit4::class)
 class OnBoardingTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
@@ -33,8 +39,13 @@ class OnBoardingTest {
     fun setupNavHost() {
         composeTestRule.setContent {
             val context = LocalContext.current
-            val dataStoreManager = DataStoreManager(context)
-            val navigationRepository = NavigationRepositoryImpl(dataStoreManager)
+            val testDataStore = PreferenceDataStoreFactory.create(
+                scope = TestScope(),
+                produceFile = { context.preferencesDataStoreFile(TEST_ONBOARDING_DATASTORE) }
+            )
+
+            val dataStoreRepositoryImpl = DataStoreRepositoryImpl(testDataStore)
+            val navigationRepository = NavigationRepositoryImpl(dataStoreRepositoryImpl)
             navigationViewModel = NavigationViewModel(navigationRepository)
             navController = TestNavHostController(context).apply {
                 navigatorProvider.addNavigator(ComposeNavigator())
@@ -109,5 +120,9 @@ class OnBoardingTest {
             onNodeWithStringId(R.string.start).assertDisplayedIf(isOnBoardingFirst)
             onNodeWithStringId(R.string.next).assertDisplayedIf(!isOnBoardingFirst)
         }
+    }
+
+    private companion object {
+        const val TEST_ONBOARDING_DATASTORE: String = "test_datastore"
     }
 }

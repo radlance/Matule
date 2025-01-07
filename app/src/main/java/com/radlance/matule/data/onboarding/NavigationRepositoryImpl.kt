@@ -1,26 +1,26 @@
 package com.radlance.matule.data.onboarding
 
-import com.radlance.matule.data.common.DataStoreManager
+import com.radlance.matule.data.common.DataStoreRepository
 import com.radlance.matule.domain.onboarding.NavigationRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class NavigationRepositoryImpl @Inject constructor(
-    private val dataStoreManager: DataStoreManager
+    private val dataStoreRepository: DataStoreRepository
 ) : NavigationRepository {
     override suspend fun setOnBoardingViewed() {
-        dataStoreManager.setOnBoardingViewed()
+        dataStoreRepository.setOnBoardingViewed()
     }
 
     override fun getOnBoardingViewingStatus(): Flow<Boolean> {
-        return dataStoreManager.getViewingStatus()
+        return dataStoreRepository.getViewingStatus()
     }
 
     override suspend fun setUserLoggedIn(loggedIn: Boolean) {
-        return dataStoreManager.setLoggedInStatus(loggedIn)
+        return dataStoreRepository.setLoggedInStatus(loggedIn)
     }
 
     override fun getLoggedInStatus(): Flow<Boolean> {
-        return dataStoreManager.getLoggedInStatus()
+        return dataStoreRepository.getLoggedInStatus()
     }
 }
