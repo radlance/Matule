@@ -7,6 +7,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.radlance.matule.data.common.DataStoreRepository
 import com.radlance.matule.data.common.DataStoreRepositoryImpl
+import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.CoroutineScope
@@ -50,5 +51,14 @@ class DataStoreManagerTest {
         assertTrue(dataStoreRepository.getLoggedInStatus().first())
         dataStoreRepository.setLoggedInStatus(false)
         assertFalse(dataStoreRepository.getLoggedInStatus().first())
+    }
+
+    @Test
+    fun dataStore_updateNotificationCount_changeCurrentValue() = runTest {
+        assertEquals(0, dataStoreRepository.getNotificationsCount().first())
+        dataStoreRepository.updateNotificationCount(1)
+        assertEquals(1, dataStoreRepository.getNotificationsCount().first())
+        dataStoreRepository.updateNotificationCount(2)
+        assertEquals(2, dataStoreRepository.getNotificationsCount().first())
     }
 }
