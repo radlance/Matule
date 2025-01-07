@@ -3,8 +3,10 @@ package com.radlance.matule.di
 import com.radlance.matule.data.common.DataStoreRepository
 import com.radlance.matule.data.database.local.MatuleDao
 import com.radlance.matule.data.notification.LocalNotificationRepository
+import com.radlance.matule.data.notification.NotificationDataStoreImpl
 import com.radlance.matule.data.notification.NotificationRepositoryImpl
 import com.radlance.matule.data.notification.RemoteNotificationRepository
+import com.radlance.matule.domain.notification.NotificationDataStore
 import com.radlance.matule.domain.notification.NotificationRepository
 import dagger.Module
 import dagger.Provides
@@ -18,20 +20,28 @@ import javax.inject.Singleton
 class NotificationModule {
     @Provides
     @Singleton
+    fun provideNotificationDataStore(
+        dataStoreRepository: DataStoreRepository
+    ): NotificationDataStore {
+        return NotificationDataStoreImpl(dataStoreRepository)
+    }
+
+    @Provides
+    @Singleton
     fun provideLocalNotificationRepository(
         dao: MatuleDao,
-        dataStoreRepository: DataStoreRepository
+        notificationDataStore: NotificationDataStore
     ): LocalNotificationRepository {
-        return LocalNotificationRepository(dao, dataStoreRepository)
+        return LocalNotificationRepository(dao, notificationDataStore)
     }
 
     @Provides
     @Singleton
     fun provideRemoteProductRepository(
         supabaseClient: SupabaseClient,
-        dataStoreRepository: DataStoreRepository
+        notificationDataStore: NotificationDataStore
     ): RemoteNotificationRepository {
-        return RemoteNotificationRepository(supabaseClient, dataStoreRepository)
+        return RemoteNotificationRepository(supabaseClient, notificationDataStore)
     }
 
     @Provides

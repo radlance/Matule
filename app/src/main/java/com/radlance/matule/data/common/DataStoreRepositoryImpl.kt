@@ -36,13 +36,13 @@ class DataStoreRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getNotificationsExistStatus(): Flow<Int> {
+    override fun getNotificationsCount(): Flow<Int> {
         return dataStore.data.map { preferences ->
             preferences[KEY_NOTIFICATION_COUNT] ?: 0
         }
     }
 
-    override suspend fun setNotificationExistStatus(notificationsCount: Int) {
+    override suspend fun updateNotificationCount(notificationsCount: Int) {
         dataStore.edit { settings ->
             settings[KEY_NOTIFICATION_COUNT] = notificationsCount
         }
