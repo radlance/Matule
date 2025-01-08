@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AuthViewModel @Inject constructor(
+data class AuthViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val mapper: AuthResult.Mapper<AuthResultUiState>
 ) : ViewModel() {

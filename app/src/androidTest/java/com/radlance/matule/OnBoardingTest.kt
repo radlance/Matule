@@ -7,20 +7,14 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeLeft
-import androidx.datastore.preferences.core.PreferenceDataStoreFactory
-import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.radlance.matule.data.common.DataStoreRepositoryImpl
-import com.radlance.matule.data.onboarding.NavigationRepositoryImpl
 import com.radlance.matule.navigation.base.NavGraph
-import com.radlance.matule.navigation.base.NavigationViewModel
 import com.radlance.matule.navigation.base.OnboardingFirst
 import com.radlance.matule.navigation.base.OnboardingSecond
 import com.radlance.matule.navigation.base.OnboardingThird
 import com.radlance.matule.navigation.base.Splash
-import kotlinx.coroutines.test.TestScope
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -33,25 +27,22 @@ class OnBoardingTest {
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     private lateinit var navController: TestNavHostController
-    private lateinit var navigationViewModel: NavigationViewModel
 
     @Before
     fun setupNavHost() {
         composeTestRule.setContent {
             val context = LocalContext.current
-            val testDataStore = PreferenceDataStoreFactory.create(
-                scope = TestScope(),
-                produceFile = { context.preferencesDataStoreFile(TEST_ONBOARDING_DATASTORE) }
-            )
+            val viewModelFactory = ViewModelFactory(context)
 
-            val dataStoreRepositoryImpl = DataStoreRepositoryImpl(testDataStore)
-            val navigationRepository = NavigationRepositoryImpl(dataStoreRepositoryImpl)
-            navigationViewModel = NavigationViewModel(navigationRepository)
             navController = TestNavHostController(context).apply {
                 navigatorProvider.addNavigator(ComposeNavigator())
             }
 
-            NavGraph(navController = navController, navigationViewModel = navigationViewModel)
+            NavGraph(
+                navController = navController,
+                navigationViewModel = viewModelFactory.createNavigationViewModel(),
+                authViewModel = viewModelFactory.createAuthViewModel()
+            )
         }
     }
 
@@ -72,17 +63,19 @@ class OnBoardingTest {
         val onBoardingScreens = listOf(
             OnboardingScreen(
                 stringResId = R.string.you_have_the_power,
-                imageContentDescription = R.string.onboarding_image_3
+                imageContentDescription = R.string.onboarding_image_3,
+                destination = OnboardingThird
             ),
-
             OnboardingScreen(
                 stringResId = R.string.will_start_travel,
-                imageContentDescription = R.string.onboarding_image_2
+                imageContentDescription = R.string.onboarding_image_2,
+                destination = OnboardingSecond
             ),
 
             OnboardingScreen(
                 stringResId = R.string.welcome,
-                imageContentDescription = R.string.onboarding_image_1
+                imageContentDescription = R.string.onboarding_image_1,
+                destination = OnboardingFirst
             )
         )
 
@@ -93,19 +86,23 @@ class OnBoardingTest {
             mainClock.advanceTimeBy(1000)
             navController.assertCurrentDestination(OnboardingFirst)
 
-            verifyOnBoardingStackScreen(screenStack.pop())
-            verifyOnBoardingButtonTextState(isOnBoardingFirst = true)
-            onRoot().performTouchInput { swipeLeft() }
-
-            navController.assertCurrentDestination(OnboardingSecond)
-            verifyOnBoardingStackScreen(screenStack.pop())
-            verifyOnBoardingButtonTextState(isOnBoardingFirst = false)
-            onRoot().performTouchInput { swipeLeft() }
-
-            navController.assertCurrentDestination(OnboardingThird)
-            verifyOnBoardingStackScreen(screenStack.pop())
-            verifyOnBoardingButtonTextState(isOnBoardingFirst = false)
+            while (screenStack.isNotEmpty()) {
+                swipeAndCheckNextScreen(
+                    screen = screenStack.pop(),
+                    isOnBoardingFirst = screenStack.size == onBoardingScreens.size - 1
+                )
+            }
         }
+    }
+
+    private fun swipeAndCheckNextScreen(
+        screen: OnboardingScreen,
+        isOnBoardingFirst: Boolean
+    ) {
+        verifyOnBoardingStackScreen(screen)
+        verifyOnBoardingButtonTextState(isOnBoardingFirst)
+        navController.assertCurrentDestination(screen.destination)
+        composeTestRule.onRoot().performTouchInput { swipeLeft() }
     }
 
     private fun verifyOnBoardingStackScreen(onboardingScreen: OnboardingScreen) {
@@ -120,9 +117,5 @@ class OnBoardingTest {
             onNodeWithStringId(R.string.start).assertDisplayedIf(isOnBoardingFirst)
             onNodeWithStringId(R.string.next).assertDisplayedIf(!isOnBoardingFirst)
         }
-    }
-
-    private companion object {
-        const val TEST_ONBOARDING_DATASTORE: String = "test_onboarding_datastore"
     }
 }

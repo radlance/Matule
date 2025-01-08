@@ -3,40 +3,42 @@ package com.radlance.matule.navigation.base
 import androidx.annotation.Keep
 import kotlinx.serialization.Serializable
 
-@Serializable
-@Keep
-data object Splash
+interface Destination
 
 @Serializable
 @Keep
-data object OnboardingFirst
+data object Splash: Destination
 
 @Serializable
 @Keep
-data object OnboardingSecond
+data object OnboardingFirst: Destination
 
 @Serializable
 @Keep
-data object OnboardingThird
+data object OnboardingSecond: Destination
 
 @Serializable
 @Keep
-data object SignIn
+data object OnboardingThird: Destination
 
 @Serializable
 @Keep
-data object SignUp
+data object SignIn: Destination
 
 @Serializable
 @Keep
-data object ForgotPassword
+data object SignUp: Destination
+
+@Serializable
+@Keep
+data object ForgotPassword: Destination
 
 @Serializable
 @Keep
 data class Verification(
     val email: String
-)
+): Destination
 
 @Serializable
 @Keep
-data object Home
+data object Home: Destination
