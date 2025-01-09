@@ -94,7 +94,7 @@ fun NavGraph(
                     navController.navigate(SignIn) {
                         popUpTo<OnboardingThird> { inclusive = false }
                     }
-                    navigationViewModel.setOnBoardingViewed()
+                    navigationViewModel.setOnBoardingViewed(viewed = true)
                 },
                 onBackPressed = {
                     navController.navigate(OnboardingSecond) {

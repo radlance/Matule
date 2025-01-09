@@ -27,9 +27,9 @@ class NavigationViewModel @Inject constructor(
             initialValue = OnBoardingNavigationState.NavigateToOnBoardingFirst
         )
 
-    fun setOnBoardingViewed() {
+    fun setOnBoardingViewed(viewed: Boolean) {
         viewModelScope.launch {
-            navigationRepository.setOnBoardingViewed()
+            navigationRepository.setOnBoardingViewed(viewed)
         }
     }
 

@@ -3,6 +3,7 @@ package com.radlance.matule
 import android.content.Context
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.preferencesDataStoreFile
+import androidx.test.core.app.ApplicationProvider
 import com.radlance.matule.data.auth.AuthRepositoryImpl
 import com.radlance.matule.data.common.DataStoreRepositoryImpl
 import com.radlance.matule.data.onboarding.NavigationRepositoryImpl
@@ -15,14 +16,21 @@ import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.serializer.KotlinXSerializer
 import io.github.jan.supabase.storage.Storage
-import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 
-class ViewModelFactory(private val context: Context) {
+const val TEST_ONBOARDING_DATASTORE: String = "test_onboarding_datastore"
+private val context: Context = ApplicationProvider.getApplicationContext()
+
+@OptIn(ExperimentalCoroutinesApi::class)
+val testDataStore = PreferenceDataStoreFactory.create(
+    scope = CoroutineScope(UnconfinedTestDispatcher()),
+    produceFile = { context.preferencesDataStoreFile(TEST_ONBOARDING_DATASTORE) }
+)
+
+class ViewModelFactory {
     fun createNavigationViewModel(): NavigationViewModel {
-        val testDataStore = PreferenceDataStoreFactory.create(
-            scope = TestScope(),
-            produceFile = { context.preferencesDataStoreFile(TEST_ONBOARDING_DATASTORE) }
-        )
 
         val dataStoreRepositoryImpl = DataStoreRepositoryImpl(testDataStore)
         val navigationRepository = NavigationRepositoryImpl(dataStoreRepositoryImpl)
@@ -48,9 +56,5 @@ class ViewModelFactory(private val context: Context) {
         val authViewModel = AuthViewModel(authRepository, mapper)
 
         return authViewModel
-    }
-
-    private companion object {
-        const val TEST_ONBOARDING_DATASTORE: String = "test_onboarding_datastore"
     }
 }

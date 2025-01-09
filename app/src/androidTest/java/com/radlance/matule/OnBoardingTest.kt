@@ -11,10 +11,13 @@ import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.radlance.matule.navigation.base.NavGraph
+import com.radlance.matule.navigation.base.NavigationViewModel
 import com.radlance.matule.navigation.base.OnboardingFirst
 import com.radlance.matule.navigation.base.OnboardingSecond
 import com.radlance.matule.navigation.base.OnboardingThird
+import com.radlance.matule.navigation.base.SignIn
 import com.radlance.matule.navigation.base.Splash
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -27,23 +30,30 @@ class OnBoardingTest {
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     private lateinit var navController: TestNavHostController
+    private lateinit var navigationViewModel: NavigationViewModel
 
     @Before
     fun setupNavHost() {
         composeTestRule.setContent {
             val context = LocalContext.current
-            val viewModelFactory = ViewModelFactory(context)
+            val viewModelFactory = ViewModelFactory()
 
             navController = TestNavHostController(context).apply {
                 navigatorProvider.addNavigator(ComposeNavigator())
             }
 
+            navigationViewModel = viewModelFactory.createNavigationViewModel()
             NavGraph(
                 navController = navController,
-                navigationViewModel = viewModelFactory.createNavigationViewModel(),
+                navigationViewModel = navigationViewModel,
                 authViewModel = viewModelFactory.createAuthViewModel()
             )
         }
+    }
+
+    @After
+    fun teardown() {
+        navigationViewModel.setOnBoardingViewed(viewed = false)
     }
 
     @Test
@@ -59,7 +69,7 @@ class OnBoardingTest {
     }
 
     @Test
-    fun navHost_firstOnBoardingHorizontalSwipe_popUpOnBoardingScreensStack() {
+    fun navHost_onBoardingSwipe_popUpOnboardingScreensStack() {
         val onBoardingScreens = listOf(
             OnboardingScreen(
                 stringResId = R.string.you_have_the_power,
@@ -86,12 +96,30 @@ class OnBoardingTest {
             mainClock.advanceTimeBy(1000)
             navController.assertCurrentDestination(OnboardingFirst)
 
-            while (screenStack.isNotEmpty()) {
+            if (screenStack.isNotEmpty()) {
                 swipeAndCheckNextScreen(
                     screen = screenStack.pop(),
                     isOnBoardingFirst = screenStack.size == onBoardingScreens.size - 1
                 )
+            } else {
+                navController.assertCurrentDestination(SignIn)
             }
+        }
+    }
+
+    @Test
+    fun navHost_recreateAfterSwipeAllOnboarding_launchSignInScreen() {
+        with(composeTestRule) {
+            mainClock.advanceTimeBy(1000)
+            navController.assertCurrentDestination(OnboardingFirst)
+
+            repeat(3) {
+                composeTestRule.onRoot().performTouchInput { swipeLeft() }
+            }
+
+            activityRule.scenario.recreate()
+            mainClock.advanceTimeBy(1000)
+            navController.assertCurrentDestination(SignIn)
         }
     }
 

@@ -19,8 +19,8 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
-const val TEST_DATASTORE_NAME: String = "test_datastore"
-val context: Context = ApplicationProvider.getApplicationContext()
+private const val TEST_DATASTORE_NAME: String = "test_datastore"
+private val context: Context = ApplicationProvider.getApplicationContext()
 
 @OptIn(ExperimentalCoroutinesApi::class)
 val dataStore = PreferenceDataStoreFactory.create(
@@ -38,10 +38,12 @@ class DataStoreManagerTest {
     }
 
     @Test
-    fun dataStore_setOnBoardingViewed_changeViewedStatusToTrue() = runTest {
+    fun dataStore_setOnBoardingViewed_changeViewedStatus() = runTest {
         assertFalse(dataStoreRepository.getViewingStatus().first())
-        dataStoreRepository.setOnBoardingViewed()
+        dataStoreRepository.setOnBoardingViewed(true)
         assertTrue(dataStoreRepository.getViewingStatus().first())
+        dataStoreRepository.setOnBoardingViewed(false)
+        assertFalse(dataStoreRepository.getViewingStatus().first())
     }
 
     @Test

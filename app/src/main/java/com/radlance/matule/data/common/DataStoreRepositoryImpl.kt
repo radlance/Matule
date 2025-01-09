@@ -12,9 +12,9 @@ import javax.inject.Inject
 class DataStoreRepositoryImpl @Inject constructor(
     private val dataStore: DataStore<Preferences>
 ) : DataStoreRepository {
-    override suspend fun setOnBoardingViewed() {
+    override suspend fun setOnBoardingViewed(viewed: Boolean) {
         dataStore.edit { settings ->
-            settings[KEY_ONBOARDING_VIEWED] = true
+            settings[KEY_ONBOARDING_VIEWED] = viewed
         }
     }
 

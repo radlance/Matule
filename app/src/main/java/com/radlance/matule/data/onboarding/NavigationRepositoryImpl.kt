@@ -8,8 +8,8 @@ import javax.inject.Inject
 class NavigationRepositoryImpl @Inject constructor(
     private val dataStoreRepository: DataStoreRepository
 ) : NavigationRepository {
-    override suspend fun setOnBoardingViewed() {
-        dataStoreRepository.setOnBoardingViewed()
+    override suspend fun setOnBoardingViewed(viewed: Boolean) {
+        dataStoreRepository.setOnBoardingViewed(viewed)
     }
 
     override fun getOnBoardingViewingStatus(): Flow<Boolean> {
