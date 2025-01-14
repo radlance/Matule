@@ -54,7 +54,7 @@ fun BottomNavigationBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(106.dp)
-                .scale(scaleX = 1.1f, scaleY = 1f)
+                .scale(scaleX = 1.1f, scaleY = 1.1f)
                 .offset(y = 6.dp),
             contentScale = ContentScale.FillWidth
         )
