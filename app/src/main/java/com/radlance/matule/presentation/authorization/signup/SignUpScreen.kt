@@ -1,7 +1,5 @@
 package com.radlance.matule.presentation.authorization.signup
 
-import android.content.Intent
-import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -76,6 +74,8 @@ fun SignUpScreen(
     val accountManager = AccountManager(context as ComponentActivity)
     val coroutineScope = rememberCoroutineScope()
 
+    val pdfReader = PdfReader(context)
+
     AuthScaffold(snackBarHostState = snackBarHostState, modifier = modifier) {
         signUpResultUiState.Show(
             onSuccessResult = {
@@ -127,14 +127,8 @@ fun SignUpScreen(
                     checked = !checked
                 },
                 onPdfLinkClick = {
-                    val pdfUrl =
-                        "https://drive.google.com/uc?id=1UD2e1VZKOHcXqrHlH65PBhPAXIftbg07"
-                    val intent = Intent(Intent.ACTION_VIEW).apply {
-                        setDataAndType(Uri.parse(pdfUrl), "application/pdf")
-                        addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-                    }
-                    context.startActivity(intent)
-                    keyboardController?.hide()
+                    val pdfUrl = "https://drive.google.com/uc?id=1UD2e1VZKOHcXqrHlH65PBhPAXIftbg07"
+                    pdfReader.readPdf(downloadUrl = pdfUrl)
                 },
                 checked = checked,
                 interactionSource = interactionSource

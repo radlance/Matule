@@ -88,4 +88,5 @@
     <string name="onboarding_image_1">onboaring image 1</string>
     <string name="onboarding_image_2">onboarding image 2</string>
     <string name="onboarding_image_3">onboarding image 3</string>
+    <string name="no_pdf_reader">Нет приложения для открытия PDF</string>
 </resources>
