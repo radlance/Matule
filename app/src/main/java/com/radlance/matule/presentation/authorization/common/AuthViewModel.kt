@@ -42,6 +42,7 @@ data class AuthViewModel @Inject constructor(
 
     fun signInWithGoogle(googleIdToken: String, rawNonce: String) {
         viewModelScope.launch {
+            _googleSignInResult.value = AuthResultUiState.Loading()
             val result = authRepository.signInWithGoogle(googleIdToken, rawNonce)
             _googleSignInResult.value = result.map(mapper)
         }
@@ -63,7 +64,7 @@ data class AuthViewModel @Inject constructor(
         with(authUiState.value) {
             if (isValidEmail && (isValidPassword && (isSignUp && isValidName || !isSignUp) || sendOtp)) {
                 viewModelScope.launch {
-                    _authResultUiState.value = AuthResultUiState.Loading("Загрузка…")
+                    _authResultUiState.value = AuthResultUiState.Loading()
 
                     val result = when {
                         isSignUp -> authRepository.signUp(User(email = email!!, password = password!!, name = name!!))

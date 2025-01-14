@@ -53,7 +53,7 @@ interface AuthResultUiState {
         }
     }
 
-    data class Loading(private val message: String) : AuthResultUiState {
+    data class Loading(private val message: String = "Загрузка…") : AuthResultUiState {
         @Composable
         override fun Show(
             onSuccessResult: () -> Unit,
