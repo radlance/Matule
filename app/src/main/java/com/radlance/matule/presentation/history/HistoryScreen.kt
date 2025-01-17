@@ -58,18 +58,23 @@ fun HistoryScreen(
 
             onLoading = {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator(modifier = Modifier.offset(y = (-55).dp))
-                    }
+                    CircularProgressIndicator(modifier = Modifier.offset(y = (-55).dp))
                 }
             },
             onError = {
-                Column {
-                    Text(text = stringResource(R.string.load_error))
-                    Button(onClick = viewModel::fetchHistory) {
-                        Text(text = stringResource(R.string.retry), color = Color.White)
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.offset(y = (-55).dp)
+                    ) {
+                        Text(text = stringResource(R.string.load_error))
+                        Spacer(Modifier.height(12.dp))
+                        Button(onClick = viewModel::fetchHistory) {
+                            Text(text = stringResource(R.string.retry), color = Color.White)
+                        }
                     }
                 }
+
             },
             onUnauthorized = {}
         )
