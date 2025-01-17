@@ -128,7 +128,10 @@ fun BottomNavGraph(
         }
 
         composable<History> {
-            HistoryScreen(viewModel = sharedViewModel)
+            HistoryScreen(
+                viewModel = sharedViewModel,
+                onSignInClick = onSigInClick
+            )
         }
 
         composable<Notification> {

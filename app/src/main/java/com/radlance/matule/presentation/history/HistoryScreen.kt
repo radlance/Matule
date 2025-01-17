@@ -27,6 +27,7 @@ import com.radlance.matule.ui.theme.MatuleTheme
 
 @Composable
 fun HistoryScreen(
+    onSignInClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ProductViewModel = hiltViewModel()
 ) {
@@ -76,7 +77,18 @@ fun HistoryScreen(
                 }
 
             },
-            onUnauthorized = {}
+            onUnauthorized = {
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Column(
+                        modifier = Modifier.offset(y = (-55).dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Button(onClick = onSignInClick) {
+                            Text(text = stringResource(R.string.sign_in))
+                        }
+                    }
+                }
+            }
         )
     }
 }
@@ -85,6 +97,6 @@ fun HistoryScreen(
 @Composable
 private fun HistoryScreenPreview() {
     MatuleTheme {
-        HistoryScreen()
+        HistoryScreen({})
     }
 }

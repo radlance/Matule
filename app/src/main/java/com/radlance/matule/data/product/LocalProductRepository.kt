@@ -41,10 +41,10 @@ class LocalProductRepository @Inject constructor(
     }
 
     override suspend fun placeOrder(products: List<Product>): FetchResult<List<Product>> {
-        return FetchResult.Error(emptyList())
+        return FetchResult.Unauthorized()
     }
 
     override suspend fun loadHistory(): FetchResult<List<HistoryProduct>> {
-        return FetchResult.Error(emptyList())
+        return FetchResult.Unauthorized()
     }
 }
