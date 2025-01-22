@@ -10,6 +10,7 @@ import com.radlance.matule.data.onboarding.NavigationRepositoryImpl
 import com.radlance.matule.navigation.base.NavigationViewModel
 import com.radlance.matule.presentation.authorization.common.AuthResultMapper
 import com.radlance.matule.presentation.authorization.common.AuthViewModel
+import com.radlance.matule.presentation.common.ResourceManagerImpl
 import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.createSupabaseClient
@@ -51,7 +52,8 @@ class ViewModelFactory {
         }
 
         val authRepository = AuthRepositoryImpl(supabaseClient.auth)
-        val mapper = AuthResultMapper()
+        val resourceManager = ResourceManagerImpl(context)
+        val mapper = AuthResultMapper(resourceManager)
 
         val authViewModel = AuthViewModel(authRepository, mapper)
 

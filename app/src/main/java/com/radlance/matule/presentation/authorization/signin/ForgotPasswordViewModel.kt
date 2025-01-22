@@ -3,9 +3,11 @@ package com.radlance.matule.presentation.authorization.signin
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.radlance.matule.R
 import com.radlance.matule.domain.authorization.AuthRepository
 import com.radlance.matule.domain.authorization.AuthResult
 import com.radlance.matule.presentation.authorization.common.AuthResultUiState
+import com.radlance.matule.presentation.common.ResourceManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +20,8 @@ import kotlin.random.Random
 @HiltViewModel
 class ForgotPasswordViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-    private val mapper: AuthResult.Mapper<AuthResultUiState>
+    private val mapper: AuthResult.Mapper<AuthResultUiState>,
+    private val resourceManager: ResourceManager
 ) : ViewModel() {
     private val otpItems = mutableStateListOf("", "", "", "", "", "")
     private val _resendingUiState = MutableStateFlow<AuthResultUiState>(AuthResultUiState.Initial)
@@ -62,7 +65,10 @@ class ForgotPasswordViewModel @Inject constructor(
 
     fun resendOtp(email: String) {
         viewModelScope.launch {
-            _resendingUiState.value = AuthResultUiState.Loading("Отправка…")
+            _resendingUiState.value = AuthResultUiState.Loading(
+                resourceManager.getString(R.string.sending)
+            )
+
             val result = authRepository.sendOtp(email)
             _resendingUiState.value = result.map(mapper)
         }
@@ -74,7 +80,10 @@ class ForgotPasswordViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            _savePasswordUiState.value = AuthResultUiState.Loading("Сохранение…")
+            _savePasswordUiState.value = AuthResultUiState.Loading(
+                resourceManager.getString(R.string.saving)
+            )
+
             val result = authRepository.updatePassword(newPassword)
             _savePasswordUiState.value = result.map(mapper)
         }
@@ -82,7 +91,10 @@ class ForgotPasswordViewModel @Inject constructor(
 
     private fun confirmOtp(email: String, otp: String) {
         viewModelScope.launch {
-            _confirmOtpState.value = AuthResultUiState.Loading("Проверка…")
+            _confirmOtpState.value = AuthResultUiState.Loading(
+                resourceManager.getString(R.string.checking)
+            )
+
             val result = authRepository.verifyEmailOtp(email = email, token = otp)
             _confirmOtpState.value = result.map(mapper)
         }

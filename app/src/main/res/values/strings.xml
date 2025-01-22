@@ -94,4 +94,7 @@
     <string name="account_already_exist">Аккаунт с такой почтой уже существует</string>
     <string name="verification_error">Ошибка верификации</string>
     <string name="unknown_error">Неизвестная ошибка</string>
+    <string name="sending">Отправка…</string>
+    <string name="saving">Сохранение…</string>
+    <string name="checking">Проверка…</string>
 </resources>
