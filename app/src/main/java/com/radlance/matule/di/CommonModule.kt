@@ -34,6 +34,12 @@ class CommonModule {
 
     @Singleton
     @Provides
+    fun provideApplicationContext(@ApplicationContext context: Context): Context {
+        return context
+    }
+
+    @Singleton
+    @Provides
     fun provideSupabaseClient(): SupabaseClient {
         val supabase = createSupabaseClient(
             supabaseUrl = "https://osoknxtwcppulkimwpjo.supabase.co",
