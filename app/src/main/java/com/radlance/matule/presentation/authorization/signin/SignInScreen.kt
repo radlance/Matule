@@ -40,9 +40,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.radlance.matule.R
-import com.radlance.matule.presentation.authorization.common.AccountManager
 import com.radlance.matule.presentation.authorization.common.AuthScaffold
 import com.radlance.matule.presentation.authorization.common.AuthViewModel
+import com.radlance.matule.presentation.authorization.common.GoogleAccountManager
 import com.radlance.matule.presentation.component.BackButton
 import com.radlance.matule.presentation.component.EnterInputField
 import com.radlance.matule.presentation.component.NavigationButton
@@ -56,6 +56,7 @@ fun SignInScreen(
     onSignUpTextClicked: () -> Unit,
     onRecoverPasswordTextClicked: () -> Unit,
     onSuccessSignIn: () -> Unit,
+    accountManager: AccountManager,
     modifier: Modifier = Modifier,
     viewModel: AuthViewModel = hiltViewModel()
 ) {
@@ -78,8 +79,6 @@ fun SignInScreen(
     val interactionSource = remember { MutableInteractionSource() }
     val snackBarHostState = remember { SnackbarHostState() }
     val keyboardController = LocalSoftwareKeyboardController.current
-
-    val accountManager = remember { AccountManager(context as ComponentActivity) }
 
 
     LaunchedEffect(Unit) {
@@ -252,11 +251,11 @@ fun SignInScreen(
 @Preview(showBackground = true)
 @Composable
 private fun SignInScreenPreview() {
-    SignInScreen({}, {}, {}, {})
+    SignInScreen({}, {}, {}, {}, accountManager = GoogleAccountManager(ComponentActivity()))
 }
 
 @Preview(showBackground = true, device = "spec:width=673dp,height=841dp")
 @Composable
 private fun SignInScreenExpandedPreview() {
-    SignInScreen({}, {}, {}, {})
+    SignInScreen({}, {}, {}, {}, accountManager = GoogleAccountManager(ComponentActivity()))
 }

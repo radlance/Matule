@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.toRoute
 import com.radlance.matule.presentation.authorization.common.AuthViewModel
+import com.radlance.matule.presentation.authorization.signin.AccountManager
 import com.radlance.matule.presentation.authorization.signin.ForgotPasswordScreen
 import com.radlance.matule.presentation.authorization.signin.SignInScreen
 import com.radlance.matule.presentation.authorization.signin.VerificationScreen
@@ -30,7 +31,8 @@ import com.radlance.matule.ui.theme.backGroundGradient
 fun NavGraph(
     navController: NavHostController,
     navigationViewModel: NavigationViewModel = viewModel(),
-    authViewModel: AuthViewModel = viewModel()
+    authViewModel: AuthViewModel = viewModel(),
+    accountManager: AccountManager
 ) {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route?.split(".")?.last()
@@ -129,7 +131,8 @@ fun NavGraph(
                         navigationViewModel.setUserLoggedIn()
                     }
                 },
-                viewModel = authViewModel.copy()
+                viewModel = authViewModel.copy(),
+                accountManager = accountManager
             )
         }
 

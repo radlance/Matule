@@ -11,43 +11,15 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.radlance.matule.BuildConfig
 import com.radlance.matule.R
 import com.radlance.matule.domain.user.User
+import com.radlance.matule.presentation.authorization.signin.AccountManager
+import com.radlance.matule.presentation.authorization.signin.AccountManagerUiState
 import java.security.MessageDigest
 import java.util.UUID
 
 
-interface AccountManagerUiState {
-    fun show(
-        onSuccess: (token: String, rawNonce: String, user: User?) -> Unit,
-        onError: (String) -> Unit
-    )
-
-    data class Success(
-        private val token: String? = null,
-        private val rawNonce: String? = null,
-        private val user: User? = null
-    ) : AccountManagerUiState {
-        override fun show(
-            onSuccess: (token: String, rawNonce: String, user: User?) -> Unit,
-            onError: (String) -> Unit
-        ) {
-            onSuccess(token ?: "", rawNonce ?: "", user)
-        }
-    }
-
-    data class Error(private val message: String) : AccountManagerUiState {
-        override fun show(
-            onSuccess: (token: String, rawNonce: String, user: User?) -> Unit,
-            onError: (String) -> Unit
-        ) {
-            onError(message)
-        }
-    }
-}
-
-
-class AccountManager(
+class GoogleAccountManager(
     private val activity: Activity
-) {
+) : AccountManager {
     private val credentialManager = CredentialManager.create(activity)
     private val rawNonce = UUID.randomUUID().toString()
 
@@ -61,7 +33,7 @@ class AccountManager(
         .addCredentialOption(googleIdOption)
         .build()
 
-    suspend fun signInWithGoogle(): AccountManagerUiState {
+    override suspend fun signInWithGoogle(): AccountManagerUiState {
         return try {
             val result = credentialManager.getCredential(request = request, context = activity)
             val credential = result.credential
@@ -74,7 +46,7 @@ class AccountManager(
         }
     }
 
-    suspend fun signUp(email: String, password: String): AccountManagerUiState {
+    override suspend fun signUp(email: String, password: String): AccountManagerUiState {
         return try {
             credentialManager.createCredential(
                 context = activity,
@@ -82,11 +54,11 @@ class AccountManager(
             )
             AccountManagerUiState.Success(token = null, rawNonce = null)
         } catch (e: Exception) {
-            AccountManagerUiState.Error(message = String())
+            AccountManagerUiState.Error()
         }
     }
 
-    suspend fun signIn(): AccountManagerUiState {
+    override suspend fun signIn(): AccountManagerUiState {
         return try {
             val credentialResponse = credentialManager.getCredential(
                 context = activity,
@@ -102,7 +74,7 @@ class AccountManager(
 
             AccountManagerUiState.Success(user = user)
         } catch (e: Exception) {
-            AccountManagerUiState.Error(message = String())
+            AccountManagerUiState.Error()
         }
     }
 

@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.radlance.matule.R
-import com.radlance.matule.presentation.authorization.common.AccountManager
+import com.radlance.matule.presentation.authorization.common.GoogleAccountManager
 import com.radlance.matule.presentation.authorization.common.AuthScaffold
 import com.radlance.matule.presentation.authorization.common.AuthViewModel
 import com.radlance.matule.presentation.component.NavigationButton
@@ -71,7 +71,7 @@ fun SignUpScreen(
     val snackBarHostState = remember { SnackbarHostState() }
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    val accountManager = AccountManager(context as ComponentActivity)
+    val googleAccountManager = GoogleAccountManager(context as ComponentActivity)
     val coroutineScope = rememberCoroutineScope()
 
     val pdfReader = PdfReader(context)
@@ -81,7 +81,7 @@ fun SignUpScreen(
             onSuccessResult = {
                 onSuccessSignUp()
                 coroutineScope.launch {
-                    accountManager.signUp(emailFieldValue, passwordFieldValue)
+                    googleAccountManager.signUp(emailFieldValue, passwordFieldValue)
                 }
             },
             onChangeButtonState = viewModel::updateActionButtonState,

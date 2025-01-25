@@ -46,7 +46,8 @@ class OnBoardingTest {
             NavGraph(
                 navController = navController,
                 navigationViewModel = navigationViewModel,
-                authViewModel = viewModelFactory.createAuthViewModel()
+                authViewModel = viewModelFactory.createAuthViewModel(),
+                accountManager = FakeAccountManager()
             )
         }
     }

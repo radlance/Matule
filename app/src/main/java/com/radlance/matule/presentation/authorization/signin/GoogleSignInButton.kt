@@ -18,7 +18,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.radlance.matule.presentation.authorization.common.AccountManager
+import com.radlance.matule.presentation.authorization.common.GoogleAccountManager
 import com.radlance.matule.presentation.authorization.common.AuthResultUiState
 import com.radlance.matule.ui.theme.MatuleTheme
 import com.radlance.matule.ui.theme.secondaryTextColor
@@ -90,7 +90,7 @@ private fun GoogleSignInButtonPreview() {
             onSignIn = { _, _ -> },
             authResultUiState = AuthResultUiState.Initial,
             coroutineScope = CoroutineScope(Dispatchers.Main),
-            accountManager = AccountManager(LocalContext.current as ComponentActivity),
+            accountManager = GoogleAccountManager(LocalContext.current as ComponentActivity),
             onSuccessSignIn = {}
         )
     }
