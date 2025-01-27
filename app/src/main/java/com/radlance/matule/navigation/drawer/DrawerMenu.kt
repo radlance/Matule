@@ -40,10 +40,8 @@ import coil3.request.crossfade
 import com.radlance.matule.R
 import com.radlance.matule.domain.user.User
 import com.radlance.matule.navigation.bottom.BottomNavigationState
-import com.radlance.matule.navigation.bottom.Cart
 import com.radlance.matule.navigation.bottom.Favorite
-import com.radlance.matule.navigation.bottom.History
-import com.radlance.matule.navigation.bottom.Notification
+import com.radlance.matule.navigation.bottom.UserData
 import com.radlance.matule.navigation.bottom.rememberNavigationState
 import com.radlance.matule.presentation.authorization.common.AuthResultUiState
 import com.radlance.matule.ui.theme.MatuleTheme
@@ -66,6 +64,10 @@ fun DrawerMenu(
     onMenuItemClick: () -> Unit,
     onSignOutClick: () -> Unit,
     onSignOut: () -> Unit,
+    navigateToCart: () -> Unit,
+    navigateToProfile: () -> Unit,
+    navigateToNotification: () -> Unit,
+    navigateToOrderHistory: () -> Unit,
     notificationExist: Boolean,
     modifier: Modifier = Modifier
 ) {
@@ -112,7 +114,7 @@ fun DrawerMenu(
                     .size(96.dp)
                     .clip(CircleShape)
                     .clickable {
-                        navigationState.navigateTo(com.radlance.matule.navigation.bottom.UserData)
+                        navigationState.navigateTo(UserData)
                         onMenuItemClick()
                     },
                 contentScale = ContentScale.Crop
@@ -137,7 +139,7 @@ fun DrawerMenu(
                     contentDescription = "ProfileNavigationIcon",
                     sectionResId = R.string.profile,
                     onItemClick = {
-                        navigationState.navigateTo(com.radlance.matule.navigation.bottom.UserData)
+                        navigateToProfile()
                         onMenuItemClick()
                     }
                 )
@@ -147,7 +149,7 @@ fun DrawerMenu(
                     contentDescription = "CartIcon",
                     sectionResId = R.string.cart,
                     onItemClick = {
-                        navigationState.navigateTo(Cart)
+                        navigateToCart()
                         onMenuItemClick()
                     }
                 )
@@ -168,7 +170,7 @@ fun DrawerMenu(
                     sectionResId = R.string.orders,
                     iconOffset = IntOffset(x = 0, y = 15),
                     onItemClick = {
-                        navigationState.navigateTo(History)
+                        navigateToOrderHistory()
                         onMenuItemClick()
                     }
                 )
@@ -178,7 +180,7 @@ fun DrawerMenu(
                     contentDescription = "NotificationIcon",
                     sectionResId = R.string.notifications,
                     onItemClick = {
-                        navigationState.navigateTo(Notification)
+                        navigateToNotification()
                         onMenuItemClick()
                     },
                     showBadge = notificationExist
@@ -219,7 +221,11 @@ private fun DrawerMenuPreview() {
             onSignOutClick = {},
             onSignOut = {},
             signOutState = AuthResultUiState.Initial,
-            notificationExist = false
+            notificationExist = false,
+            navigateToCart = {},
+            navigateToProfile = {},
+            navigateToNotification = {},
+            navigateToOrderHistory = {}
         )
     }
 }

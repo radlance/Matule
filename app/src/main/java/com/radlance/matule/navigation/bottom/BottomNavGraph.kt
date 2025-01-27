@@ -1,10 +1,7 @@
 package com.radlance.matule.navigation.bottom
 
 import android.app.Activity
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -12,30 +9,22 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.toRoute
-import com.radlance.matule.presentation.cart.CartScreen
 import com.radlance.matule.presentation.common.ProductViewModel
 import com.radlance.matule.presentation.favorite.FavoriteScreen
-import com.radlance.matule.presentation.history.HistoryScreen
 import com.radlance.matule.presentation.home.HomeScreen
 import com.radlance.matule.presentation.home.details.ProductDetailsScreen
 import com.radlance.matule.presentation.home.search.SearchScreen
-import com.radlance.matule.presentation.notification.NotificationScreen
-import com.radlance.matule.presentation.order.OrderScreen
-import com.radlance.matule.presentation.profile.FullScreenBarcode
-import com.radlance.matule.presentation.profile.ProfileScreen
-import com.radlance.matule.presentation.profile.edit.EditProfileScreen
 
 @Composable
 fun BottomNavGraph(
     navigationState: BottomNavigationState,
     onDrawerClick: () -> Unit,
-    onSigInClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    sharedViewModel: ProductViewModel = hiltViewModel()
 ) {
     val navController = navigationState.navHostController
     val context = LocalContext.current
 
-    val sharedViewModel = hiltViewModel<ProductViewModel>()
     NavHost(
         navController = navController,
         startDestination = Base,
@@ -107,58 +96,6 @@ fun BottomNavGraph(
                 },
                 viewModel = sharedViewModel
             )
-        }
-
-        navigation<Payment>(startDestination = Cart) {
-            composable<Cart> {
-                CartScreen(
-                    onPlaceOrderClick = { navigationState.navigateTo(Order) },
-                    productViewModel = sharedViewModel,
-                    onSignInClick = onSigInClick
-                )
-            }
-
-            composable<Order> {
-                OrderScreen(
-                    onBackPressed = { navigationState.navigateTo(Cart) },
-                    navigateToCatalog = { navigationState.navigateTo(Catalog) },
-                    productViewModel = sharedViewModel
-                )
-            }
-        }
-
-        composable<History> {
-            HistoryScreen(
-                viewModel = sharedViewModel,
-                onSignInClick = onSigInClick
-            )
-        }
-
-        composable<Notification> {
-            NotificationScreen()
-        }
-
-        navigation<Profile>(startDestination = UserData) {
-            composable<UserData> {
-                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    ProfileScreen(
-                        onBarcodeClick = { navigationState.navigateTo(Barcode) },
-                        onEditProfileClick = { navigationState.navigateTo(EditProfile) },
-                        onSignInClick = onSigInClick
-                    )
-                }
-            }
-
-            composable<Barcode> {
-                FullScreenBarcode(onBackPressed = { navigationState.navigateTo(UserData) })
-            }
-
-            composable<EditProfile> {
-                EditProfileScreen(
-                    onBackPressed = { navigationState.navigateTo(UserData) },
-                    onNavigateToProfile = { navigationState.navigateTo(UserData) }
-                )
-            }
         }
     }
 }

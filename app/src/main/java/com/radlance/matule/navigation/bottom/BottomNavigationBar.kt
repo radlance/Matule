@@ -42,6 +42,9 @@ import com.radlance.matule.ui.vector.ProfileNavigationIcon
 @Composable
 fun BottomNavigationBar(
     navigationState: BottomNavigationState,
+    navigateToCart: () -> Unit,
+    navigateToProfile: () -> Unit,
+    navigateToNotification: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val navBackStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
@@ -60,11 +63,7 @@ fun BottomNavigationBar(
         )
 
         IconButton(
-            onClick = {
-                if (!isSelectedIcon(Payment, navBackStackEntry)) {
-                    navigationState.navigateTo(Payment)
-                }
-            },
+            onClick = navigateToCart,
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .size(56.dp)
@@ -145,18 +144,11 @@ fun BottomNavigationBar(
                             interactionSource = interactionSource,
                             indication = null
                         ) {
-                            if (!isSelectedIcon(Notification, navBackStackEntry)) {
-                                navigationState.navigateTo(Notification)
-                            }
+                            navigateToNotification()
                         }
                 ) {
                     Image(
-                        imageVector = NotificationNavigationIcon(
-                            getNavigationItemColor(
-                                Notification,
-                                navBackStackEntry
-                            )
-                        ),
+                        imageVector = NotificationNavigationIcon(secondaryTextColor),
                         contentDescription = "NotificationNavigationIcon"
                     )
                 }
@@ -169,18 +161,11 @@ fun BottomNavigationBar(
                             interactionSource = interactionSource,
                             indication = null
                         ) {
-                            if (!isSelectedIcon(Profile, navBackStackEntry)) {
-                                navigationState.navigateTo(Profile)
-                            }
+                            navigateToProfile()
                         }
                 ) {
                     Image(
-                        imageVector = ProfileNavigationIcon(
-                            getNavigationItemColor(
-                                Profile,
-                                navBackStackEntry
-                            )
-                        ),
+                        imageVector = ProfileNavigationIcon(secondaryTextColor),
                         contentDescription = "ProfileNavigationIcon",
                         modifier = Modifier
                     )
