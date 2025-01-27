@@ -93,8 +93,9 @@ data class AuthViewModel @Inject constructor(
         _authUiState.update { currentState ->
             currentState.copy(
                 isValidName = name?.isNotBlank() ?: false,
-                isValidEmail = email?.let { Regex("^[a-z0-9]+@[a-z0-9]+\\.[a-z]{2,}$").matches(it) }
-                    ?: false,
+                isValidEmail = email?.let {
+                    Regex("^[a-z0-9]+@[a-z0-9]+(\\.[a-z0-9]+)*\\.[a-z]{2,}$").matches(it)
+                } ?: false,
                 isValidPassword = password?.let { password.isNotBlank() && password.length >= 6 }
                     ?: false
 
