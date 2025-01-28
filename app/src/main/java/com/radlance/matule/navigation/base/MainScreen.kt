@@ -125,7 +125,7 @@ fun MainScreen(
                drawerStateViewModel.leaveHomeScreen()
            },
            notificationExist = notificationsCount > 0,
-           navigateToCart = {},
+           navigateToCart = navigateToCart,
            navigateToProfile = navigateToProfile,
            navigateToNotification = navigateToNotification,
            navigateToOrderHistory = navigateToOrderHistory,
