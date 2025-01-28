@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,13 +34,6 @@ fun ChangeQuantityComponent(
     onDecrementClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val changeQuantityColorState =
-        if (quantity <= 1 || quantity >= 1000) {
-            ButtonDefaults.buttonColors().disabledContainerColor
-        } else {
-            MaterialTheme.colorScheme.primary
-        }
-
     val interactionSource = remember { MutableInteractionSource() }
 
     Column(
@@ -51,7 +43,7 @@ fun ChangeQuantityComponent(
             .height(104.dp)
             .width(58.dp)
             .clip(RoundedCornerShape(8.dp))
-            .background(changeQuantityColorState)
+            .background(MaterialTheme.colorScheme.primary)
     ) {
         Spacer(Modifier.height(14.dp))
         Image(

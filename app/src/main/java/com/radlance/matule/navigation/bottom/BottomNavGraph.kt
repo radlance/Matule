@@ -19,6 +19,7 @@ import com.radlance.matule.presentation.home.search.SearchScreen
 fun BottomNavGraph(
     navigationState: BottomNavigationState,
     onDrawerClick: () -> Unit,
+    navigateToCart: () -> Unit,
     modifier: Modifier = Modifier,
     sharedViewModel: ProductViewModel = hiltViewModel()
 ) {
@@ -36,10 +37,7 @@ fun BottomNavGraph(
                     onBackPressed = {
                         (context as Activity).finish()
                     },
-                    onNavigateToCart = {
-                        navigationState.navigateTo(Payment)
-                    },
-
+                    onNavigateToCart = navigateToCart,
                     onNavigateToDetails = {
                         navController.navigate(Details(it))
                     },
@@ -47,11 +45,7 @@ fun BottomNavGraph(
                     onSearchFieldClick = {
                         navController.navigate(Search)
                     },
-
-                    onCartClick = {
-                        navigationState.navigateTo(Payment)
-                    },
-
+                    onCartClick = navigateToCart,
                     onMenuIconClick = onDrawerClick,
                     viewModel = sharedViewModel
                 )
@@ -77,9 +71,7 @@ fun BottomNavGraph(
                 ProductDetailsScreen(
                     selectedProductId = args.productId,
                     onBackPressed = navController::navigateUp,
-                    onNavigateToCart = {
-                        navigationState.navigateTo(Payment)
-                    },
+                    onNavigateToCart = navigateToCart,
                     viewModel = sharedViewModel
                 )
             }
@@ -94,7 +86,8 @@ fun BottomNavGraph(
                 onNavigateToDetails = {
                     navController.navigate(Details(it))
                 },
-                viewModel = sharedViewModel
+                viewModel = sharedViewModel,
+                onBackPressed = navController::navigateUp
             )
         }
     }

@@ -41,7 +41,6 @@ import com.radlance.matule.R
 import com.radlance.matule.domain.user.User
 import com.radlance.matule.navigation.bottom.BottomNavigationState
 import com.radlance.matule.navigation.bottom.Favorite
-import com.radlance.matule.navigation.bottom.UserData
 import com.radlance.matule.navigation.bottom.rememberNavigationState
 import com.radlance.matule.presentation.authorization.common.AuthResultUiState
 import com.radlance.matule.ui.theme.MatuleTheme
@@ -114,7 +113,7 @@ fun DrawerMenu(
                     .size(96.dp)
                     .clip(CircleShape)
                     .clickable {
-                        navigationState.navigateTo(UserData)
+                        navigateToProfile()
                         onMenuItemClick()
                     },
                 contentScale = ContentScale.Crop

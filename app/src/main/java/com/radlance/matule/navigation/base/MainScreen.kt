@@ -156,6 +156,7 @@ fun MainScreen(
                     drawerStateViewModel.changeDrawerState()
                     drawerStateViewModel.getCurrentUserData()
                 },
+                navigateToCart = navigateToCart,
                 modifier = Modifier,
                 sharedViewModel = sharedProductViewModel
             )

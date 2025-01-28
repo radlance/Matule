@@ -20,7 +20,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.toRoute
 import com.radlance.matule.navigation.bottom.Barcode
-import com.radlance.matule.navigation.bottom.Catalog
 import com.radlance.matule.navigation.bottom.EditProfile
 import com.radlance.matule.navigation.bottom.Order
 import com.radlance.matule.navigation.bottom.Payment
@@ -240,21 +239,26 @@ fun NavGraph(
                 CartScreen(
                     onPlaceOrderClick = { navController.navigate(Order) },
                     productViewModel = sharedViewModel,
-                    onSignInClick = navigateToSignIn
+                    onSignInClick = navigateToSignIn,
+                    onBackPressed = { navController.navigate(Home) }
                 )
             }
 
             composable<Order> {
                 OrderScreen(
-                    onBackPressed = { navController.navigate(Cart) },
-                    navigateToCatalog = { navController.navigate(Catalog) },
+                    onBackPressed = {
+                        navController.navigate(Cart) {
+                            popUpTo<Order> { inclusive = true }
+                        }
+                    },
+                    navigateToCatalog = { navController.navigate(Home) },
                     productViewModel = sharedViewModel
                 )
             }
         }
 
         composable<Notification> {
-            NotificationScreen()
+            NotificationScreen(onBackPressed = { navController.navigate(Home) })
         }
 
         navigation<Profile>(startDestination = UserData) {
@@ -263,13 +267,20 @@ fun NavGraph(
                     ProfileScreen(
                         onBarcodeClick = { navController.navigate(Barcode) },
                         onEditProfileClick = { navController.navigate(EditProfile) },
-                        onSignInClick = navigateToSignIn
+                        onSignInClick = navigateToSignIn,
+                        onBackPressed = { navController.navigate(Home) }
                     )
                 }
             }
 
             composable<Barcode> {
-                FullScreenBarcode(onBackPressed = { navController.navigate(UserData) })
+                FullScreenBarcode(
+                    onBackPressed = {
+                        navController.navigate(UserData) {
+                            popUpTo<Barcode> { inclusive = true }
+                        }
+                    }
+                )
             }
 
             composable<EditProfile> {
@@ -283,6 +294,7 @@ fun NavGraph(
         composable<History> {
             HistoryScreen(
                 viewModel = sharedViewModel,
+                onBackPressed = { navController.navigate(Home) },
                 onSignInClick = navigateToSignIn
             )
         }

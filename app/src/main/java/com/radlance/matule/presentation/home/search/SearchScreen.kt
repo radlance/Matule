@@ -165,7 +165,7 @@ fun SearchScreen(
 
                 onLoading = {
                     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator(modifier = Modifier.offset(y = (-55).dp))
+                        CircularProgressIndicator()
                     }
                 },
                 onUnauthorized = {}

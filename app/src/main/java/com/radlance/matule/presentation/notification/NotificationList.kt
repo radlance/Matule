@@ -26,7 +26,7 @@ fun NotificationList(
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(12.dp),
-        contentPadding = PaddingValues(bottom = 140.dp, top = 20.dp)
+        contentPadding = PaddingValues(top = 20.dp)
     ) {
         items(items = notifications, key = { notification -> notification.id }) { notification ->
             LaunchedEffect(notification.id) {
