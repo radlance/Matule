@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,6 +29,7 @@ import com.radlance.matule.ui.theme.MatuleTheme
 @Composable
 fun HistoryScreen(
     onSignInClick: () -> Unit,
+    onBackPressed: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ProductViewModel = hiltViewModel()
 ) {
@@ -39,8 +41,8 @@ fun HistoryScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
     ) {
-        Spacer(Modifier.height(55.dp))
-        HistoryHeader()
+        Spacer(Modifier.height(dimensionResource(R.dimen.main_top_padding)))
+        HistoryHeader(onBackPressed = onBackPressed)
         Spacer(Modifier.height(16.dp))
 
         fetchHistoryResult.Show(
@@ -97,6 +99,6 @@ fun HistoryScreen(
 @Composable
 private fun HistoryScreenPreview() {
     MatuleTheme {
-        HistoryScreen({})
+        HistoryScreen({}, {})
     }
 }

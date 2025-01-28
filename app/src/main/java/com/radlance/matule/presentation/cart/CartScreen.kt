@@ -22,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,6 +41,7 @@ import com.radlance.matule.ui.theme.ralewayFamily
 @Composable
 fun CartScreen(
     onPlaceOrderClick: () -> Unit,
+    onBackPressed: () -> Unit,
     onSignInClick: () -> Unit,
     modifier: Modifier = Modifier,
     productViewModel: ProductViewModel = hiltViewModel(),
@@ -60,6 +62,7 @@ fun CartScreen(
             onSuccess = {
                 LaunchedEffect(Unit) {
                     onPlaceOrderClick()
+                    observeUserData = false
                 }
             },
             onError = {},
@@ -89,8 +92,8 @@ fun CartScreen(
             .background(MaterialTheme.colorScheme.surface),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Spacer(Modifier.height(55.dp))
-        CartHeader()
+        Spacer(Modifier.height(dimensionResource(R.dimen.main_top_padding)))
+        CartHeader(onBackPressed = onBackPressed)
         Spacer(Modifier.height(16.dp))
 
         removeResult.Show(
@@ -156,10 +159,10 @@ fun CartScreen(
 
                         onRemoveProduct = productViewModel::removeProductFromCart,
 
-                        modifier = Modifier.weight(4f)
+                        modifier = Modifier.weight(4.5f)
                     )
                     Box(
-                        modifier = Modifier.weight(3f)
+                        modifier = Modifier.weight(2f)
                     ) {
                         CartResult(
                             productsPrice = productsInCart.sumOf { it.price * it.quantityInCart },
@@ -204,6 +207,6 @@ fun CartScreen(
 @Composable
 private fun CartScreenPreview() {
     MatuleTheme {
-        CartScreen({}, {})
+        CartScreen({}, {}, {})
     }
 }

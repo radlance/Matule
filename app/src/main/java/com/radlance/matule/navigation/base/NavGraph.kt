@@ -2,11 +2,13 @@ package com.radlance.matule.navigation.base
 
 import android.app.Activity
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -14,17 +16,33 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.navigation
 import androidx.navigation.toRoute
+import com.radlance.matule.navigation.bottom.Barcode
+import com.radlance.matule.navigation.bottom.EditProfile
+import com.radlance.matule.navigation.bottom.Order
+import com.radlance.matule.navigation.bottom.Payment
+import com.radlance.matule.navigation.bottom.UserData
 import com.radlance.matule.presentation.authorization.common.AuthViewModel
 import com.radlance.matule.presentation.authorization.signin.AccountManager
 import com.radlance.matule.presentation.authorization.signin.ForgotPasswordScreen
 import com.radlance.matule.presentation.authorization.signin.SignInScreen
 import com.radlance.matule.presentation.authorization.signin.VerificationScreen
 import com.radlance.matule.presentation.authorization.signup.SignUpScreen
+import com.radlance.matule.presentation.cart.CartScreen
+import com.radlance.matule.presentation.common.ProductViewModel
+import com.radlance.matule.presentation.history.HistoryScreen
+import com.radlance.matule.presentation.home.details.ProductDetailsScreen
+import com.radlance.matule.presentation.home.search.SearchScreen
+import com.radlance.matule.presentation.notification.NotificationScreen
 import com.radlance.matule.presentation.onboarding.OnboardingFirst
 import com.radlance.matule.presentation.onboarding.OnboardingSecond
 import com.radlance.matule.presentation.onboarding.OnboardingThird
 import com.radlance.matule.presentation.onboarding.SplashScreen
+import com.radlance.matule.presentation.order.OrderScreen
+import com.radlance.matule.presentation.profile.FullScreenBarcode
+import com.radlance.matule.presentation.profile.ProfileScreen
+import com.radlance.matule.presentation.profile.edit.EditProfileScreen
 import com.radlance.matule.ui.theme.backGroundGradient
 
 @Composable
@@ -32,6 +50,7 @@ fun NavGraph(
     navController: NavHostController,
     navigationViewModel: NavigationViewModel = viewModel(),
     authViewModel: AuthViewModel = viewModel(),
+    sharedViewModel: ProductViewModel = viewModel(),
     accountManager: AccountManager
 ) {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
@@ -49,6 +68,12 @@ fun NavGraph(
         Modifier.background(brush = backGroundGradient)
     } else {
         Modifier.background(color = MaterialTheme.colorScheme.background)
+    }
+
+    val navigateToSignIn: () -> Unit = {
+        navController.navigate(SignIn) {
+            popUpTo<Home> { inclusive = true }
+        }
     }
 
     NavHost(
@@ -193,11 +218,113 @@ fun NavGraph(
 
         composable<Home> {
             MainScreen(
-                onSignOut = {
-                    navController.navigate(SignIn) {
-                        popUpTo<Home> { inclusive = true }
-                    }
+                onSignOut = navigateToSignIn,
+                navigateToCart = {
+                    navController.navigate(Cart)
+                },
+                navigateToProfile = {
+                    navController.navigate(Profile)
+                },
+                navigateToNotification = {
+                    navController.navigate(Notification)
+                },
+                navigateToOrderHistory = {
+                    navController.navigate(History)
+                },
+                navigateToDetails = {
+                    navController.navigate(Details(it))
+                },
+                navigateToSearch = {
+                    navController.navigate(Search)
+                },
+                sharedProductViewModel = sharedViewModel
+            )
+        }
+
+        composable<Search> {
+            SearchScreen(
+                onBackPressed = navController::navigateUp,
+                onNavigateToCart = {
+                    navController.navigate(Cart)
+                },
+
+                onNavigateToDetails = { navController.navigate(Details(it)) },
+                productViewModel = sharedViewModel
+            )
+        }
+
+        composable<Details> {
+            val args = it.toRoute<Details>()
+            ProductDetailsScreen(
+                selectedProductId = args.productId,
+                onBackPressed = navController::navigateUp,
+                onNavigateToCart = { navController.navigate(Cart) },
+                viewModel = sharedViewModel
+            )
+        }
+
+        navigation<Payment>(startDestination = Cart) {
+            composable<Cart> {
+                CartScreen(
+                    onPlaceOrderClick = { navController.navigate(Order) },
+                    productViewModel = sharedViewModel,
+                    onSignInClick = navigateToSignIn,
+                    onBackPressed = { navController.navigate(Home) }
+                )
+            }
+
+            composable<Order> {
+                OrderScreen(
+                    onBackPressed = {
+                        navController.navigate(Cart) {
+                            popUpTo<Order> { inclusive = true }
+                        }
+                    },
+                    navigateToCatalog = { navController.navigate(Home) },
+                    productViewModel = sharedViewModel
+                )
+            }
+        }
+
+        composable<Notification> {
+            NotificationScreen(onBackPressed = { navController.navigate(Home) })
+        }
+
+        navigation<Profile>(startDestination = UserData) {
+            composable<UserData> {
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    ProfileScreen(
+                        onBarcodeClick = { navController.navigate(Barcode) },
+                        onEditProfileClick = { navController.navigate(EditProfile) },
+                        onSignInClick = navigateToSignIn,
+                        onBackPressed = { navController.navigate(Home) }
+                    )
                 }
+            }
+
+            composable<Barcode> {
+                FullScreenBarcode(
+                    onBackPressed = {
+                        navController.navigate(UserData) {
+                            popUpTo<Barcode> { inclusive = true }
+                        }
+                    }
+                )
+            }
+
+            composable<EditProfile> {
+                EditProfileScreen(
+                    onBackPressed = { navController.navigate(UserData) },
+                    onNavigateToProfile = { navController.navigate(UserData) }
+                )
+            }
+        }
+
+        composable<History> {
+            HistoryScreen(
+                viewModel = sharedViewModel,
+                onBackPressed = { navController.navigate(Home) },
+                onSignInClick = navigateToSignIn
             )
         }
     }

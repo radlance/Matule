@@ -15,16 +15,6 @@ data object Catalog : BottomDestination
 
 @Serializable
 @Keep
-data class Details(
-    val productId: Int
-) : BottomDestination
-
-@Serializable
-@Keep
-data object Search : BottomDestination
-
-@Serializable
-@Keep
 data object Favorite: BottomDestination
 
 @Serializable
@@ -33,23 +23,7 @@ data object Payment: BottomDestination
 
 @Serializable
 @Keep
-data object Cart: BottomDestination
-
-@Serializable
-@Keep
 data object Order: BottomDestination
-
-@Serializable
-@Keep
-data object History: BottomDestination
-
-@Serializable
-@Keep
-data object Notification: BottomDestination
-
-@Serializable
-@Keep
-data object Profile: BottomDestination
 
 @Serializable
 @Keep

@@ -34,23 +34,31 @@ import com.radlance.matule.navigation.bottom.BottomNavigationBar
 import com.radlance.matule.navigation.bottom.rememberNavigationState
 import com.radlance.matule.navigation.drawer.DrawerMenu
 import com.radlance.matule.navigation.drawer.DrawerStateViewModel
+import com.radlance.matule.presentation.common.ProductViewModel
 import com.radlance.matule.ui.theme.MatuleTheme
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
     onSignOut: () -> Unit,
+    navigateToCart: () -> Unit,
+    navigateToProfile: () -> Unit,
+    navigateToNotification: () -> Unit,
+    navigateToOrderHistory: () -> Unit,
+    navigateToDetails: (Int) -> Unit,
+    navigateToSearch: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: DrawerStateViewModel = hiltViewModel()
+    drawerStateViewModel: DrawerStateViewModel = hiltViewModel(),
+    sharedProductViewModel: ProductViewModel = hiltViewModel()
 ) {
     val navigationState = rememberNavigationState()
     var userData by remember { mutableStateOf(User()) }
 
-    val drawerState by viewModel.drawerState.collectAsState()
-    val signOutState by viewModel.signOutState.collectAsState()
+    val drawerState by drawerStateViewModel.drawerState.collectAsState()
+    val signOutState by drawerStateViewModel.signOutState.collectAsState()
 
-    val notificationsCount by viewModel.hasNotifications.collectAsState()
-    val userUiState by viewModel.user.collectAsState()
+    val notificationsCount by drawerStateViewModel.hasNotifications.collectAsState()
+    val userUiState by drawerStateViewModel.user.collectAsState()
 
     val updateAnim = updateTransition(drawerState, label = "MenuState")
 
@@ -97,11 +105,11 @@ fun MainScreen(
             .pointerInput(Unit) {
                 detectHorizontalDragGestures { change, dragAmount ->
                     if (dragAmount > 10f) {
-                        viewModel.setExpandedState()
+                        drawerStateViewModel.setExpandedState()
                     } else if (dragAmount < -10f) {
-                        viewModel.setCollapsedState()
+                        drawerStateViewModel.setCollapsedState()
                     }
-                    viewModel.getCurrentUserData()
+                    drawerStateViewModel.getCurrentUserData()
                     change.consume()
                 }
             }
@@ -109,20 +117,29 @@ fun MainScreen(
        DrawerMenu(
            user = userData,
            navigationState = navigationState,
-           onMenuItemClick = viewModel::changeDrawerState,
-           onSignOutClick = viewModel::signOut,
+           onMenuItemClick = drawerStateViewModel::changeDrawerState,
+           onSignOutClick = drawerStateViewModel::signOut,
            signOutState = signOutState,
            onSignOut = {
                onSignOut()
-               viewModel.leaveHomeScreen()
+               drawerStateViewModel.leaveHomeScreen()
            },
-           notificationExist = notificationsCount > 0
+           notificationExist = notificationsCount > 0,
+           navigateToCart = navigateToCart,
+           navigateToProfile = navigateToProfile,
+           navigateToNotification = navigateToNotification,
+           navigateToOrderHistory = navigateToOrderHistory,
        )
 
         Scaffold(
             containerColor = MaterialTheme.colorScheme.surfaceTint,
             bottomBar = {
-                BottomNavigationBar(navigationState)
+                BottomNavigationBar(
+                    navigationState,
+                    navigateToCart = navigateToCart,
+                    navigateToProfile = navigateToProfile,
+                    navigateToNotification = navigateToNotification
+                )
             },
             modifier = modifier
                 .scale(scale)
@@ -138,11 +155,14 @@ fun MainScreen(
             BottomNavGraph(
                 navigationState = navigationState,
                 onDrawerClick = {
-                    viewModel.changeDrawerState()
-                    viewModel.getCurrentUserData()
+                    drawerStateViewModel.changeDrawerState()
+                    drawerStateViewModel.getCurrentUserData()
                 },
-                onSigInClick = onSignOut,
-                modifier = Modifier
+                navigateToDetails = navigateToDetails,
+                navigateToSearch = navigateToSearch,
+                navigateToCart = navigateToCart,
+                modifier = Modifier,
+                sharedViewModel = sharedProductViewModel
             )
         }
     }
@@ -153,7 +173,7 @@ fun MainScreen(
 @Composable
 private fun CommonBottomNavigationPreview() {
     MatuleTheme {
-        MainScreen({})
+        MainScreen({}, {}, {}, {}, {}, {}, {})
     }
 }
 
@@ -161,6 +181,6 @@ private fun CommonBottomNavigationPreview() {
 @Composable
 private fun CommonBottomNavigationExpandedPreview() {
     MatuleTheme {
-        MainScreen({})
+        MainScreen({}, {}, {}, {}, {}, {}, {})
     }
 }

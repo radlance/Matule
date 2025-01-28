@@ -38,7 +38,6 @@ fun ProductDetailsBottomContent(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .padding(bottom = 140.dp)
     ) {
         IconButton(
             onClick = onLikeClick,

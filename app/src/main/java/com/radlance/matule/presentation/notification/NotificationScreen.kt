@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,6 +28,7 @@ import com.radlance.matule.ui.theme.MatuleTheme
 
 @Composable
 fun NotificationScreen(
+    onBackPressed: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: NotificationViewModel = hiltViewModel()
 ) {
@@ -37,8 +39,8 @@ fun NotificationScreen(
             .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Spacer(Modifier.height(55.dp))
-        NotificationHeader()
+        Spacer(Modifier.height(dimensionResource(R.dimen.main_top_padding)))
+        NotificationHeader(onBackPressed)
         Spacer(Modifier.height(20.dp))
 
         fetchNotificationResult.Show(
@@ -46,8 +48,7 @@ fun NotificationScreen(
                 if (notifications.isEmpty()) {
                     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         Text(
-                            text = stringResource(R.string.no_notifications),
-                            modifier = Modifier.offset(y = (-55).dp)
+                            text = stringResource(R.string.no_notifications)
                         )
                     }
                 } else {
@@ -70,7 +71,6 @@ fun NotificationScreen(
             onError = {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Column(
-                        modifier = Modifier.offset(y = (-55).dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(text = stringResource(R.string.load_error))
@@ -90,6 +90,6 @@ fun NotificationScreen(
 @Composable
 private fun NotificationScreenPreview() {
     MatuleTheme {
-        NotificationScreen()
+        NotificationScreen({})
     }
 }

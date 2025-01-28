@@ -126,7 +126,6 @@ fun SearchScreen(
                         it.title.contains(searchSubmitQuery, ignoreCase = true)
                     }
                     if (foundedProducts.isEmpty()) {
-
                         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                             Text(
                                 text = "Товаров по запросу \"$searchSubmitQuery\" не найдено",
@@ -165,7 +164,7 @@ fun SearchScreen(
 
                 onLoading = {
                     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator(modifier = Modifier.offset(y = (-55).dp))
+                        CircularProgressIndicator()
                     }
                 },
                 onUnauthorized = {}

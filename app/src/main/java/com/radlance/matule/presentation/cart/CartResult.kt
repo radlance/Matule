@@ -100,7 +100,7 @@ fun CartResult(
                 enabled = buttonEnabled,
                 modifier = Modifier.fillMaxWidth()
             )
-            Spacer(Modifier.height(120.dp))
+            Spacer(Modifier.height(20.dp))
         }
     }
 }

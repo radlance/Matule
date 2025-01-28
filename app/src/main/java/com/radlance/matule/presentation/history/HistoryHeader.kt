@@ -1,4 +1,4 @@
-package com.radlance.matule.presentation.favorite
+package com.radlance.matule.presentation.history
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,19 +11,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.radlance.matule.R
 import com.radlance.matule.presentation.component.BackButton
 import com.radlance.matule.presentation.component.CommonHeader
+import com.radlance.matule.ui.theme.MatuleTheme
 import com.radlance.matule.ui.theme.ralewayFamily
 
 @Composable
-fun FavoriteHeader(
+fun HistoryHeader(
     onBackPressed: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     CommonHeader(
+        modifier = modifier.fillMaxWidth().padding(horizontal = 21.dp),
         startContent = {
             BackButton(
                 onClick = onBackPressed,
@@ -32,19 +35,24 @@ fun FavoriteHeader(
         },
         middleContent = {
             Text(
-                text = stringResource(R.string.favorite),
+                text = stringResource(R.string.orders),
                 fontSize = 16.sp,
                 fontFamily = ralewayFamily,
                 fontWeight = FontWeight.SemiBold,
                 lineHeight = 20.sp
             )
         },
-        horizontalArrangement = Arrangement.SpaceBetween,
         endContent = {
             Box(Modifier.size(44.dp))
         },
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 21.dp)
+        horizontalArrangement = Arrangement.SpaceBetween
     )
+}
+
+@Preview
+@Composable
+private fun HistoryHeaderPreview() {
+    MatuleTheme {
+        HistoryHeader({})
+    }
 }

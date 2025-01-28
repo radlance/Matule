@@ -82,7 +82,7 @@ fun CartItem(
                 )
                 Spacer(Modifier.height(6.dp))
                 Text(
-                    text = "₽${product.price * product.quantityInCart}",
+                    text = product.price.toString(),
                     fontFamily = poppinsFamily,
                     fontWeight = FontWeight.Medium,
                     fontSize = 14.sp,

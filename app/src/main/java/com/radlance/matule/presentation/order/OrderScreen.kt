@@ -1,7 +1,6 @@
 package com.radlance.matule.presentation.order
 
 import android.widget.Toast
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -48,8 +47,6 @@ fun OrderScreen(
     productViewModel: ProductViewModel = hiltViewModel(),
     orderViewModel: OrderViewModel = hiltViewModel()
 ) {
-    BackHandler { onBackPressed() }
-
     var resultSum by rememberSaveable { mutableDoubleStateOf(0.0) }
     var currentUser by remember { mutableStateOf(User()) }
 
@@ -107,10 +104,10 @@ fun OrderScreen(
                     email = currentUser.email,
                     modifier = Modifier
                         .padding(horizontal = 14.dp)
-                        .weight(4f)
+                        .weight(4.5f)
                 )
                 Box(
-                    modifier = Modifier.weight(3f)
+                    modifier = Modifier.weight(2f)
                 ) {
                     if (resultSum == 0.0) {
                         resultSum = productsInCart.sumOf { it.price * it.quantityInCart }

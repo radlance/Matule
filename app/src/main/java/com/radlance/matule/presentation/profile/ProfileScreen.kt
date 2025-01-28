@@ -18,6 +18,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,6 +31,7 @@ fun ProfileScreen(
     onBarcodeClick: () -> Unit,
     onEditProfileClick: () -> Unit,
     onSignInClick: () -> Unit,
+    onBackPressed: () -> Unit,
     modifier: Modifier = Modifier,
     profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
@@ -42,8 +44,8 @@ fun ProfileScreen(
             .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Spacer(Modifier.height(55.dp))
-        ProfileHeader()
+        Spacer(Modifier.height(dimensionResource(R.dimen.main_top_padding)))
+        ProfileHeader(onBackPressed = onBackPressed)
         Spacer(Modifier.height(48.dp))
 
         userData.Show(
@@ -98,7 +100,7 @@ fun ProfileScreen(
 @Composable
 private fun ProfileScreenPreview() {
     MatuleTheme {
-        ProfileScreen({}, {}, {})
+        ProfileScreen({}, {}, {}, {})
     }
 }
 
@@ -106,6 +108,6 @@ private fun ProfileScreenPreview() {
 @Composable
 private fun ProfileScreenPreviewExpanded() {
     MatuleTheme {
-        ProfileScreen({}, {}, {})
+        ProfileScreen({}, {}, {}, {})
     }
 }

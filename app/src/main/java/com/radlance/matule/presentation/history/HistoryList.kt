@@ -2,7 +2,6 @@ package com.radlance.matule.presentation.history
 
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -42,8 +41,7 @@ fun HistoryList(
         modifier = modifier
             .fillMaxSize()
             .padding(start = 19.dp, end = 21.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        contentPadding = PaddingValues(bottom = 140.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         history.groupByDate(context).forEach { (date, products) ->
             item {
