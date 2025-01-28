@@ -47,7 +47,8 @@ class OnBoardingTest {
                 navController = navController,
                 navigationViewModel = navigationViewModel,
                 authViewModel = viewModelFactory.createAuthViewModel(),
-                accountManager = FakeAccountManager()
+                accountManager = FakeAccountManager(),
+                sharedViewModel = viewModelFactory.createProductViewModel()
             )
         }
     }

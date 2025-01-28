@@ -11,7 +11,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -51,6 +50,7 @@ fun NavGraph(
     navController: NavHostController,
     navigationViewModel: NavigationViewModel = viewModel(),
     authViewModel: AuthViewModel = viewModel(),
+    sharedViewModel: ProductViewModel = viewModel(),
     accountManager: AccountManager
 ) {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
@@ -70,7 +70,6 @@ fun NavGraph(
         Modifier.background(color = MaterialTheme.colorScheme.background)
     }
 
-    val sharedViewModel = hiltViewModel<ProductViewModel>()
     val navigateToSignIn: () -> Unit = {
         navController.navigate(SignIn) {
             popUpTo<Home> { inclusive = true }

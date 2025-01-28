@@ -7,9 +7,11 @@ import androidx.test.core.app.ApplicationProvider
 import com.radlance.matule.data.auth.AuthRepositoryImpl
 import com.radlance.matule.data.common.DataStoreRepositoryImpl
 import com.radlance.matule.data.onboarding.NavigationRepositoryImpl
+import com.radlance.matule.data.product.RemoteProductRepository
 import com.radlance.matule.navigation.base.NavigationViewModel
 import com.radlance.matule.presentation.authorization.common.AuthResultMapper
 import com.radlance.matule.presentation.authorization.common.AuthViewModel
+import com.radlance.matule.presentation.common.ProductViewModel
 import com.radlance.matule.presentation.common.ResourceManagerImpl
 import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.auth.auth
@@ -31,6 +33,16 @@ val testDataStore = PreferenceDataStoreFactory.create(
 )
 
 class ViewModelFactory {
+    private val supabaseClient = createSupabaseClient(
+        supabaseUrl = "https://osoknxtwcppulkimwpjo.supabase.co",
+        supabaseKey = BuildConfig.SUPABASE_KEY
+    ) {
+        install(Auth)
+        install(Postgrest)
+        install(Storage)
+        defaultSerializer = KotlinXSerializer()
+    }
+
     fun createNavigationViewModel(): NavigationViewModel {
 
         val dataStoreRepositoryImpl = DataStoreRepositoryImpl(testDataStore)
@@ -41,16 +53,6 @@ class ViewModelFactory {
     }
 
     fun createAuthViewModel(): AuthViewModel {
-        val supabaseClient = createSupabaseClient(
-            supabaseUrl = "https://osoknxtwcppulkimwpjo.supabase.co",
-            supabaseKey = BuildConfig.SUPABASE_KEY
-        ) {
-            install(Auth)
-            install(Postgrest)
-            install(Storage)
-            defaultSerializer = KotlinXSerializer()
-        }
-
         val authRepository = AuthRepositoryImpl(supabaseClient.auth)
         val resourceManager = ResourceManagerImpl(context)
         val mapper = AuthResultMapper(resourceManager)
@@ -58,5 +60,9 @@ class ViewModelFactory {
         val authViewModel = AuthViewModel(authRepository, mapper)
 
         return authViewModel
+    }
+
+    fun createProductViewModel(): ProductViewModel {
+        return ProductViewModel(RemoteProductRepository(supabaseClient))
     }
 }
