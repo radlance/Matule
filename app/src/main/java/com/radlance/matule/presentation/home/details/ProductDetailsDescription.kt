@@ -70,7 +70,5 @@ fun ProductDetailsDescription(
                 expanded = !expanded
             }
         )
-
-        Spacer(Modifier.height(20.dp))
     }
 }

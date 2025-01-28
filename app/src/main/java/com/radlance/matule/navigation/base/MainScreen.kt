@@ -45,6 +45,8 @@ fun MainScreen(
     navigateToProfile: () -> Unit,
     navigateToNotification: () -> Unit,
     navigateToOrderHistory: () -> Unit,
+    navigateToDetails: (Int) -> Unit,
+    navigateToSearch: () -> Unit,
     modifier: Modifier = Modifier,
     drawerStateViewModel: DrawerStateViewModel = hiltViewModel(),
     sharedProductViewModel: ProductViewModel = hiltViewModel()
@@ -156,6 +158,8 @@ fun MainScreen(
                     drawerStateViewModel.changeDrawerState()
                     drawerStateViewModel.getCurrentUserData()
                 },
+                navigateToDetails = navigateToDetails,
+                navigateToSearch = navigateToSearch,
                 navigateToCart = navigateToCart,
                 modifier = Modifier,
                 sharedViewModel = sharedProductViewModel
@@ -169,7 +173,7 @@ fun MainScreen(
 @Composable
 private fun CommonBottomNavigationPreview() {
     MatuleTheme {
-        MainScreen({}, {}, {}, {}, {})
+        MainScreen({}, {}, {}, {}, {}, {}, {})
     }
 }
 
@@ -177,6 +181,6 @@ private fun CommonBottomNavigationPreview() {
 @Composable
 private fun CommonBottomNavigationExpandedPreview() {
     MatuleTheme {
-        MainScreen({}, {}, {}, {}, {})
+        MainScreen({}, {}, {}, {}, {}, {}, {})
     }
 }

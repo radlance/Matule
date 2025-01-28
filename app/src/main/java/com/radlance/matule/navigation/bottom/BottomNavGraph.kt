@@ -8,18 +8,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import androidx.navigation.toRoute
 import com.radlance.matule.presentation.common.ProductViewModel
 import com.radlance.matule.presentation.favorite.FavoriteScreen
 import com.radlance.matule.presentation.home.HomeScreen
-import com.radlance.matule.presentation.home.details.ProductDetailsScreen
-import com.radlance.matule.presentation.home.search.SearchScreen
 
 @Composable
 fun BottomNavGraph(
     navigationState: BottomNavigationState,
     onDrawerClick: () -> Unit,
     navigateToCart: () -> Unit,
+    navigateToDetails: (Int) -> Unit,
+    navigateToSearch: () -> Unit,
     modifier: Modifier = Modifier,
     sharedViewModel: ProductViewModel = hiltViewModel()
 ) {
@@ -38,40 +37,10 @@ fun BottomNavGraph(
                         (context as Activity).finish()
                     },
                     onNavigateToCart = navigateToCart,
-                    onNavigateToDetails = {
-                        navController.navigate(Details(it))
-                    },
-
-                    onSearchFieldClick = {
-                        navController.navigate(Search)
-                    },
+                    onNavigateToDetails = navigateToDetails,
+                    onSearchFieldClick = navigateToSearch,
                     onCartClick = navigateToCart,
                     onMenuIconClick = onDrawerClick,
-                    viewModel = sharedViewModel
-                )
-            }
-
-            composable<Search> {
-                SearchScreen(
-                    onBackPressed = navController::navigateUp,
-                    onNavigateToCart = {
-                        navigationState.navigateTo(Payment)
-                    },
-
-                    onNavigateToDetails = {
-                        navController.navigate(Details(it))
-                    },
-                    productViewModel = sharedViewModel
-                )
-            }
-
-            composable<Details> {
-                val args = it.toRoute<Details>()
-
-                ProductDetailsScreen(
-                    selectedProductId = args.productId,
-                    onBackPressed = navController::navigateUp,
-                    onNavigateToCart = navigateToCart,
                     viewModel = sharedViewModel
                 )
             }
@@ -83,9 +52,7 @@ fun BottomNavGraph(
                     navigationState.navigateTo(Payment)
                 },
 
-                onNavigateToDetails = {
-                    navController.navigate(Details(it))
-                },
+                onNavigateToDetails = navigateToDetails,
                 viewModel = sharedViewModel,
                 onBackPressed = navController::navigateUp
             )

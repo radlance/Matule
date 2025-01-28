@@ -103,8 +103,8 @@ fun ProductDetailsScreen(
                         selectedProduct = product,
                         modifier = Modifier.align(Alignment.End)
                     )
-                    Spacer(Modifier.weight(1f))
 
+                    Spacer(Modifier.height(60.dp))
 
                     ProductDetailsBottomContent(
                         isFavorite = product.isFavorite,

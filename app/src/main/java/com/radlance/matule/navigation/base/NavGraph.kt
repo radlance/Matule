@@ -33,6 +33,8 @@ import com.radlance.matule.presentation.authorization.signup.SignUpScreen
 import com.radlance.matule.presentation.cart.CartScreen
 import com.radlance.matule.presentation.common.ProductViewModel
 import com.radlance.matule.presentation.history.HistoryScreen
+import com.radlance.matule.presentation.home.details.ProductDetailsScreen
+import com.radlance.matule.presentation.home.search.SearchScreen
 import com.radlance.matule.presentation.notification.NotificationScreen
 import com.radlance.matule.presentation.onboarding.OnboardingFirst
 import com.radlance.matule.presentation.onboarding.OnboardingSecond
@@ -230,7 +232,35 @@ fun NavGraph(
                 navigateToOrderHistory = {
                     navController.navigate(History)
                 },
+                navigateToDetails = {
+                    navController.navigate(Details(it))
+                },
+                navigateToSearch = {
+                    navController.navigate(Search)
+                },
                 sharedProductViewModel = sharedViewModel
+            )
+        }
+
+        composable<Search> {
+            SearchScreen(
+                onBackPressed = navController::navigateUp,
+                onNavigateToCart = {
+                    navController.navigate(Cart)
+                },
+
+                onNavigateToDetails = { navController.navigate(Details(it)) },
+                productViewModel = sharedViewModel
+            )
+        }
+
+        composable<Details> {
+            val args = it.toRoute<Details>()
+            ProductDetailsScreen(
+                selectedProductId = args.productId,
+                onBackPressed = navController::navigateUp,
+                onNavigateToCart = { navController.navigate(Cart) },
+                viewModel = sharedViewModel
             )
         }
 

@@ -126,7 +126,6 @@ fun SearchScreen(
                         it.title.contains(searchSubmitQuery, ignoreCase = true)
                     }
                     if (foundedProducts.isEmpty()) {
-
                         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                             Text(
                                 text = "Товаров по запросу \"$searchSubmitQuery\" не найдено",

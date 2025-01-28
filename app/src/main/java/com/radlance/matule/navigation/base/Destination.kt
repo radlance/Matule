@@ -1,6 +1,7 @@
 package com.radlance.matule.navigation.base
 
 import androidx.annotation.Keep
+import com.radlance.matule.navigation.bottom.BottomDestination
 import kotlinx.serialization.Serializable
 
 interface Destination
@@ -45,11 +46,21 @@ data object Home: Destination
 
 @Serializable
 @Keep
+data class Details(
+    val productId: Int
+) : Destination
+
+@Serializable
+@Keep
 data object Cart : Destination
 
 @Serializable
 @Keep
 data object History : Destination
+
+@Serializable
+@Keep
+data object Search : BottomDestination
 
 @Serializable
 @Keep
