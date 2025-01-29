@@ -30,7 +30,7 @@ import com.radlance.matule.presentation.authorization.signin.SignInScreen
 import com.radlance.matule.presentation.authorization.signin.VerificationScreen
 import com.radlance.matule.presentation.authorization.signup.SignUpScreen
 import com.radlance.matule.presentation.cart.CartScreen
-import com.radlance.matule.presentation.catalog.CatalogScreen
+import com.radlance.matule.presentation.home.catalog.CatalogScreen
 import com.radlance.matule.presentation.common.ProductViewModel
 import com.radlance.matule.presentation.history.HistoryScreen
 import com.radlance.matule.presentation.home.details.ProductDetailsScreen

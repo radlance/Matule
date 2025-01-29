@@ -1,4 +1,4 @@
-package com.radlance.matule.presentation.home.catalog
+package com.radlance.matule.presentation.home.core
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

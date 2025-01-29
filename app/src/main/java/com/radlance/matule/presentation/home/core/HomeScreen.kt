@@ -1,4 +1,4 @@
-package com.radlance.matule.presentation.home
+package com.radlance.matule.presentation.home.core
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -28,11 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.radlance.matule.R
 import com.radlance.matule.presentation.common.ProductViewModel
-import com.radlance.matule.presentation.component.CategoriesRow
-import com.radlance.matule.presentation.home.catalog.HomeHeader
-import com.radlance.matule.presentation.home.catalog.HomeSearchBar
-import com.radlance.matule.presentation.home.catalog.PopularRow
-import com.radlance.matule.presentation.home.catalog.SaleBanner
+import com.radlance.matule.presentation.home.common.CategoriesRow
 import com.radlance.matule.presentation.home.common.ChangeProductStatus
 import com.radlance.matule.ui.theme.MatuleTheme
 

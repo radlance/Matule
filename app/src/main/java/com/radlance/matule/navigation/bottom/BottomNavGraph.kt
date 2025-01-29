@@ -10,7 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.radlance.matule.presentation.common.ProductViewModel
 import com.radlance.matule.presentation.favorite.FavoriteScreen
-import com.radlance.matule.presentation.home.HomeScreen
+import com.radlance.matule.presentation.home.core.HomeScreen
 
 @Composable
 fun BottomNavGraph(

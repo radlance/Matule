@@ -1,4 +1,4 @@
-package com.radlance.matule.presentation.catalog
+package com.radlance.matule.presentation.home.catalog
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth

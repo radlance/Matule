@@ -1,4 +1,4 @@
-package com.radlance.matule.presentation.component
+package com.radlance.matule.presentation.home.common
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.radlance.matule.R
 import com.radlance.matule.domain.product.Category
-import com.radlance.matule.presentation.home.catalog.CategoryItem
+import com.radlance.matule.presentation.home.core.CategoryItem
 import com.radlance.matule.ui.theme.MatuleTheme
 import com.radlance.matule.ui.theme.ralewayFamily
 

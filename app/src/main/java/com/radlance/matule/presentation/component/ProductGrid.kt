@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.radlance.matule.domain.product.Product
-import com.radlance.matule.presentation.home.catalog.ShoesCard
+import com.radlance.matule.presentation.home.core.ShoesCard
 import com.radlance.matule.ui.theme.MatuleTheme
 
 @Composable
