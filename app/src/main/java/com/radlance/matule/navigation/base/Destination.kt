@@ -52,6 +52,12 @@ data class Details(
 
 @Serializable
 @Keep
+data class Catalog(
+    val categoryId: Int?
+) : Destination
+
+@Serializable
+@Keep
 data object Cart : Destination
 
 @Serializable

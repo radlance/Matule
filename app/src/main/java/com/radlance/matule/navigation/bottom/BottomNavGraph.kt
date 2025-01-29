@@ -19,6 +19,7 @@ fun BottomNavGraph(
     navigateToCart: () -> Unit,
     navigateToDetails: (Int) -> Unit,
     navigateToSearch: () -> Unit,
+    navigateToCatalog: (Int?) -> Unit,
     modifier: Modifier = Modifier,
     sharedViewModel: ProductViewModel = hiltViewModel()
 ) {
@@ -36,8 +37,9 @@ fun BottomNavGraph(
                     onBackPressed = {
                         (context as Activity).finish()
                     },
-                    onNavigateToCart = navigateToCart,
-                    onNavigateToDetails = navigateToDetails,
+                    navigateToCart = navigateToCart,
+                    navigateToDetails = navigateToDetails,
+                    navigateToCatalog = navigateToCatalog,
                     onSearchFieldClick = navigateToSearch,
                     onCartClick = navigateToCart,
                     onMenuIconClick = onDrawerClick,

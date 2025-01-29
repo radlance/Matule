@@ -30,6 +30,7 @@ import com.radlance.matule.presentation.authorization.signin.SignInScreen
 import com.radlance.matule.presentation.authorization.signin.VerificationScreen
 import com.radlance.matule.presentation.authorization.signup.SignUpScreen
 import com.radlance.matule.presentation.cart.CartScreen
+import com.radlance.matule.presentation.catalog.CatalogScreen
 import com.radlance.matule.presentation.common.ProductViewModel
 import com.radlance.matule.presentation.history.HistoryScreen
 import com.radlance.matule.presentation.home.details.ProductDetailsScreen
@@ -219,25 +220,25 @@ fun NavGraph(
         composable<Home> {
             MainScreen(
                 onSignOut = navigateToSignIn,
-                navigateToCart = {
-                    navController.navigate(Cart)
-                },
-                navigateToProfile = {
-                    navController.navigate(Profile)
-                },
-                navigateToNotification = {
-                    navController.navigate(Notification)
-                },
-                navigateToOrderHistory = {
-                    navController.navigate(History)
-                },
-                navigateToDetails = {
-                    navController.navigate(Details(it))
-                },
-                navigateToSearch = {
-                    navController.navigate(Search)
-                },
+                navigateToCart = { navController.navigate(Cart) },
+                navigateToProfile = { navController.navigate(Profile) },
+                navigateToNotification = { navController.navigate(Notification) },
+                navigateToOrderHistory = { navController.navigate(History) },
+                navigateToDetails = { navController.navigate(Details(it)) },
+                navigateToSearch = { navController.navigate(Search) },
+                navigateToCatalog = { navController.navigate(Catalog(it)) },
                 sharedProductViewModel = sharedViewModel
+            )
+        }
+
+        composable<Catalog> { backStackEntry ->
+            val args = backStackEntry.toRoute<Catalog>()
+            CatalogScreen(
+                selectedCategoryId = args.categoryId,
+                onBackPressed = { navController.navigate(Home) },
+                navigateToDetails = { navController.navigate(Details(it)) },
+                navigateToCart = { navController.navigate(Cart) },
+                productViewModel = sharedViewModel
             )
         }
 
@@ -248,7 +249,7 @@ fun NavGraph(
                     navController.navigate(Cart)
                 },
 
-                onNavigateToDetails = { navController.navigate(Details(it)) },
+                navigateToDetails = { navController.navigate(Details(it)) },
                 productViewModel = sharedViewModel
             )
         }

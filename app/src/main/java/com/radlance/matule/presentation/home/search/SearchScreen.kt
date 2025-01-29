@@ -40,7 +40,7 @@ import com.radlance.matule.ui.theme.ralewayFamily
 @Composable
 fun SearchScreen(
     onBackPressed: () -> Unit,
-    onNavigateToDetails: (Int) -> Unit,
+    navigateToDetails: (Int) -> Unit,
     onNavigateToCart: () -> Unit,
     modifier: Modifier = Modifier,
     productViewModel: ProductViewModel = hiltViewModel(),
@@ -144,7 +144,7 @@ fun SearchScreen(
                             products = foundedProducts,
                             onLikeClicked = productViewModel::changeFavoriteStatus,
                             onAddToCartClick = productViewModel::addProductToCart,
-                            onCardClick = onNavigateToDetails,
+                            onCardClick = navigateToDetails,
                             onNavigateToCart = onNavigateToCart
                         )
                     }

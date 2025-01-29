@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.radlance.matule.R
 import com.radlance.matule.presentation.common.ProductViewModel
-import com.radlance.matule.presentation.home.catalog.CategoriesRow
+import com.radlance.matule.presentation.component.CategoriesRow
 import com.radlance.matule.presentation.home.catalog.HomeHeader
 import com.radlance.matule.presentation.home.catalog.HomeSearchBar
 import com.radlance.matule.presentation.home.catalog.PopularRow
@@ -39,8 +39,9 @@ import com.radlance.matule.ui.theme.MatuleTheme
 @Composable
 fun HomeScreen(
     onBackPressed: () -> Unit,
-    onNavigateToCart: () -> Unit,
-    onNavigateToDetails: (Int) -> Unit,
+    navigateToCart: () -> Unit,
+    navigateToDetails: (Int) -> Unit,
+    navigateToCatalog: (Int?) -> Unit,
     onMenuIconClick: () -> Unit,
     onSearchFieldClick: () -> Unit,
     onCartClick: () -> Unit,
@@ -104,7 +105,8 @@ fun HomeScreen(
         loadContentResult.Show(
             onSuccess = {
                 CategoriesRow(
-                    categories = it.categories
+                    categories = it.categories,
+                    onCategoryClick = navigateToCatalog
                 )
 
                 Spacer(Modifier.height(24.dp))
@@ -112,8 +114,8 @@ fun HomeScreen(
                     products = it.products,
                     onLikeClick = viewModel::changeFavoriteStatus,
                     onAddCartClick = viewModel::addProductToCart,
-                    onCardClick = onNavigateToDetails,
-                    onNavigateToCart = onNavigateToCart
+                    onCardClick = navigateToDetails,
+                    onNavigateToCart = navigateToCart
                 )
             },
 
@@ -142,7 +144,7 @@ fun HomeScreen(
 @Composable
 private fun HomeScreenPreview() {
     MatuleTheme(darkTheme = false) {
-        HomeScreen({}, {}, {}, {}, {}, { DrawerValue.Closed })
+        HomeScreen({}, {}, {}, {}, {}, {}, { DrawerValue.Closed })
     }
 }
 
@@ -150,6 +152,6 @@ private fun HomeScreenPreview() {
 @Composable
 private fun HomeScreenExpandedPreview() {
     MatuleTheme(darkTheme = false) {
-        HomeScreen({}, {}, {}, {}, {}, { DrawerValue.Closed })
+        HomeScreen({}, {}, {}, {}, {}, {}, { DrawerValue.Closed })
     }
 }

@@ -1,5 +1,6 @@
-package com.radlance.matule.presentation.home.catalog
+package com.radlance.matule.presentation.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,15 +22,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.radlance.matule.R
 import com.radlance.matule.domain.product.Category
+import com.radlance.matule.presentation.home.catalog.CategoryItem
 import com.radlance.matule.ui.theme.MatuleTheme
 import com.radlance.matule.ui.theme.ralewayFamily
 
 @Composable
 fun CategoriesRow(
     categories: List<Category>,
+    onCategoryClick: (Int?) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val allCategories = listOf(Category(id = 0, title = stringResource(R.string.all))) + categories
+    val allCategory = Category(id = 0, title = stringResource(R.string.all))
+    val allCategories = listOf(allCategory) + categories
     Column(modifier = modifier.fillMaxWidth()) {
         Text(
             text = stringResource(R.string.categories),
@@ -51,7 +55,19 @@ fun CategoriesRow(
             modifier = Modifier.fillMaxWidth()
         ) {
             items(items = allCategories, key = { category -> category.id }) { categoryItem ->
-                CategoryItem(categoryTitle = categoryItem.title, modifier = Modifier.weight(1f))
+                CategoryItem(
+                    categoryTitle = categoryItem.title,
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable {
+                            val selectedCategory = if (categoryItem != allCategory) {
+                                categoryItem.id
+                            } else {
+                                null
+                            }
+                            onCategoryClick(selectedCategory)
+                        }
+                )
             }
         }
     }
@@ -66,7 +82,7 @@ private fun CategoriesRowPreview() {
         Category(id = 3, title = "Tennis")
     )
     MatuleTheme {
-        CategoriesRow(mockCategories)
+        CategoriesRow(mockCategories, {})
     }
 }
 
@@ -79,6 +95,6 @@ private fun CategoriesRowSmallPreview() {
         Category(id = 3, title = "Tennis")
     )
     MatuleTheme {
-        CategoriesRow(mockCategories)
+        CategoriesRow(mockCategories, {})
     }
 }
