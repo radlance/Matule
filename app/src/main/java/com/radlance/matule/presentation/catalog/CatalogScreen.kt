@@ -14,6 +14,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,6 +45,8 @@ fun CatalogScreen(
     val addToFavoriteResult by productViewModel.favoriteResult.collectAsState()
     val addToCartResult by productViewModel.inCartResult.collectAsState()
 
+    var selectedCategoryIdState by rememberSaveable { mutableStateOf(selectedCategoryId) }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -51,21 +56,25 @@ fun CatalogScreen(
         Spacer(Modifier.height(dimensionResource(R.dimen.main_top_padding)))
         fetchResult.Show(
             onSuccess = { fetchContent ->
-                val selectedCategory = selectedCategoryId?.let {
-                    fetchContent.categories.first { it.id == selectedCategoryId }
+                val selectedCategory = selectedCategoryIdState?.let {
+                    fetchContent.categories.first { it.id == selectedCategoryIdState }
                 }
                 CatalogHeader(
                     title = selectedCategory?.title ?: stringResource(R.string.all),
                     onBackPressed = onBackPressed
                 )
                 Spacer(Modifier.height(16.dp))
-
-                CategoriesRow(categories = fetchContent.categories, onCategoryClick = {})
-                Spacer(Modifier.height(25.dp))
-
                 val product = selectedCategory?.let {
                     fetchContent.products.filter { it.categoryId == selectedCategory.id }
                 } ?: fetchContent.products
+
+                CategoriesRow(
+                    categories = fetchContent.categories,
+                    onCategoryClick = { selectedCategoryIdState = it },
+                    selectedCategoryId = selectedCategoryIdState ?: 0
+                )
+
+                Spacer(Modifier.height(25.dp))
 
                 ProductGrid(
                     products = product,
@@ -122,7 +131,6 @@ fun CatalogScreen(
             onUnauthorized = {}
         )
     }
-
 }
 
 @Preview

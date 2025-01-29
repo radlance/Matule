@@ -106,7 +106,8 @@ fun HomeScreen(
             onSuccess = {
                 CategoriesRow(
                     categories = it.categories,
-                    onCategoryClick = navigateToCatalog
+                    onCategoryClick = navigateToCatalog,
+                    selectedCategoryId = -1
                 )
 
                 Spacer(Modifier.height(24.dp))

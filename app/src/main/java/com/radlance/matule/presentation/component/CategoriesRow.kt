@@ -30,6 +30,7 @@ import com.radlance.matule.ui.theme.ralewayFamily
 fun CategoriesRow(
     categories: List<Category>,
     onCategoryClick: (Int?) -> Unit,
+    selectedCategoryId: Int,
     modifier: Modifier = Modifier
 ) {
     val allCategory = Category(id = 0, title = stringResource(R.string.all))
@@ -57,6 +58,7 @@ fun CategoriesRow(
             items(items = allCategories, key = { category -> category.id }) { categoryItem ->
                 CategoryItem(
                     categoryTitle = categoryItem.title,
+                    selected = categoryItem.id == selectedCategoryId,
                     modifier = Modifier
                         .weight(1f)
                         .clickable {
@@ -82,7 +84,7 @@ private fun CategoriesRowPreview() {
         Category(id = 3, title = "Tennis")
     )
     MatuleTheme {
-        CategoriesRow(mockCategories, {})
+        CategoriesRow(mockCategories, {}, 1)
     }
 }
 
@@ -95,6 +97,6 @@ private fun CategoriesRowSmallPreview() {
         Category(id = 3, title = "Tennis")
     )
     MatuleTheme {
-        CategoriesRow(mockCategories, {})
+        CategoriesRow(mockCategories, {}, 1)
     }
 }
