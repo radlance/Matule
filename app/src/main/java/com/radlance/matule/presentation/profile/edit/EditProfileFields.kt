@@ -35,6 +35,7 @@ fun EditProfileFields(
             value = name,
             onValueChange = { onNameChanged(it) },
             label = stringResource(R.string.your_name),
+            hintResId = R.string.name_hint,
             interactionSource = interactionSource,
             isError = !profileUiState.isValidName
         )
@@ -44,6 +45,7 @@ fun EditProfileFields(
             value = email,
             enabled = false,
             onValueChange = { onEmailChanged(it) },
+            hintResId = R.string.email_hint,
             label = stringResource(R.string.email),
             interactionSource = interactionSource,
             isError = !profileUiState.isValidEmail

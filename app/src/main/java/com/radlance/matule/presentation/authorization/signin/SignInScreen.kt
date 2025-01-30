@@ -142,6 +142,7 @@ fun SignInScreen(
                     emailFieldValue = it
                     viewModel.resetEmailError()
                 },
+                hintResId = R.string.email_hint,
                 modifier = Modifier
                     .align(Alignment.Start)
                     .padding(top = 30.dp),
@@ -158,6 +159,7 @@ fun SignInScreen(
                     passwordFieldValue = it
                     viewModel.resetPasswordError()
                 },
+                hintResId = R.string.password_hint,
                 modifier = Modifier
                     .align(Alignment.Start)
                     .padding(top = 30.dp),

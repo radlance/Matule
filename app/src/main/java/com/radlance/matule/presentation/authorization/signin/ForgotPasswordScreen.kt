@@ -109,6 +109,7 @@ fun ForgotPasswordScreen(
                     emailFieldValue = it
                     viewModel.resetEmailError()
                 },
+                hintResId = R.string.email_hint,
                 isError = !uiState.isValidEmail,
                 modifier = Modifier
                     .align(Alignment.Start)

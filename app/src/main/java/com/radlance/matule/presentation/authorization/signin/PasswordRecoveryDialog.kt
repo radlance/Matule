@@ -67,6 +67,7 @@ fun PasswordRecoveryDialog(
             EnterInputField(
                 value = value,
                 onValueChange = { onValueChanged(it) },
+                hintResId = R.string.blank,
                 interactionSource = interactionSource,
                 modifier = Modifier.padding(top = 8.dp)
             )

@@ -34,6 +34,7 @@ fun SignUpFields(
             label = stringResource(R.string.your_name),
             value = nameFieldValue,
             onValueChange = onNameValueChange,
+            hintResId = R.string.name_hint,
             modifier = Modifier
                 .align(Alignment.Start),
             isPassword = false,
@@ -45,6 +46,7 @@ fun SignUpFields(
             label = stringResource(R.string.email),
             value = emailFieldValue,
             onValueChange = onEmailValueChange,
+            hintResId = R.string.email_hint,
             modifier = Modifier
                 .align(Alignment.Start),
             isPassword = false,
@@ -57,6 +59,7 @@ fun SignUpFields(
             label = stringResource(R.string.password),
             value = passwordFieldValue,
             onValueChange = onPasswordValueChange,
+            hintResId = R.string.password_hint,
             modifier = Modifier
                 .align(Alignment.Start),
             isPassword = true,

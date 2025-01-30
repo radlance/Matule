@@ -1,7 +1,9 @@
 package com.radlance.matule.presentation.component
 
 import android.annotation.SuppressLint
+import androidx.annotation.StringRes
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -29,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -45,14 +48,16 @@ import com.radlance.matule.ui.theme.ralewayFamily
 
 @Composable
 fun EnterInputField(
-    label: String = "",
     value: String,
     onValueChange: (String) -> Unit,
+    @StringRes hintResId: Int,
     interactionSource: MutableInteractionSource,
     modifier: Modifier = Modifier,
+    label: String = "",
     isPassword: Boolean = false,
     isError: Boolean = false,
     enabled: Boolean = true,
+    showCheck: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
     var showPassword by rememberSaveable {
@@ -96,60 +101,95 @@ fun EnterInputField(
                     .padding(horizontal = 14.dp),
                 contentAlignment = Alignment.CenterStart
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    BasicTextField(
-                        value = value,
-                        onValueChange = onValueChange,
-                        modifier = Modifier.weight(1f),
-                        visualTransformation = if (!showPassword) {
-                            PasswordVisualTransformation()
-                        } else {
-                            VisualTransformation.None
-                        },
-                        enabled = enabled,
-                        singleLine = true,
-                        textStyle = TextStyle(
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    if (value.isEmpty()) {
+                        Text(
+                            text = stringResource(hintResId),
                             color = inputFieldTextColor,
                             fontSize = 14.sp,
                             lineHeight = 16.sp,
                             fontFamily = poppinsFamily,
                             fontWeight = FontWeight.Medium
-                        ),
-                        keyboardOptions = keyboardOptions,
-                    )
-
-                    if (isPassword) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_visibility_off),
-                            contentDescription = "VisibilityOff",
-                            modifier = Modifier
-                                .clickable(
-                                    indication = null,
-                                    interactionSource = interactionSource
-                                ) {
-                                    showPassword = !showPassword
-                                }
                         )
                     }
-                }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        BasicTextField(
+                            value = value,
+                            onValueChange = onValueChange,
+                            modifier = Modifier.weight(1f),
+                            visualTransformation = if (!showPassword) {
+                                PasswordVisualTransformation()
+                            } else {
+                                VisualTransformation.None
+                            },
+                            enabled = enabled,
+                            singleLine = true,
+                            textStyle = TextStyle(
+                                fontSize = 14.sp,
+                                lineHeight = 16.sp,
+                                fontFamily = poppinsFamily,
+                                fontWeight = FontWeight.Medium
+                            ),
+                            keyboardOptions = keyboardOptions,
+                        )
 
+                        if (isPassword) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_visibility_off),
+                                contentDescription = "VisibilityOff",
+                                modifier = Modifier
+                                    .clickable(
+                                        indication = null,
+                                        interactionSource = interactionSource
+                                    ) {
+                                        showPassword = !showPassword
+                                    }
+                            )
+                        }
+
+                        if (showCheck) {
+                            Image(
+                                painter = painterResource(R.drawable.ic_done),
+                                contentDescription = "ic_done"
+                            )
+                        }
+                    }
+                }
             }
         }
+    }
+}
+
+
+@SuppressLint("UnrememberedMutableInteractionSource")
+@Preview
+@Composable
+private fun EnterInputFieldHintPreview() {
+    MatuleTheme {
+        EnterInputField(
+            label = "",
+            value = "",
+            onValueChange = {},
+            hintResId = R.string.name,
+            enabled = false,
+            interactionSource = MutableInteractionSource()
+        )
     }
 }
 
 @SuppressLint("UnrememberedMutableInteractionSource")
 @Preview
 @Composable
-private fun EnterInputFieldPreview() {
+private fun EnterInputFieldValuePreview() {
     MatuleTheme {
         EnterInputField(
             label = "",
-            value = "",
+            value = "value",
             onValueChange = {},
+            hintResId = R.string.name,
             enabled = false,
             interactionSource = MutableInteractionSource()
         )

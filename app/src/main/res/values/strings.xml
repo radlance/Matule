@@ -99,4 +99,8 @@
     <string name="checking">Проверка…</string>
     <string name="no_popular_products">Нет популярных продуктов</string>
     <string name="done">Готово</string>
+    <string name="email_hint">xyz@gmail.com</string>
+    <string name="blank" />
+    <string name="password_hint">•••••••</string>
+    <string name="name_hint">xxxxxxxx</string>
 </resources>
