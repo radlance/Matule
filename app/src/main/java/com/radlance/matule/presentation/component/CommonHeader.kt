@@ -2,9 +2,7 @@ package com.radlance.matule.presentation.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
@@ -37,19 +35,23 @@ fun CommonHeader(
     modifier: Modifier = Modifier,
     startContent: @Composable () -> Unit,
     middleContent: @Composable () -> Unit,
-    endContent: @Composable () -> Unit,
-    horizontalArrangement: Arrangement.Horizontal = Arrangement.SpaceBetween
+    endContent: @Composable () -> Unit
 ) {
-    Row(
+    Box(
         modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = horizontalArrangement
+        contentAlignment = Alignment.Center
     ) {
-        startContent()
-        Box {
+        Box(Modifier.align(Alignment.CenterStart)) {
+            startContent()
+        }
+
+        Box((Modifier.align(Alignment.Center))) {
             middleContent()
         }
-        endContent()
+
+        Box((Modifier.align(Alignment.CenterEnd))) {
+            endContent()
+        }
     }
 }
 

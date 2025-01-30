@@ -1,10 +1,7 @@
 package com.radlance.matule.presentation.history
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,7 +23,9 @@ fun HistoryHeader(
     modifier: Modifier = Modifier
 ) {
     CommonHeader(
-        modifier = modifier.fillMaxWidth().padding(horizontal = 21.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 21.dp),
         startContent = {
             BackButton(
                 onClick = onBackPressed,
@@ -42,10 +41,7 @@ fun HistoryHeader(
                 lineHeight = 20.sp
             )
         },
-        endContent = {
-            Box(Modifier.size(44.dp))
-        },
-        horizontalArrangement = Arrangement.SpaceBetween
+        endContent = {},
     )
 }
 

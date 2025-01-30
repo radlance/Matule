@@ -1,9 +1,7 @@
 package com.radlance.matule.presentation.home.catalog
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,8 +40,6 @@ fun CatalogHeader(
                 lineHeight = 20.sp
             )
         },
-        endContent = {
-            Box(Modifier.size(44.dp))
-        },
+        endContent = {},
     )
 }
