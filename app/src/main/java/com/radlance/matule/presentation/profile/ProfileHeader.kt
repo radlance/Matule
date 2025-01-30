@@ -38,7 +38,17 @@ fun ProfileHeader(
                 lineHeight = 20.sp
             )
         },
-        endContent = {},
+        endContent = {
+            Text(
+                text = stringResource(R.string.done),
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = 16.sp,
+                fontFamily = ralewayFamily,
+                fontWeight = FontWeight.Bold,
+                lineHeight = 16.sp
+            )
+        },
+
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 21.dp)
