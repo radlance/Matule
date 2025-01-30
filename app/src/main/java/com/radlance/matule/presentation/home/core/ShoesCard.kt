@@ -49,7 +49,7 @@ import com.radlance.matule.ui.theme.fillRedColor
 import com.radlance.matule.ui.theme.inputFieldTextColor
 import com.radlance.matule.ui.theme.poppinsFamily
 import com.radlance.matule.ui.theme.ralewayFamily
-import com.radlance.matule.ui.vector.LikeIcon
+import com.radlance.matule.ui.vector.FavoriteIcon
 
 @Composable
 fun ShoesCard(
@@ -76,7 +76,7 @@ fun ShoesCard(
                     .padding(start = 9.dp, top = 3.dp)
                     .clip(CircleShape)
                     .size(28.dp)
-                    .background(MaterialTheme.colorScheme.surfaceTint),
+                    .background(MaterialTheme.colorScheme.surfaceVariant),
             ) {
                 val fillColor = if (product.isFavorite) {
                     fillRedColor
@@ -85,7 +85,7 @@ fun ShoesCard(
                 }
 
                 Image(
-                    imageVector = LikeIcon(fillColor = fillColor),
+                    imageVector = FavoriteIcon(fillColor = fillColor),
                     contentDescription = "LikeIcon"
                 )
             }

@@ -42,7 +42,7 @@ data class Verification(
 
 @Serializable
 @Keep
-data object Home: Destination
+data object Home : Destination
 
 @Serializable
 @Keep
@@ -55,6 +55,10 @@ data class Details(
 data class Catalog(
     val categoryId: Int?
 ) : Destination
+
+@Serializable
+@Keep
+data object Popular : Destination
 
 @Serializable
 @Keep

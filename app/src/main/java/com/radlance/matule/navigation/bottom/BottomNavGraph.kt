@@ -20,6 +20,7 @@ fun BottomNavGraph(
     navigateToDetails: (Int) -> Unit,
     navigateToSearch: () -> Unit,
     navigateToCatalog: (Int?) -> Unit,
+    navigateToPopular: () -> Unit,
     modifier: Modifier = Modifier,
     sharedViewModel: ProductViewModel = hiltViewModel()
 ) {
@@ -40,6 +41,7 @@ fun BottomNavGraph(
                     navigateToCart = navigateToCart,
                     navigateToDetails = navigateToDetails,
                     navigateToCatalog = navigateToCatalog,
+                    navigateToPopular = navigateToPopular,
                     onSearchFieldClick = navigateToSearch,
                     onCartClick = navigateToCart,
                     onMenuIconClick = onDrawerClick,

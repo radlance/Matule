@@ -48,7 +48,7 @@ import com.radlance.matule.ui.theme.componentGrayColor
 import com.radlance.matule.ui.theme.ralewayFamily
 import com.radlance.matule.ui.vector.CartIcon
 import com.radlance.matule.ui.vector.ExitIcon
-import com.radlance.matule.ui.vector.FavoriteNavigationIcon
+import com.radlance.matule.ui.vector.FavoriteOutlinedIcon
 import com.radlance.matule.ui.vector.NotificationNavigationIcon
 import com.radlance.matule.ui.vector.OrdersIcon
 import com.radlance.matule.ui.vector.ProfileNavigationIcon
@@ -154,7 +154,7 @@ fun DrawerMenu(
                 )
 
                 MenuItem(
-                    icon = FavoriteNavigationIcon(Color.White),
+                    icon = FavoriteOutlinedIcon(Color.White),
                     contentDescription = "CartIcon",
                     sectionResId = R.string.favorite,
                     onItemClick = {

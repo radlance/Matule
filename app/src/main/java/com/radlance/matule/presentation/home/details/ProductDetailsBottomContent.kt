@@ -16,14 +16,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.radlance.matule.R
 import com.radlance.matule.presentation.component.NavigationButton
 import com.radlance.matule.ui.theme.fillRedColor
 import com.radlance.matule.ui.vector.BagIcon
 import com.radlance.matule.ui.vector.CartIcon
-import com.radlance.matule.ui.vector.LikeIcon
+import com.radlance.matule.ui.vector.FavoriteIcon
+import com.radlance.matule.ui.vector.FavoriteOutlinedIcon
 
 @Composable
 fun ProductDetailsBottomContent(
@@ -47,18 +47,16 @@ fun ProductDetailsBottomContent(
                 .size(52.dp)
                 .background(MaterialTheme.colorScheme.surfaceVariant),
         ) {
-            val fillColor = if (isFavorite) {
-                fillRedColor
-            } else {
-                Color.LightGray
-            }
-
             Image(
-                imageVector = LikeIcon(
-                    fillColor = fillColor,
-                    width = 20.dp,
-                    height = 17.79.dp
-                ),
+                imageVector = if (isFavorite) {
+                    FavoriteIcon(
+                        fillColor = fillRedColor,
+                        width = 20.dp,
+                        height = 17.79.dp
+                    )
+                } else {
+                    FavoriteOutlinedIcon(MaterialTheme.colorScheme.onSurface)
+                },
                 contentDescription = "LikeIcon"
             )
         }

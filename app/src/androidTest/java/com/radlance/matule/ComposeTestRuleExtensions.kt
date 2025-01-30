@@ -12,8 +12,8 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import junit.framework.TestCase.assertEquals
 
 fun <T : Any> NavController.assertCurrentDestination(expectedRoute: T) {
-    val currentDestination = currentBackStackEntry?.destination?.route?.split(".")?.last()
-    assertEquals(expectedRoute.toString(), currentDestination)
+    val currentDestination = currentBackStackEntry?.destination?.route
+    assertEquals(expectedRoute::class.qualifiedName, currentDestination)
 }
 
 fun <A : ComponentActivity> AndroidComposeTestRule<ActivityScenarioRule<A>, A>.onNodeWithStringId(

@@ -30,10 +30,11 @@ import com.radlance.matule.presentation.authorization.signin.SignInScreen
 import com.radlance.matule.presentation.authorization.signin.VerificationScreen
 import com.radlance.matule.presentation.authorization.signup.SignUpScreen
 import com.radlance.matule.presentation.cart.CartScreen
-import com.radlance.matule.presentation.home.catalog.CatalogScreen
 import com.radlance.matule.presentation.common.ProductViewModel
 import com.radlance.matule.presentation.history.HistoryScreen
+import com.radlance.matule.presentation.home.catalog.CatalogScreen
 import com.radlance.matule.presentation.home.details.ProductDetailsScreen
+import com.radlance.matule.presentation.home.popular.PopularScreen
 import com.radlance.matule.presentation.home.search.SearchScreen
 import com.radlance.matule.presentation.notification.NotificationScreen
 import com.radlance.matule.presentation.onboarding.OnboardingFirst
@@ -55,7 +56,7 @@ fun NavGraph(
     accountManager: AccountManager
 ) {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = currentBackStackEntry?.destination?.route?.split(".")?.last()
+    val currentRoute = currentBackStackEntry?.destination?.route
     val navigationState by navigationViewModel.navigationState.collectAsState()
 
     val context = LocalContext.current
@@ -64,7 +65,7 @@ fun NavGraph(
             OnboardingFirst,
             OnboardingSecond,
             OnboardingThird
-        ).map { it.toString() } || currentRoute == null
+        ).map { it::class.qualifiedName } || currentRoute == null
     ) {
         Modifier.background(brush = backGroundGradient)
     } else {
@@ -227,7 +228,18 @@ fun NavGraph(
                 navigateToDetails = { navController.navigate(Details(it)) },
                 navigateToSearch = { navController.navigate(Search) },
                 navigateToCatalog = { navController.navigate(Catalog(it)) },
+                navigateToPopular = { navController.navigate(Popular) },
                 sharedProductViewModel = sharedViewModel
+            )
+        }
+
+        composable<Popular> {
+            PopularScreen(
+                onBackPressed = { navController.navigate(Home) },
+                navigateToFavorite = { navController.navigate(Home) },
+                navigateToDetails = { navController.navigate(Details(it)) },
+                navigateToCart = { navController.navigate(Cart) },
+                productViewModel = sharedViewModel
             )
         }
 

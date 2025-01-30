@@ -5,13 +5,18 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-fun FavoriteNavigationIcon(color: Color): ImageVector {
+fun FavoriteOutlinedIcon(
+    color: Color,
+    width: Dp = 24.dp,
+    height: Dp = 24.dp,
+): ImageVector {
     return ImageVector.Builder(
         name = "HeartIcon 1",
-        defaultWidth = 24.dp,
-        defaultHeight = 24.dp,
+        defaultWidth = width,
+        defaultHeight = height,
         viewportWidth = 24f,
         viewportHeight = 24f
     ).apply {

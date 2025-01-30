@@ -34,7 +34,7 @@ import com.radlance.matule.ui.theme.bluePrimaryColor
 import com.radlance.matule.ui.theme.secondaryTextColor
 import com.radlance.matule.ui.vector.BagIcon
 import com.radlance.matule.ui.vector.BottomPanel
-import com.radlance.matule.ui.vector.FavoriteNavigationIcon
+import com.radlance.matule.ui.vector.FavoriteOutlinedIcon
 import com.radlance.matule.ui.vector.HomeNavigationIcon
 import com.radlance.matule.ui.vector.NotificationNavigationIcon
 import com.radlance.matule.ui.vector.ProfileNavigationIcon
@@ -121,7 +121,7 @@ fun BottomNavigationBar(
                         }, horizontalArrangement = Arrangement.End
                 ) {
                     Image(
-                        imageVector = FavoriteNavigationIcon(
+                        imageVector = FavoriteOutlinedIcon(
                             getNavigationItemColor(
                                 Favorite,
                                 navBackStackEntry

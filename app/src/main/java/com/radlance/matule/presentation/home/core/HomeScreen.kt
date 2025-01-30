@@ -38,6 +38,7 @@ fun HomeScreen(
     navigateToCart: () -> Unit,
     navigateToDetails: (Int) -> Unit,
     navigateToCatalog: (Int?) -> Unit,
+    navigateToPopular: () -> Unit,
     onMenuIconClick: () -> Unit,
     onSearchFieldClick: () -> Unit,
     onCartClick: () -> Unit,
@@ -112,7 +113,8 @@ fun HomeScreen(
                     onLikeClick = viewModel::changeFavoriteStatus,
                     onAddCartClick = viewModel::addProductToCart,
                     onCardClick = navigateToDetails,
-                    onNavigateToCart = navigateToCart
+                    navigateToCart = navigateToCart,
+                    navigateToPopular = navigateToPopular
                 )
             },
 
@@ -141,7 +143,7 @@ fun HomeScreen(
 @Composable
 private fun HomeScreenPreview() {
     MatuleTheme(darkTheme = false) {
-        HomeScreen({}, {}, {}, {}, {}, {}, { DrawerValue.Closed })
+        HomeScreen({}, {}, {}, {}, {}, {}, {}, { DrawerValue.Closed })
     }
 }
 
@@ -149,6 +151,6 @@ private fun HomeScreenPreview() {
 @Composable
 private fun HomeScreenExpandedPreview() {
     MatuleTheme(darkTheme = false) {
-        HomeScreen({}, {}, {}, {}, {}, {}, { DrawerValue.Closed })
+        HomeScreen({}, {}, {}, {}, {}, {}, {}, { DrawerValue.Closed })
     }
 }

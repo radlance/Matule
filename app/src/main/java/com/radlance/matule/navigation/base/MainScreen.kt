@@ -48,9 +48,10 @@ fun MainScreen(
     navigateToDetails: (Int) -> Unit,
     navigateToSearch: () -> Unit,
     navigateToCatalog: (Int?) -> Unit,
+    navigateToPopular: () -> Unit,
     modifier: Modifier = Modifier,
     drawerStateViewModel: DrawerStateViewModel = hiltViewModel(),
-    sharedProductViewModel: ProductViewModel = hiltViewModel()
+    sharedProductViewModel: ProductViewModel = hiltViewModel(),
 ) {
     val navigationState = rememberNavigationState()
     var userData by remember { mutableStateOf(User()) }
@@ -163,6 +164,7 @@ fun MainScreen(
                 navigateToSearch = navigateToSearch,
                 navigateToCart = navigateToCart,
                 navigateToCatalog = navigateToCatalog,
+                navigateToPopular = navigateToPopular,
                 modifier = Modifier,
                 sharedViewModel = sharedProductViewModel
             )
@@ -175,7 +177,7 @@ fun MainScreen(
 @Composable
 private fun CommonBottomNavigationPreview() {
     MatuleTheme {
-        MainScreen({}, {}, {}, {}, {}, {}, {}, {})
+        MainScreen({}, {}, {}, {}, {}, {}, {}, {}, {})
     }
 }
 
@@ -183,6 +185,6 @@ private fun CommonBottomNavigationPreview() {
 @Composable
 private fun CommonBottomNavigationExpandedPreview() {
     MatuleTheme {
-        MainScreen({}, {}, {}, {}, {}, {}, {}, {})
+        MainScreen({}, {}, {}, {}, {}, {}, {}, {}, {})
     }
 }

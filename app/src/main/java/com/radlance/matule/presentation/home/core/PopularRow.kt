@@ -1,5 +1,6 @@
 package com.radlance.matule.presentation.home.core
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,7 +31,8 @@ fun PopularRow(
     onLikeClick: (productId: Int) -> Unit,
     onAddCartClick: (productId: Int) -> Unit,
     onCardClick: (Int) -> Unit,
-    onNavigateToCart: () -> Unit,
+    navigateToCart: () -> Unit,
+    navigateToPopular: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
@@ -56,7 +58,8 @@ fun PopularRow(
                 fontSize = 12.sp,
                 fontFamily = poppinsFamily,
                 fontWeight = FontWeight.Medium,
-                lineHeight = 16.sp
+                lineHeight = 16.sp,
+                modifier = Modifier.clickable { navigateToPopular() }
             )
         }
 
@@ -77,7 +80,7 @@ fun PopularRow(
                             if (quantityInCart == 0) {
                                 onAddCartClick(id)
                             } else {
-                                onNavigateToCart()
+                                navigateToCart()
                             }
                         },
                         onCardClick = onCardClick,
@@ -95,7 +98,7 @@ fun PopularRow(
                             if (quantityInCart == 0) {
                                 onAddCartClick(id)
                             } else {
-                                onNavigateToCart()
+                                navigateToCart()
                             }
                         },
                         onCardClick = onCardClick,
@@ -115,7 +118,8 @@ private fun PopularRowPreview() {
             emptyList(),
             onLikeClick = {},
             onAddCartClick = {},
-            onNavigateToCart = {},
+            navigateToCart = {},
+            navigateToPopular = {},
             onCardClick = {}
         )
     }

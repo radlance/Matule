@@ -97,4 +97,5 @@
     <string name="sending">Отправка…</string>
     <string name="saving">Сохранение…</string>
     <string name="checking">Проверка…</string>
+    <string name="no_popular_products">Нет популярных продуктов</string>
 </resources>

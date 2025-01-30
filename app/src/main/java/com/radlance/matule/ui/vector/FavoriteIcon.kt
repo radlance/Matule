@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-fun LikeIcon(
+fun FavoriteIcon(
     fillColor: Color,
     width: Dp = 13.2.dp,
     height: Dp = 11.867.dp
