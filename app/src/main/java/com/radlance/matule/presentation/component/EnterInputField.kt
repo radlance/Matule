@@ -195,3 +195,20 @@ private fun EnterInputFieldValuePreview() {
         )
     }
 }
+
+@SuppressLint("UnrememberedMutableInteractionSource")
+@Preview
+@Composable
+private fun EnterInputFieldCheckedPreview() {
+    MatuleTheme {
+        EnterInputField(
+            label = "",
+            value = "value with check",
+            onValueChange = {},
+            hintResId = R.string.name,
+            enabled = false,
+            showCheck = true,
+            interactionSource = MutableInteractionSource()
+        )
+    }
+}
