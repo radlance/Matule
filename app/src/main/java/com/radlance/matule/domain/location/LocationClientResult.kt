@@ -1,18 +1,18 @@
 package com.radlance.matule.domain.location
 
-import android.location.Location
+import android.location.Address
 
 interface LocationClientResult {
     fun <T: Any> map(mapper: Mapper<T>): T
 
     interface Mapper<T: Any> {
-        fun mapSuccess(location: Location): T
+        fun mapSuccess(address: Address): T
         fun mapError(message: String): T
     }
 
-    data class Success(private val location: Location) : LocationClientResult {
+    data class Success(private val address: Address) : LocationClientResult {
         override fun <T : Any> map(mapper: Mapper<T>): T {
-            return mapper.mapSuccess(location)
+            return mapper.mapSuccess(address)
         }
     }
 

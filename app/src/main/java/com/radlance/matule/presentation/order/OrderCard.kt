@@ -74,7 +74,7 @@ fun OrderCard(
                 locationClientResultUiState.Show(
                     onSuccess = { address ->
                         OrderAddress(
-                            address = "${address.latitude}, ${address.longitude}",
+                            address = address.getAddressLine(0),
                             modifier = Modifier.padding(start = 20.dp, end = 32.dp)
                         )
                     },

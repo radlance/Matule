@@ -105,5 +105,6 @@
     <string name="name_hint">xxxxxxxx</string>
     <string name="missing_location_permission">Отсутствует разрешение на геопозицию</string>
     <string name="gps_is_disabled">Геопозиция выключена</string>
-    <string name="getting_current_position">получение текущий геопозиции…</string>
+    <string name="getting_current_position">Получение текущий геопозиции…</string>
+    <string name="geocoding_error">Ошибка геокодирования</string>
 </resources>

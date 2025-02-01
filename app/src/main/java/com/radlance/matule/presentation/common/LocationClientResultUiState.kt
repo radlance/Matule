@@ -1,6 +1,6 @@
 package com.radlance.matule.presentation.common
 
-import android.location.Location
+import android.location.Address
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -13,12 +13,12 @@ import com.radlance.matule.ui.theme.poppinsFamily
 
 interface LocationClientResultUiState {
     @Composable
-    fun Show(onSuccess: @Composable (Location) -> Unit, onError: @Composable (String) -> Unit)
+    fun Show(onSuccess: @Composable (Address) -> Unit, onError: @Composable (String) -> Unit)
 
-    data class Success(private val location: Location) : LocationClientResultUiState {
+    data class Success(private val location: Address) : LocationClientResultUiState {
         @Composable
         override fun Show(
-            onSuccess: @Composable (Location) -> Unit,
+            onSuccess: @Composable (Address) -> Unit,
             onError: @Composable (String) -> Unit
         ) {
             onSuccess(location)
@@ -29,7 +29,7 @@ interface LocationClientResultUiState {
     data class Error(private val message: String) : LocationClientResultUiState {
         @Composable
         override fun Show(
-            onSuccess: @Composable (Location) -> Unit,
+            onSuccess: @Composable (Address) -> Unit,
             onError: @Composable (String) -> Unit
         ) {
             onError(message)
@@ -40,7 +40,7 @@ interface LocationClientResultUiState {
     data class Initial(private val message: String) : LocationClientResultUiState {
         @Composable
         override fun Show(
-            onSuccess: @Composable (Location) -> Unit,
+            onSuccess: @Composable (Address) -> Unit,
             onError: @Composable (String) -> Unit
         ) {
             Text(

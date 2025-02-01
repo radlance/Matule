@@ -131,7 +131,8 @@ fun EnterInputField(
                                 fontSize = 14.sp,
                                 lineHeight = 16.sp,
                                 fontFamily = poppinsFamily,
-                                fontWeight = FontWeight.Medium
+                                fontWeight = FontWeight.Medium,
+                                color = MaterialTheme.colorScheme.onSurface
                             ),
                             keyboardOptions = keyboardOptions,
                         )

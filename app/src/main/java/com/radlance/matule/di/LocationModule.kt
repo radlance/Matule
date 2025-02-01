@@ -1,6 +1,7 @@
 package com.radlance.matule.di
 
 import android.content.Context
+import android.location.Geocoder
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.radlance.matule.common.ResourceManager
@@ -11,6 +12,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import java.util.Locale
 import javax.inject.Singleton
 
 @Module
@@ -24,15 +26,23 @@ class LocationModule {
 
     @Provides
     @Singleton
+    fun provideGeocoder(@ApplicationContext context: Context): Geocoder {
+        return Geocoder(context, Locale.getDefault())
+    }
+
+    @Provides
+    @Singleton
     fun provideLocationClient(
         @ApplicationContext context: Context,
         fusedLocationProviderClient: FusedLocationProviderClient,
-        resourceManager: ResourceManager
+        resourceManager: ResourceManager,
+        geocoder: Geocoder,
     ): LocationClient {
         return BaseLocationClient(
             context = context,
             client = fusedLocationProviderClient,
-            resourceManager = resourceManager
+            resourceManager = resourceManager,
+            geocoder = geocoder
         )
     }
 }

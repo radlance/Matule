@@ -2,6 +2,7 @@ package com.radlance.matule.data.location
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.location.Geocoder
 import android.location.LocationManager
 import android.os.Looper
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -22,7 +23,8 @@ import javax.inject.Inject
 class BaseLocationClient @Inject constructor(
     private val context: Context,
     private val client: FusedLocationProviderClient,
-    private val resourceManager: ResourceManager
+    private val resourceManager: ResourceManager,
+    private val geocoder: Geocoder,
 ) : LocationClient, ContextCore() {
     @SuppressLint("MissingPermission")
     override fun getLocationUpdates(interval: Long): Flow<LocationClientResult> {
@@ -50,7 +52,18 @@ class BaseLocationClient @Inject constructor(
                 override fun onLocationResult(result: LocationResult) {
                     super.onLocationResult(result)
                     result.locations.lastOrNull()?.let { location ->
-                        launch { send(LocationClientResult.Success(location)) }
+
+                        @Suppress("DEPRECATION")
+                        val addressResult: LocationClientResult =
+                            geocoder.getFromLocation(location.latitude, location.longitude, 1)
+                                ?.let {
+                                    LocationClientResult.Success(it.first())
+                                }
+                                ?: LocationClientResult.Error(resourceManager.getString(R.string.geocoding_error))
+
+                        launch {
+                            send(addressResult)
+                        }
                     }
                 }
             }
