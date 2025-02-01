@@ -9,7 +9,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface OnBoardingModule {
+interface OnboardingModule {
     @Binds
     fun provideRepository(onBoardingRepositoryImpl: NavigationRepositoryImpl): NavigationRepository
 }

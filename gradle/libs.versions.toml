@@ -8,7 +8,7 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 kotlinxSerializationJson = "1.8.0"
 lifecycleRuntimeKtx = "2.8.7"
-activityCompose = "1.10.0"
+activityCompose = "1.9.3"
 composeBom = "2025.01.01"
 materialIconsExtended = "1.7.7"
 navigationComposeVersion = "2.8.6"
@@ -22,9 +22,11 @@ ktor = "3.0.1"
 ksp = "2.0.0-1.0.23"
 room = "2.6.1"
 coil = "3.0.4"
+gms = "21.3.0"
 
 
 [libraries]
+play-serivces-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "gms" }
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 coil-network-http = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
 

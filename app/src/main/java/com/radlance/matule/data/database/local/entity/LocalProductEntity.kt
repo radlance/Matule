@@ -20,7 +20,7 @@ data class LocalProductEntity(
     val price: Double,
     val description: String,
     @ColumnInfo("image_url") val imageUrl: String,
-    @ColumnInfo("category_id") val categoryId: Int,
+    @ColumnInfo("category_id", index = true) val categoryId: Int,
     @ColumnInfo("is_favorite") val isFavorite: Boolean = false,
     @ColumnInfo("quantity_in_cart") val quantityInCart: Int = 0,
     @PrimaryKey val id: Int = 0

@@ -63,6 +63,7 @@ kapt {
 }
 
 dependencies {
+    implementation(libs.play.serivces.location)
     implementation(libs.coil.compose)
     implementation(libs.coil.network.http)
 

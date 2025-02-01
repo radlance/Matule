@@ -2,7 +2,7 @@ package com.radlance.matule.presentation.authorization.common
 
 import com.radlance.matule.R
 import com.radlance.matule.domain.authorization.AuthResult
-import com.radlance.matule.presentation.common.ResourceManager
+import com.radlance.matule.common.ResourceManager
 import javax.inject.Inject
 
 class AuthResultMapper @Inject constructor(

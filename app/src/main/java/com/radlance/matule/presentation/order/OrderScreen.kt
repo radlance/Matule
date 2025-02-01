@@ -1,6 +1,9 @@
 package com.radlance.matule.presentation.order
 
+import android.Manifest
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -49,15 +52,26 @@ fun OrderScreen(
 ) {
     var resultSum by rememberSaveable { mutableDoubleStateOf(0.0) }
     var currentUser by remember { mutableStateOf(User()) }
+    var isGrantedLocationPermission by rememberSaveable { mutableStateOf(false) }
 
     val catalogContent by productViewModel.catalogContent.collectAsState()
     val placeOrderResult by productViewModel.placeOrderResult.collectAsState()
     val userUiState by orderViewModel.userUiState.collectAsState()
 
+    val requestPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        isGrantedLocationPermission = isGranted
+    }
+
     val context = LocalContext.current
 
     var placeOrderButtonEnabled by rememberSaveable { mutableStateOf(true) }
     var showSuccessOrderPlaceDialog by rememberSaveable { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+    }
 
     userUiState.Show(
         onSuccess = { userData ->
@@ -90,6 +104,7 @@ fun OrderScreen(
             .background(MaterialTheme.colorScheme.surface),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+
         Spacer(Modifier.height(dimensionResource(R.dimen.main_top_padding)))
         OrderHeader(onBackPressed = onBackPressed)
         Spacer(Modifier.height(46.dp))
@@ -102,6 +117,7 @@ fun OrderScreen(
 
                 OrderCard(
                     email = currentUser.email,
+                    isGrantedLocationPermission = isGrantedLocationPermission,
                     modifier = Modifier
                         .padding(horizontal = 14.dp)
                         .weight(4.5f)

@@ -7,7 +7,7 @@ import com.radlance.matule.R
 import com.radlance.matule.domain.authorization.AuthRepository
 import com.radlance.matule.domain.authorization.AuthResult
 import com.radlance.matule.presentation.authorization.common.AuthResultUiState
-import com.radlance.matule.presentation.common.ResourceManager
+import com.radlance.matule.common.ResourceManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

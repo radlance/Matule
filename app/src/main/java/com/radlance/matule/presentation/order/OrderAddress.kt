@@ -43,14 +43,8 @@ fun OrderAddress(
     Column(modifier = modifier.fillMaxWidth()) {
         Row(modifier = Modifier.fillMaxWidth()) {
             Column {
-                Text(
-                    text = stringResource(R.string.address),
-                    fontSize = 14.sp,
-                    fontFamily = ralewayFamily,
-                    fontWeight = FontWeight.Medium,
-                    lineHeight = 20.sp
-                )
-                Spacer(modifier = Modifier.height(12.dp))
+
+            Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = address,
                     color = inputFieldTextColor,

@@ -2,8 +2,8 @@ package com.radlance.matule.di
 
 import com.radlance.matule.data.auth.AuthRepositoryImpl
 import com.radlance.matule.domain.authorization.AuthRepository
-import com.radlance.matule.presentation.common.ResourceManager
-import com.radlance.matule.presentation.common.ResourceManagerImpl
+import com.radlance.matule.common.ResourceManager
+import com.radlance.matule.common.ResourceManagerImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

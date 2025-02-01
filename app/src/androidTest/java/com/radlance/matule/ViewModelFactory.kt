@@ -12,7 +12,7 @@ import com.radlance.matule.navigation.base.NavigationViewModel
 import com.radlance.matule.presentation.authorization.common.AuthResultMapper
 import com.radlance.matule.presentation.authorization.common.AuthViewModel
 import com.radlance.matule.presentation.common.ProductViewModel
-import com.radlance.matule.presentation.common.ResourceManagerImpl
+import com.radlance.matule.common.ResourceManagerImpl
 import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.createSupabaseClient

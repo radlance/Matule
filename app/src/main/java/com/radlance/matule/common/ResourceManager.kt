@@ -1,4 +1,4 @@
-package com.radlance.matule.presentation.common
+package com.radlance.matule.common
 
 import androidx.annotation.StringRes
 
