@@ -159,7 +159,7 @@ fun CartScreen(
 
                         onRemoveProduct = productViewModel::removeProductFromCart,
 
-                        modifier = Modifier.weight(4.5f)
+                        modifier = Modifier.weight(4.7f)
                     )
                     Box(
                         modifier = Modifier.weight(2f)

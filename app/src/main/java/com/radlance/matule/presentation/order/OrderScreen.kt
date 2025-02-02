@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -115,13 +116,14 @@ fun OrderScreen(
                     product.quantityInCart != 0
                 }
 
-                OrderCard(
-                    email = currentUser.email,
-                    isGrantedLocationPermission = isGrantedLocationPermission,
-                    modifier = Modifier
-                        .padding(horizontal = 14.dp)
-                        .weight(4.5f)
-                )
+                Column(modifier = Modifier.weight(4.5f)) {
+                    OrderCard(
+                        email = currentUser.email,
+                        isGrantedLocationPermission = isGrantedLocationPermission,
+                        modifier = Modifier.padding(horizontal = 14.dp)
+                    )
+                }
+
                 Box(
                     modifier = Modifier.weight(2f)
                 ) {
@@ -130,6 +132,7 @@ fun OrderScreen(
                     }
 
                     CartResult(
+                        modifier = Modifier.wrapContentSize(),
                         productsPrice = resultSum,
                         deliveryPrice = 60.20,
                         buttonStringResId = R.string.confirm,

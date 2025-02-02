@@ -51,9 +51,7 @@ fun CartResult(
 ) {
     val scrollState = rememberScrollState()
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surfaceVariant)
+        modifier = modifier.background(MaterialTheme.colorScheme.surfaceVariant)
     ) {
         Column(modifier = Modifier.fillMaxSize().verticalScroll(scrollState).padding(horizontal = 20.dp)) {
             Spacer(Modifier.height(34.dp))
