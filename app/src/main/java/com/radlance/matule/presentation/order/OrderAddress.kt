@@ -2,6 +2,7 @@ package com.radlance.matule.presentation.order
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,6 +39,7 @@ import com.radlance.matule.ui.theme.ralewayFamily
 @Composable
 fun OrderAddress(
     address: String,
+    onMapClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
@@ -82,6 +84,7 @@ fun OrderAddress(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Color.Black.copy(alpha = 0.3f))
+                    .clickable { onMapClick() }
             )
 
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -117,6 +120,6 @@ fun OrderAddress(
 @Composable
 private fun OrderAddressPreview() {
     MatuleTheme {
-        OrderAddress(address = "1082 Аэропорт, Нигерии")
+        OrderAddress(address = "1082 Аэропорт, Нигерии", onMapClick = {})
     }
 }

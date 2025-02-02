@@ -23,10 +23,12 @@ ksp = "2.0.0-1.0.23"
 room = "2.6.1"
 coil = "3.0.4"
 gms = "21.3.0"
-
+yandexAndroid = "4.10.1-lite"
 
 [libraries]
+maps-modile = { group = "com.yandex.android", name = "maps.mobile", version.ref = "yandexAndroid" }
 play-serivces-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "gms" }
+
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 coil-network-http = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
 

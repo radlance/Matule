@@ -35,6 +35,7 @@ import com.radlance.matule.ui.theme.ralewayFamily
 fun OrderCard(
     email: String,
     isGrantedLocationPermission: Boolean,
+    onMapClick: (lat: Double, long: Double) -> Unit,
     modifier: Modifier = Modifier,
     permissionViewModel: PermissionViewModel = hiltViewModel(),
 ) {
@@ -75,6 +76,7 @@ fun OrderCard(
                     onSuccess = { address ->
                         OrderAddress(
                             address = address.getAddressLine(0),
+                            onMapClick = { onMapClick(address.latitude, address.longitude) },
                             modifier = Modifier.padding(start = 20.dp, end = 32.dp)
                         )
                     },
@@ -103,6 +105,7 @@ private fun OrderCardPreview() {
         OrderCard(
             email = "emmanueloyiboke@gmail.com",
             isGrantedLocationPermission = true,
+            onMapClick = { _, _ -> },
             modifier = Modifier
                 .height(425.dp)
                 .fillMaxWidth()
@@ -117,6 +120,7 @@ private fun OrderCardExpandedPreview() {
         OrderCard(
             email = "emmanueloyiboke@gmail.com",
             isGrantedLocationPermission = true,
+            onMapClick = { _, _ -> },
             modifier = Modifier
                 .height(425.dp)
                 .fillMaxWidth()

@@ -25,7 +25,7 @@ class GoogleAccountManager(
 
     private val googleIdOption = GetGoogleIdOption.Builder()
         .setFilterByAuthorizedAccounts(false)
-        .setServerClientId(BuildConfig.SERVER_CLIENT_ID)
+        .setServerClientId(BuildConfig.GOOGLE_SERVER_CLIENT_ID)
         .setNonce(getFormattedNonce(rawNonce))
         .build()
 

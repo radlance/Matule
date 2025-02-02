@@ -79,3 +79,30 @@ data object Notification : Destination
 @Serializable
 @Keep
 data object Profile : Destination
+
+@Serializable
+@Keep
+data object Payment : BottomDestination
+
+@Serializable
+@Keep
+data object Order : BottomDestination
+
+@Serializable
+@Keep
+data class Map(
+    val latitude: Double,
+    val longitude: Double
+) : BottomDestination
+
+@Serializable
+@Keep
+data object UserData : BottomDestination
+
+@Serializable
+@Keep
+data object Barcode : BottomDestination
+
+@Serializable
+@Keep
+data object EditProfile : BottomDestination

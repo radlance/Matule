@@ -15,6 +15,9 @@ android {
     compileSdk = 34
 
     defaultConfig {
+        ndk {
+            abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a"))
+        }
         applicationId = "com.radlance.matule"
         minSdk = 30
         targetSdk = 34
@@ -30,8 +33,11 @@ android {
         val supabaseKey = properties.getProperty("supabase.key")
         buildConfigField("String", "SUPABASE_KEY", supabaseKey)
 
-        val serverClientId = properties.getProperty("server.client.id")
-        buildConfigField("String", "SERVER_CLIENT_ID", serverClientId)
+        val googleServerClientId = properties.getProperty("google.server.client.id")
+        buildConfigField("String", "GOOGLE_SERVER_CLIENT_ID", googleServerClientId)
+
+        val yandexMapKitKey = properties.getProperty("yandex.map.kit.key")
+        buildConfigField("String", "YANDEX_MAP_KIT_KEY", yandexMapKitKey)
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -63,7 +69,9 @@ kapt {
 }
 
 dependencies {
+    implementation(libs.maps.modile)
     implementation(libs.play.serivces.location)
+
     implementation(libs.coil.compose)
     implementation(libs.coil.network.http)
 

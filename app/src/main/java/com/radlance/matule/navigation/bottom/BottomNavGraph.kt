@@ -52,10 +52,7 @@ fun BottomNavGraph(
 
         composable<Favorite> {
             FavoriteScreen(
-                onNavigateToCart = {
-                    navigationState.navigateTo(Payment)
-                },
-
+                onNavigateToCart = navigateToCart,
                 onNavigateToDetails = navigateToDetails,
                 viewModel = sharedViewModel,
                 onBackPressed = navController::navigateUp

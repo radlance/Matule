@@ -47,6 +47,7 @@ import com.radlance.matule.ui.theme.MatuleTheme
 fun OrderScreen(
     onBackPressed: () -> Unit,
     navigateToCatalog: () -> Unit,
+    onMapClick: (lat: Double, long: Double) -> Unit,
     modifier: Modifier = Modifier,
     productViewModel: ProductViewModel = hiltViewModel(),
     orderViewModel: OrderViewModel = hiltViewModel()
@@ -120,6 +121,7 @@ fun OrderScreen(
                     OrderCard(
                         email = currentUser.email,
                         isGrantedLocationPermission = isGrantedLocationPermission,
+                        onMapClick = onMapClick,
                         modifier = Modifier.padding(horizontal = 14.dp)
                     )
                 }
@@ -130,7 +132,6 @@ fun OrderScreen(
                     if (resultSum == 0.0) {
                         resultSum = productsInCart.sumOf { it.price * it.quantityInCart }
                     }
-
                     CartResult(
                         modifier = Modifier.wrapContentSize(),
                         productsPrice = resultSum,
@@ -185,7 +186,7 @@ fun OrderScreen(
 @Composable
 private fun OrderScreenPreview() {
     MatuleTheme {
-        OrderScreen(onBackPressed = {}, navigateToCatalog = {})
+        OrderScreen(onBackPressed = {}, navigateToCatalog = {}, onMapClick = { _, _ -> })
     }
 }
 
@@ -193,6 +194,6 @@ private fun OrderScreenPreview() {
 @Composable
 private fun OrderScreenSmallPreview() {
     MatuleTheme {
-        OrderScreen(onBackPressed = {}, navigateToCatalog = {})
+        OrderScreen(onBackPressed = {}, navigateToCatalog = {}, onMapClick = { _, _ -> })
     }
 }

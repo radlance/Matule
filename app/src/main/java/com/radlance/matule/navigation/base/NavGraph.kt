@@ -18,11 +18,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.toRoute
-import com.radlance.matule.navigation.bottom.Barcode
-import com.radlance.matule.navigation.bottom.EditProfile
-import com.radlance.matule.navigation.bottom.Order
-import com.radlance.matule.navigation.bottom.Payment
-import com.radlance.matule.navigation.bottom.UserData
 import com.radlance.matule.presentation.authorization.common.AuthViewModel
 import com.radlance.matule.presentation.authorization.signin.AccountManager
 import com.radlance.matule.presentation.authorization.signin.ForgotPasswordScreen
@@ -41,6 +36,7 @@ import com.radlance.matule.presentation.onboarding.OnboardingFirst
 import com.radlance.matule.presentation.onboarding.OnboardingSecond
 import com.radlance.matule.presentation.onboarding.OnboardingThird
 import com.radlance.matule.presentation.onboarding.SplashScreen
+import com.radlance.matule.presentation.map.MapScreen
 import com.radlance.matule.presentation.order.OrderScreen
 import com.radlance.matule.presentation.profile.FullScreenBarcode
 import com.radlance.matule.presentation.profile.ProfileScreen
@@ -293,9 +289,15 @@ fun NavGraph(
                             popUpTo<Order> { inclusive = true }
                         }
                     },
+                    onMapClick = { lat, long -> navController.navigate(Map(lat, long)) },
                     navigateToCatalog = { navController.navigate(Home) },
                     productViewModel = sharedViewModel
                 )
+            }
+
+            composable<Map> {
+                val args = it.toRoute<Map>()
+                MapScreen(latitude = args.latitude, longitude = args.longitude)
             }
         }
 
