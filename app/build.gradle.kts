@@ -12,15 +12,12 @@ plugins {
 
 android {
     namespace = "com.radlance.matule"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
-        ndk {
-            abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a"))
-        }
         applicationId = "com.radlance.matule"
         minSdk = 30
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -49,6 +46,10 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            ndk {
+                abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a"))
+            }
         }
     }
     compileOptions {
@@ -76,7 +77,6 @@ dependencies {
     implementation(libs.coil.network.http)
 
     implementation(libs.androidx.room.runtime)
-    annotationProcessor(libs.androidx.room.compiler)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
