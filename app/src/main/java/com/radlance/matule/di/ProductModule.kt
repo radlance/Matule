@@ -23,8 +23,11 @@ class ProductModule {
 
     @Provides
     @Singleton
-    fun provideRemoteProductRepository(supabaseClient: SupabaseClient): RemoteProductRepository {
-        return RemoteProductRepository(supabaseClient)
+    fun provideRemoteProductRepository(
+        supabaseClient: SupabaseClient,
+        dao: MatuleDao
+    ): RemoteProductRepository {
+        return RemoteProductRepository(supabaseClient, dao)
     }
 
     @Provides

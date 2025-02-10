@@ -1,10 +1,11 @@
 package com.radlance.matule.data.product
 
+import com.radlance.matule.data.database.local.MatuleDao
 import com.radlance.matule.data.database.remote.RemoteMapper
 import com.radlance.matule.data.database.remote.entity.CartEntity
-import com.radlance.matule.data.database.remote.entity.RemoteCategoryEntity
 import com.radlance.matule.data.database.remote.entity.FavoriteEntity
 import com.radlance.matule.data.database.remote.entity.HistoryEntity
+import com.radlance.matule.data.database.remote.entity.RemoteCategoryEntity
 import com.radlance.matule.data.database.remote.entity.RemoteProductEntity
 import com.radlance.matule.domain.history.HistoryProduct
 import com.radlance.matule.domain.product.CatalogFetchContent
@@ -16,10 +17,41 @@ import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.postgrest.from
 import javax.inject.Inject
 
-class RemoteProductRepository @Inject constructor(private val supabaseClient: SupabaseClient) :
-    ProductRepository, RemoteMapper() {
+class RemoteProductRepository @Inject constructor(
+    private val supabaseClient: SupabaseClient,
+    private val dao: MatuleDao
+) : ProductRepository, RemoteMapper() {
     override suspend fun fetchCatalogContent(): FetchResult<CatalogFetchContent> {
         return try {
+            val localCartEntities = dao.getCartProducts()
+            if (localCartEntities.isNotEmpty()) {
+                val user = supabaseClient.auth.currentSessionOrNull()?.user!!
+                val userProducts = supabaseClient.from("cart").select {
+                    filter {
+                        CartEntity::userId eq user.id
+                    }
+                }.decodeList<CartEntity>()
+
+                if (userProducts.isEmpty()) {
+                    localCartEntities.forEach { entity ->
+                        val product = supabaseClient.from("product").select {
+                            filter {
+                                RemoteProductEntity::title eq entity.title
+                            }
+                        }.decodeList<RemoteProductEntity>().first()
+
+                        supabaseClient.from("cart").insert(
+                            CartEntity(
+                                productId = product.id,
+                                quantity = entity.quantityInCart,
+                                userId = user.id
+                            )
+                        )
+                    }
+                    dao.clearCart()
+                }
+            }
+
             val categories = supabaseClient.from("category").select().decodeList<RemoteCategoryEntity>()
             val products = supabaseClient.from("product").select().decodeList<RemoteProductEntity>()
             FetchResult.Success(

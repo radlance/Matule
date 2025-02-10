@@ -44,11 +44,17 @@ interface MatuleDao {
     @Query("UPDATE product SET quantity_in_cart = 1 WHERE id = :productId")
     suspend fun addProductToCart(productId: Int)
 
+    @Query("SELECT * FROM product WHERE quantity_in_cart = 1")
+    suspend fun getCartProducts(): List<LocalProductEntity>
+
     @Query("UPDATE product SET quantity_in_cart = :quantity WHERE id = :productId")
     suspend fun updateProductQuantity(productId: Int, quantity: Int)
 
     @Query("DELETE FROM product WHERE id = :productId")
     suspend fun removeProductFromCart(productId: Int)
+
+    @Query("DELETE FROM product")
+    suspend fun clearCart()
 
     @Query("SELECT * FROM notification")
     suspend fun getNotifications(): List<LocalNotificationEntity>
