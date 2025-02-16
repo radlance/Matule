@@ -22,72 +22,94 @@ class RemoteProductRepository @Inject constructor(
     private val dao: MatuleDao
 ) : ProductRepository, RemoteMapper() {
     override suspend fun fetchCatalogContent(): FetchResult<CatalogFetchContent> {
+        val user =
+            supabaseClient.auth.currentSessionOrNull()?.user ?: return FetchResult.Error(null)
+
         return try {
             val localCartEntities = dao.getCartProducts()
+
             if (localCartEntities.isNotEmpty()) {
-                val user = supabaseClient.auth.currentSessionOrNull()?.user!!
                 val userProducts = supabaseClient.from("cart").select {
-                    filter {
-                        CartEntity::userId eq user.id
-                    }
+                    filter { CartEntity::userId eq user.id }
                 }.decodeList<CartEntity>()
 
                 if (userProducts.isEmpty()) {
-                    localCartEntities.forEach { entity ->
-                        val product = supabaseClient.from("product").select {
-                            filter {
-                                RemoteProductEntity::title eq entity.title
-                            }
-                        }.decodeList<RemoteProductEntity>().first()
+                    val productTitles = localCartEntities.map { it.title }
 
-                        supabaseClient.from("cart").insert(
+                    val products = supabaseClient.from("product").select {
+                        filter { RemoteProductEntity::title isIn productTitles }
+                    }.decodeList<RemoteProductEntity>()
+
+                    val cartEntities = localCartEntities.mapNotNull { local ->
+                        products.find { it.title == local.title }?.let { product ->
                             CartEntity(
                                 productId = product.id,
-                                quantity = entity.quantityInCart,
+                                quantity = local.quantityInCart,
                                 userId = user.id
                             )
-                        )
+                        }
                     }
-                    dao.clearCart()
+
+                    if (cartEntities.isNotEmpty()) {
+                        supabaseClient.from("cart").insert(cartEntities)
+                        dao.clearCart()
+                    }
                 }
             }
 
             val categories = supabaseClient.from("category").select().decodeList<RemoteCategoryEntity>()
             val products = supabaseClient.from("product").select().decodeList<RemoteProductEntity>()
+            val favoriteProducts = supabaseClient.from("favorite")
+                .select { filter { FavoriteEntity::userId eq user.id } }
+                .decodeList<FavoriteEntity>().associateBy { it.productId }
+            val cartProducts =
+                supabaseClient.from("cart").select { filter { CartEntity::userId eq user.id } }
+                    .decodeList<CartEntity>().associateBy { it.productId }
+
             FetchResult.Success(
                 CatalogFetchContent(
                     categories = categories.map { it.toCategory() },
-                    products = products.map {
-                        it.toProduct(
-                            isFavorite = isFavoriteProduct(productId = it.id),
-                            quantityInCart = getProductQuantityInCart(productId = it.id)
+                    products = products.map { product ->
+                        product.toProduct(
+                            isFavorite = favoriteProducts.containsKey(product.id),
+                            quantityInCart = cartProducts[product.id]?.quantity ?: 0
                         )
                     }
                 )
             )
-
         } catch (e: Exception) {
             FetchResult.Error(null)
         }
     }
 
+
     override suspend fun changeFavoriteStatus(productId: Int): FetchResult<Int> {
-        val user = supabaseClient.auth.currentSessionOrNull()?.user
+        val user =
+            supabaseClient.auth.currentSessionOrNull()?.user ?: return FetchResult.Error(productId)
+
         return try {
-            user?.let {
-                if (isFavoriteProduct(productId)) {
-                    supabaseClient.from("favorite").delete {
-                        filter {
-                            FavoriteEntity::productId eq productId
-                            FavoriteEntity::userId eq user.id
-                        }
+            val favorites = supabaseClient.from("favorite")
+                .select {
+                    filter {
+                        FavoriteEntity::productId eq productId
+                        FavoriteEntity::userId eq user.id
                     }
-                } else {
-                    supabaseClient.from("favorite").insert(
-                        FavoriteEntity(productId = productId, userId = user.id)
-                    )
                 }
+                .decodeList<FavoriteEntity>()
+
+            if (favorites.isNotEmpty()) {
+                supabaseClient.from("favorite").delete {
+                    filter {
+                        FavoriteEntity::productId eq productId
+                        FavoriteEntity::userId eq user.id
+                    }
+                }
+            } else {
+                supabaseClient.from("favorite").insert(
+                    FavoriteEntity(productId = productId, userId = user.id)
+                )
             }
+
             FetchResult.Success(productId)
         } catch (e: Exception) {
             FetchResult.Error(productId)
@@ -95,36 +117,33 @@ class RemoteProductRepository @Inject constructor(
     }
 
     override suspend fun addProductToCart(productId: Int): FetchResult<Int> {
-        val user = supabaseClient.auth.currentSessionOrNull()?.user
+        val user =
+            supabaseClient.auth.currentSessionOrNull()?.user ?: return FetchResult.Error(productId)
         return try {
-            user?.let {
-                if (getProductQuantityInCart(productId) == 0) {
-                    supabaseClient.from("cart").insert(
-                        CartEntity(productId = productId, userId = user.id, quantity = 1)
-                    )
-                }
-            }
+            val cartEntity = CartEntity(productId = productId, userId = user.id, quantity = 1)
+            supabaseClient.from("cart").upsert(cartEntity)
             FetchResult.Success(productId)
         } catch (e: Exception) {
             FetchResult.Error(productId)
         }
     }
 
+
     override suspend fun updateQuantity(productId: Int, quantity: Int): FetchResult<Int> {
-        val user = supabaseClient.auth.currentSessionOrNull()?.user
+        val user =
+            supabaseClient.auth.currentSessionOrNull()?.user ?: return FetchResult.Error(productId)
         return try {
-            user?.let {
-                supabaseClient.from("cart").update(
-                    {
-                        CartEntity::quantity setTo quantity
-                    }
-                ) {
-                    filter {
-                        CartEntity::productId eq productId
-                        CartEntity::userId eq user.id
-                    }
+            supabaseClient.from("cart").update(
+                {
+                    CartEntity::quantity setTo quantity
+                }
+            ) {
+                filter {
+                    CartEntity::productId eq productId
+                    CartEntity::userId eq user.id
                 }
             }
+
             FetchResult.Success(productId)
         } catch (e: Exception) {
             FetchResult.Error(productId)
@@ -132,14 +151,14 @@ class RemoteProductRepository @Inject constructor(
     }
 
     override suspend fun removeProductFromCart(productId: Int): FetchResult<Int> {
-        val user = supabaseClient.auth.currentSessionOrNull()?.user
+        val user =
+            supabaseClient.auth.currentSessionOrNull()?.user ?: return FetchResult.Error(productId)
+
         return try {
-            user?.let {
-                supabaseClient.from("cart").delete {
-                    filter {
-                        CartEntity::productId eq productId
-                        CartEntity::userId eq user.id
-                    }
+            supabaseClient.from("cart").delete {
+                filter {
+                    CartEntity::productId eq productId
+                    CartEntity::userId eq user.id
                 }
             }
             FetchResult.Success(productId)
@@ -149,90 +168,55 @@ class RemoteProductRepository @Inject constructor(
     }
 
     override suspend fun placeOrder(products: List<Product>): FetchResult<List<Product>> {
-        val user = supabaseClient.auth.currentSessionOrNull()?.user
-        return try {
-            user?.let {
-                products.forEach { product ->
-                    val historyEntity = product.toHistoryEntity(user.id)
+        val user = supabaseClient.auth.currentSessionOrNull()?.user ?: return FetchResult.Error(
+            emptyList()
+        )
 
-                    supabaseClient.from("history").insert(historyEntity)
-                    supabaseClient.from("cart").delete {
-                        filter {
-                            CartEntity::productId eq product.id
-                            CartEntity::userId eq user.id
-                        }
-                    }
+        return try {
+            val historyEntities = products.map { it.toHistoryEntity(user.id) }
+
+            supabaseClient.from("history").insert(historyEntities)
+
+            supabaseClient.from("cart").delete {
+                filter {
+                    CartEntity::productId isIn products.map { it.id }
+                    CartEntity::userId eq user.id
                 }
             }
-            FetchResult.Success(products)
 
+            FetchResult.Success(products)
         } catch (e: Exception) {
             FetchResult.Error(emptyList())
         }
     }
 
     override suspend fun loadHistory(): FetchResult<List<HistoryProduct>> {
-        val user = supabaseClient.auth.currentSessionOrNull()?.user
+        val user = supabaseClient.auth.currentSessionOrNull()?.user ?: return FetchResult.Error(emptyList())
+
         return try {
-            if (user != null) {
-                val historyEntities =
-                    supabaseClient.from("history").select {
-                        filter {
-                            HistoryEntity::userId eq user.id
-                        }
-                    }.decodeList<HistoryEntity>()
-                val products = supabaseClient.from("product").select().decodeList<RemoteProductEntity>()
+            val historyEntities = supabaseClient.from("history").select {
+                filter { HistoryEntity::userId eq user.id }
+            }.decodeList<HistoryEntity>()
+
+            val productIds = historyEntities.map { it.productId }
+
+            if (productIds.isNotEmpty()) {
+                val products = supabaseClient.from("product").select {
+                    filter { RemoteProductEntity::id isIn productIds }
+                }.decodeList<RemoteProductEntity>().associateBy { it.id }
 
                 FetchResult.Success(
-                    historyEntities.map { historyEntity ->
-                        historyEntity.toHistoryProduct(
-                            products.first { productEntity ->
-                                productEntity.id == historyEntity.productId
-                            }
-                        )
+                    historyEntities.mapNotNull { historyEntity ->
+                        products[historyEntity.productId]?.let { productEntity ->
+                            historyEntity.toHistoryProduct(productEntity)
+                        }
                     }
                 )
             } else {
-                FetchResult.Error(emptyList())
+                FetchResult.Success(emptyList())
             }
         } catch (e: Exception) {
             FetchResult.Error(emptyList())
-        }
-    }
-
-    private suspend fun getProductQuantityInCart(productId: Int): Int {
-        val user = supabaseClient.auth.currentSessionOrNull()?.user
-        return try {
-            user?.let {
-                val cartEntities = supabaseClient.from("cart").select {
-                    filter {
-                        CartEntity::productId eq productId
-                        CartEntity::userId eq user.id
-                    }
-                }.decodeList<CartEntity>()
-                cartEntities.first().quantity
-            } ?: -1
-
-        } catch (e: Exception) {
-            0
-        }
-    }
-
-    private suspend fun isFavoriteProduct(productId: Int): Boolean {
-        val user = supabaseClient.auth.currentSessionOrNull()?.user
-        return try {
-            user?.let {
-                val favorites = supabaseClient.from("favorite").select {
-                    filter {
-                        FavoriteEntity::productId eq productId
-                        FavoriteEntity::userId eq it.id
-                    }
-                }.decodeList<FavoriteEntity>()
-                favorites.size == 1
-            } ?: false
-
-        } catch (e: Exception) {
-            false
         }
     }
 }
