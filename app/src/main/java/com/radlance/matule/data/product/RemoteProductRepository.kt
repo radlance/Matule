@@ -24,52 +24,47 @@ class RemoteProductRepository @Inject constructor(
     override suspend fun fetchCatalogContent(): FetchResult<CatalogFetchContent> {
         val user =
             supabaseClient.auth.currentSessionOrNull()?.user ?: return FetchResult.Error(null)
+
         return try {
             val localCartEntities = dao.getCartProducts()
+
             if (localCartEntities.isNotEmpty()) {
                 val userProducts = supabaseClient.from("cart").select {
-                    filter {
-                        CartEntity::userId eq user.id
-                    }
+                    filter { CartEntity::userId eq user.id }
                 }.decodeList<CartEntity>()
 
                 if (userProducts.isEmpty()) {
-                    localCartEntities.forEach { entity ->
-                        val product = supabaseClient.from("product").select {
-                            filter {
-                                RemoteProductEntity::title eq entity.title
-                            }
-                        }.decodeList<RemoteProductEntity>().first()
+                    val productTitles = localCartEntities.map { it.title }
 
-                        supabaseClient.from("cart").insert(
+                    val products = supabaseClient.from("product").select {
+                        filter { RemoteProductEntity::title isIn productTitles }
+                    }.decodeList<RemoteProductEntity>()
+
+                    val cartEntities = localCartEntities.mapNotNull { local ->
+                        products.find { it.title == local.title }?.let { product ->
                             CartEntity(
                                 productId = product.id,
-                                quantity = entity.quantityInCart,
+                                quantity = local.quantityInCart,
                                 userId = user.id
                             )
-                        )
+                        }
                     }
-                    dao.clearCart()
+
+                    if (cartEntities.isNotEmpty()) {
+                        supabaseClient.from("cart").insert(cartEntities)
+                        dao.clearCart()
+                    }
                 }
             }
 
             val categories = supabaseClient.from("category").select().decodeList<RemoteCategoryEntity>()
             val products = supabaseClient.from("product").select().decodeList<RemoteProductEntity>()
-
             val favoriteProducts = supabaseClient.from("favorite")
-                .select {
-                    filter { FavoriteEntity::userId eq user.id }
-                }
-
-                .decodeList<FavoriteEntity>()
-                .associateBy { it.productId }
-
-            val cartProducts = supabaseClient.from("cart")
-                .select {
-                    filter { CartEntity::userId eq user.id }
-                }
-                .decodeList<CartEntity>()
-                .associateBy { it.productId }
+                .select { filter { FavoriteEntity::userId eq user.id } }
+                .decodeList<FavoriteEntity>().associateBy { it.productId }
+            val cartProducts =
+                supabaseClient.from("cart").select { filter { CartEntity::userId eq user.id } }
+                    .decodeList<CartEntity>().associateBy { it.productId }
 
             FetchResult.Success(
                 CatalogFetchContent(
@@ -82,11 +77,11 @@ class RemoteProductRepository @Inject constructor(
                     }
                 )
             )
-
         } catch (e: Exception) {
             FetchResult.Error(null)
         }
     }
+
 
     override suspend fun changeFavoriteStatus(productId: Int): FetchResult<Int> {
         val user =
