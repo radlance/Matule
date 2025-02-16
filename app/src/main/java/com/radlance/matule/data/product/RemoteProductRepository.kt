@@ -117,12 +117,11 @@ class RemoteProductRepository @Inject constructor(
     }
 
     override suspend fun addProductToCart(productId: Int): FetchResult<Int> {
-        val user = supabaseClient.auth.currentSessionOrNull()?.user
+        val user =
+            supabaseClient.auth.currentSessionOrNull()?.user ?: return FetchResult.Error(productId)
         return try {
-            user?.let {
-                val cartEntity = CartEntity(productId = productId, userId = user.id, quantity = 1)
-                supabaseClient.from("cart").upsert(cartEntity)
-            } ?: FetchResult.Error(productId)
+            val cartEntity = CartEntity(productId = productId, userId = user.id, quantity = 1)
+            supabaseClient.from("cart").upsert(cartEntity)
             FetchResult.Success(productId)
         } catch (e: Exception) {
             FetchResult.Error(productId)
@@ -131,20 +130,20 @@ class RemoteProductRepository @Inject constructor(
 
 
     override suspend fun updateQuantity(productId: Int, quantity: Int): FetchResult<Int> {
-        val user = supabaseClient.auth.currentSessionOrNull()?.user
+        val user =
+            supabaseClient.auth.currentSessionOrNull()?.user ?: return FetchResult.Error(productId)
         return try {
-            user?.let {
-                supabaseClient.from("cart").update(
-                    {
-                        CartEntity::quantity setTo quantity
-                    }
-                ) {
-                    filter {
-                        CartEntity::productId eq productId
-                        CartEntity::userId eq user.id
-                    }
+            supabaseClient.from("cart").update(
+                {
+                    CartEntity::quantity setTo quantity
+                }
+            ) {
+                filter {
+                    CartEntity::productId eq productId
+                    CartEntity::userId eq user.id
                 }
             }
+
             FetchResult.Success(productId)
         } catch (e: Exception) {
             FetchResult.Error(productId)
@@ -152,14 +151,14 @@ class RemoteProductRepository @Inject constructor(
     }
 
     override suspend fun removeProductFromCart(productId: Int): FetchResult<Int> {
-        val user = supabaseClient.auth.currentSessionOrNull()?.user
+        val user =
+            supabaseClient.auth.currentSessionOrNull()?.user ?: return FetchResult.Error(productId)
+
         return try {
-            user?.let {
-                supabaseClient.from("cart").delete {
-                    filter {
-                        CartEntity::productId eq productId
-                        CartEntity::userId eq user.id
-                    }
+            supabaseClient.from("cart").delete {
+                filter {
+                    CartEntity::productId eq productId
+                    CartEntity::userId eq user.id
                 }
             }
             FetchResult.Success(productId)
@@ -169,51 +168,52 @@ class RemoteProductRepository @Inject constructor(
     }
 
     override suspend fun placeOrder(products: List<Product>): FetchResult<List<Product>> {
-        val user = supabaseClient.auth.currentSessionOrNull()?.user
-        return try {
-            user?.let {
-                products.forEach { product ->
-                    val historyEntity = product.toHistoryEntity(user.id)
+        val user = supabaseClient.auth.currentSessionOrNull()?.user ?: return FetchResult.Error(
+            emptyList()
+        )
 
-                    supabaseClient.from("history").insert(historyEntity)
-                    supabaseClient.from("cart").delete {
-                        filter {
-                            CartEntity::productId eq product.id
-                            CartEntity::userId eq user.id
-                        }
-                    }
+        return try {
+            val historyEntities = products.map { it.toHistoryEntity(user.id) }
+
+            supabaseClient.from("history").insert(historyEntities)
+
+            supabaseClient.from("cart").delete {
+                filter {
+                    CartEntity::productId isIn products.map { it.id }
+                    CartEntity::userId eq user.id
                 }
             }
-            FetchResult.Success(products)
 
+            FetchResult.Success(products)
         } catch (e: Exception) {
             FetchResult.Error(emptyList())
         }
     }
 
     override suspend fun loadHistory(): FetchResult<List<HistoryProduct>> {
-        val user = supabaseClient.auth.currentSessionOrNull()?.user
+        val user = supabaseClient.auth.currentSessionOrNull()?.user ?: return FetchResult.Error(emptyList())
+
         return try {
-            if (user != null) {
-                val historyEntities =
-                    supabaseClient.from("history").select {
-                        filter {
-                            HistoryEntity::userId eq user.id
-                        }
-                    }.decodeList<HistoryEntity>()
-                val products = supabaseClient.from("product").select().decodeList<RemoteProductEntity>()
+            val historyEntities = supabaseClient.from("history").select {
+                filter { HistoryEntity::userId eq user.id }
+            }.decodeList<HistoryEntity>()
+
+            val productIds = historyEntities.map { it.productId }
+
+            if (productIds.isNotEmpty()) {
+                val products = supabaseClient.from("product").select {
+                    filter { RemoteProductEntity::id isIn productIds }
+                }.decodeList<RemoteProductEntity>().associateBy { it.id }
 
                 FetchResult.Success(
-                    historyEntities.map { historyEntity ->
-                        historyEntity.toHistoryProduct(
-                            products.first { productEntity ->
-                                productEntity.id == historyEntity.productId
-                            }
-                        )
+                    historyEntities.mapNotNull { historyEntity ->
+                        products[historyEntity.productId]?.let { productEntity ->
+                            historyEntity.toHistoryProduct(productEntity)
+                        }
                     }
                 )
             } else {
-                FetchResult.Error(emptyList())
+                FetchResult.Success(emptyList())
             }
         } catch (e: Exception) {
             FetchResult.Error(emptyList())
