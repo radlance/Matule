@@ -22,10 +22,11 @@ class RemoteProductRepository @Inject constructor(
     private val dao: MatuleDao
 ) : ProductRepository, RemoteMapper() {
     override suspend fun fetchCatalogContent(): FetchResult<CatalogFetchContent> {
+        val user =
+            supabaseClient.auth.currentSessionOrNull()?.user ?: return FetchResult.Error(null)
         return try {
             val localCartEntities = dao.getCartProducts()
             if (localCartEntities.isNotEmpty()) {
-                val user = supabaseClient.auth.currentSessionOrNull()?.user!!
                 val userProducts = supabaseClient.from("cart").select {
                     filter {
                         CartEntity::userId eq user.id
@@ -54,13 +55,29 @@ class RemoteProductRepository @Inject constructor(
 
             val categories = supabaseClient.from("category").select().decodeList<RemoteCategoryEntity>()
             val products = supabaseClient.from("product").select().decodeList<RemoteProductEntity>()
+
+            val favoriteProducts = supabaseClient.from("favorite")
+                .select {
+                    filter { FavoriteEntity::userId eq user.id }
+                }
+
+                .decodeList<FavoriteEntity>()
+                .associateBy { it.productId }
+
+            val cartProducts = supabaseClient.from("cart")
+                .select {
+                    filter { CartEntity::userId eq user.id }
+                }
+                .decodeList<CartEntity>()
+                .associateBy { it.productId }
+
             FetchResult.Success(
                 CatalogFetchContent(
                     categories = categories.map { it.toCategory() },
-                    products = products.map {
-                        it.toProduct(
-                            isFavorite = isFavoriteProduct(productId = it.id),
-                            quantityInCart = getProductQuantityInCart(productId = it.id)
+                    products = products.map { product ->
+                        product.toProduct(
+                            isFavorite = favoriteProducts.containsKey(product.id),
+                            quantityInCart = cartProducts[product.id]?.quantity ?: 0
                         )
                     }
                 )
@@ -72,22 +89,32 @@ class RemoteProductRepository @Inject constructor(
     }
 
     override suspend fun changeFavoriteStatus(productId: Int): FetchResult<Int> {
-        val user = supabaseClient.auth.currentSessionOrNull()?.user
+        val user =
+            supabaseClient.auth.currentSessionOrNull()?.user ?: return FetchResult.Error(productId)
+
         return try {
-            user?.let {
-                if (isFavoriteProduct(productId)) {
-                    supabaseClient.from("favorite").delete {
-                        filter {
-                            FavoriteEntity::productId eq productId
-                            FavoriteEntity::userId eq user.id
-                        }
+            val favorites = supabaseClient.from("favorite")
+                .select {
+                    filter {
+                        FavoriteEntity::productId eq productId
+                        FavoriteEntity::userId eq user.id
                     }
-                } else {
-                    supabaseClient.from("favorite").insert(
-                        FavoriteEntity(productId = productId, userId = user.id)
-                    )
                 }
+                .decodeList<FavoriteEntity>()
+
+            if (favorites.isNotEmpty()) {
+                supabaseClient.from("favorite").delete {
+                    filter {
+                        FavoriteEntity::productId eq productId
+                        FavoriteEntity::userId eq user.id
+                    }
+                }
+            } else {
+                supabaseClient.from("favorite").insert(
+                    FavoriteEntity(productId = productId, userId = user.id)
+                )
             }
+
             FetchResult.Success(productId)
         } catch (e: Exception) {
             FetchResult.Error(productId)
@@ -98,17 +125,15 @@ class RemoteProductRepository @Inject constructor(
         val user = supabaseClient.auth.currentSessionOrNull()?.user
         return try {
             user?.let {
-                if (getProductQuantityInCart(productId) == 0) {
-                    supabaseClient.from("cart").insert(
-                        CartEntity(productId = productId, userId = user.id, quantity = 1)
-                    )
-                }
-            }
+                val cartEntity = CartEntity(productId = productId, userId = user.id, quantity = 1)
+                supabaseClient.from("cart").upsert(cartEntity)
+            } ?: FetchResult.Error(productId)
             FetchResult.Success(productId)
         } catch (e: Exception) {
             FetchResult.Error(productId)
         }
     }
+
 
     override suspend fun updateQuantity(productId: Int, quantity: Int): FetchResult<Int> {
         val user = supabaseClient.auth.currentSessionOrNull()?.user
@@ -197,42 +222,6 @@ class RemoteProductRepository @Inject constructor(
             }
         } catch (e: Exception) {
             FetchResult.Error(emptyList())
-        }
-    }
-
-    private suspend fun getProductQuantityInCart(productId: Int): Int {
-        val user = supabaseClient.auth.currentSessionOrNull()?.user
-        return try {
-            user?.let {
-                val cartEntities = supabaseClient.from("cart").select {
-                    filter {
-                        CartEntity::productId eq productId
-                        CartEntity::userId eq user.id
-                    }
-                }.decodeList<CartEntity>()
-                cartEntities.first().quantity
-            } ?: -1
-
-        } catch (e: Exception) {
-            0
-        }
-    }
-
-    private suspend fun isFavoriteProduct(productId: Int): Boolean {
-        val user = supabaseClient.auth.currentSessionOrNull()?.user
-        return try {
-            user?.let {
-                val favorites = supabaseClient.from("favorite").select {
-                    filter {
-                        FavoriteEntity::productId eq productId
-                        FavoriteEntity::userId eq it.id
-                    }
-                }.decodeList<FavoriteEntity>()
-                favorites.size == 1
-            } ?: false
-
-        } catch (e: Exception) {
-            false
         }
     }
 }
