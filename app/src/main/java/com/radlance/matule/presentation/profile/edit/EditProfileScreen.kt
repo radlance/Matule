@@ -34,6 +34,7 @@ import com.radlance.matule.R
 import com.radlance.matule.presentation.authorization.common.AuthScaffold
 import com.radlance.matule.presentation.profile.ProfileViewModel
 import com.radlance.matule.ui.theme.MatuleTheme
+import androidx.core.net.toUri
 
 @Composable
 fun EditProfileScreen(
@@ -110,7 +111,7 @@ fun EditProfileScreen(
                 onSuccess = { userData ->
                     LaunchedEffect(userData.imageUrl) {
                         if (userData.imageUrl.isNotEmpty()) {
-                            imageState = Uri.parse(userData.imageUrl)
+                            imageState = userData.imageUrl.toUri()
                         }
                     }
 
@@ -137,7 +138,7 @@ fun EditProfileScreen(
 
                         profileUiState = profileUiState,
                         onSaveClick = {
-                            val byteArray = if (imageState != Uri.parse(userData.imageUrl)) {
+                            val byteArray = if (imageState != userData.imageUrl.toUri()) {
                                 imageState.toByteArray(context)
                             } else {
                                 null
