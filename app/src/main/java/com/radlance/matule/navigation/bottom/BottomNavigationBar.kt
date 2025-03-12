@@ -26,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -41,6 +42,7 @@ import com.radlance.matule.ui.vector.ProfileNavigationIcon
 
 @Composable
 fun BottomNavigationBar(
+    bottomInnerPadding: Dp,
     navigationState: BottomNavigationState,
     navigateToCart: () -> Unit,
     navigateToProfile: () -> Unit,
@@ -50,7 +52,19 @@ fun BottomNavigationBar(
     val navBackStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
     val interactionSource = remember { MutableInteractionSource() }
 
-    Box(modifier = modifier.fillMaxWidth()) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(80.dp)
+            .offset(y = 100.dp)
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+    )
+
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(bottom = bottomInnerPadding)
+    ) {
         Image(
             imageVector = BottomPanel(MaterialTheme.colorScheme.surfaceVariant),
             contentDescription = "BottomPanel",

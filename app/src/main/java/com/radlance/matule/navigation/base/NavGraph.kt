@@ -3,6 +3,7 @@ package com.radlance.matule.navigation.base
 import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -49,6 +50,7 @@ fun NavGraph(
     navigationViewModel: NavigationViewModel = viewModel(),
     authViewModel: AuthViewModel = viewModel(),
     sharedViewModel: ProductViewModel = viewModel(),
+    paddingValues: PaddingValues = PaddingValues(),
     accountManager: AccountManager
 ) {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
@@ -225,7 +227,8 @@ fun NavGraph(
                 navigateToSearch = { navController.navigate(Search) },
                 navigateToCatalog = { navController.navigate(Catalog(it)) },
                 navigateToPopular = { navController.navigate(Popular) },
-                sharedProductViewModel = sharedViewModel
+                sharedProductViewModel = sharedViewModel,
+                paddingValues = paddingValues
             )
         }
 

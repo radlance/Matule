@@ -2,7 +2,7 @@ package com.radlance.matule.app
 
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -12,11 +12,15 @@ import com.radlance.matule.presentation.authorization.common.GoogleAccountManage
 
 @Composable
 fun MatuleApp(modifier: Modifier = Modifier) {
-    Surface(modifier = modifier.fillMaxSize()) {
+    Scaffold(modifier = modifier.fillMaxSize()) { innerPadding ->
         val navHostController = rememberNavController()
 
         val context = LocalContext.current
         val accountManager = GoogleAccountManager(context as ComponentActivity)
-        NavGraph(navController = navHostController, accountManager = accountManager)
+        NavGraph(
+            navController = navHostController,
+            accountManager = accountManager,
+            paddingValues = innerPadding
+        )
     }
 }
